@@ -1,15 +1,19 @@
-package me.andrew.healthindicators;
+package io.github.adytech99.healthindicators;
 
-import net.fabricmc.api.ModInitializer;
+import io.github.adytech99.healthindicators.config.ModConfig;
+import io.github.adytech99.healthindicators.util.Maths;
+import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.text.Text;
 
-public class HealthIndicatorsMod implements ModInitializer {
+@Environment(EnvType.CLIENT)
+public class HealthIndicatorsMod implements ClientModInitializer {
     public static final String MOD_ID = "healthindicators";
-
     public static final String CONFIG_FILE = "healthindicators.json";
 
     public static final KeyBinding RENDERING_ENABLED_KEY_BINDING = KeyBindingHelper.registerKeyBinding(new KeyBinding(
@@ -33,10 +37,11 @@ public class HealthIndicatorsMod implements ModInitializer {
             "key.categories." + MOD_ID
     ));
 
-    @Override
-    public void onInitialize() {
-        Config.load();
 
+    @Override
+    public void onInitializeClient() {
+        ModConfig.HANDLER.load();
+        Config.load();
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (RENDERING_ENABLED_KEY_BINDING.wasPressed()) {
                 Config.setRenderingEnabled(!Config.getRenderingEnabled());
@@ -53,16 +58,16 @@ public class HealthIndicatorsMod implements ModInitializer {
             }
 
             while (INCREASE_HEART_OFFSET_KEY_BINDING.wasPressed()) {
-                Config.setHeartOffset(Config.getHeartOffset() + 1);
+                ModConfig.HANDLER.instance().heart_offset = (ModConfig.HANDLER.instance().heart_offset + ModConfig.HANDLER.instance().offset_step_size);
                 if (client.player != null) {
-                    client.player.sendMessage(Text.literal("Set heart offset to " + Config.getHeartOffset()), true);
+                    client.player.sendMessage(Text.literal("Set heart offset to " + Maths.truncate(ModConfig.HANDLER.instance().heart_offset,2)), true);
                 }
             }
 
             while (DECREASE_HEART_OFFSET_KEY_BINDING.wasPressed()) {
-                Config.setHeartOffset(Config.getHeartOffset() - 1);
+                ModConfig.HANDLER.instance().heart_offset = (ModConfig.HANDLER.instance().heart_offset - ModConfig.HANDLER.instance().offset_step_size);
                 if (client.player != null) {
-                    client.player.sendMessage(Text.literal("Set heart offset to " + Config.getHeartOffset()), true);
+                    client.player.sendMessage(Text.literal("Set heart offset to " + Maths.truncate(ModConfig.HANDLER.instance().heart_offset,2)), true);
                 }
             }
         });

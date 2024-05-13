@@ -1,8 +1,9 @@
-package me.andrew.healthindicators.mixin;
+/*
+package io.github.adytech99.healthindicators.mixin;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import me.andrew.healthindicators.Config;
-import me.andrew.healthindicators.HeartType;
+import io.github.adytech99.healthindicators.Config;
+import io.github.adytech99.healthindicators.HeartType;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.*;
@@ -12,6 +13,7 @@ import net.minecraft.client.render.entity.PlayerEntityRenderer;
 import net.minecraft.client.render.entity.model.PlayerEntityModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
+import net.minecraft.scoreboard.ScoreboardDisplaySlot;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import org.joml.Matrix4f;
@@ -21,13 +23,12 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(PlayerEntityRenderer.class)
-public abstract class PlayerEntityRendererMixin extends LivingEntityRenderer<AbstractClientPlayerEntity, PlayerEntityModel<AbstractClientPlayerEntity>> {
-    private static final Identifier ICONS = new Identifier("textures/gui/icons.png");
+public abstract class OldPlayerEntityRendererMixin extends LivingEntityRenderer<AbstractClientPlayerEntity, PlayerEntityModel<AbstractClientPlayerEntity>> {
+    private static final Identifier ICONS = new Identifier("minecraft", "textures/gui/sprites/hud/heart/full.png");
 
-    public PlayerEntityRendererMixin(EntityRendererFactory.Context ctx, PlayerEntityModel<AbstractClientPlayerEntity> model, float shadowRadius) {
+    public OldPlayerEntityRendererMixin(EntityRendererFactory.Context ctx, PlayerEntityModel<AbstractClientPlayerEntity> model, float shadowRadius) {
         super(ctx, model, shadowRadius);
     }
-
     @Inject(
             method = "render(Lnet/minecraft/client/network/AbstractClientPlayerEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V",
             at = @At("RETURN")
@@ -44,7 +45,7 @@ public abstract class PlayerEntityRendererMixin extends LivingEntityRenderer<Abs
         matrixStack.translate(0, abstractClientPlayerEntity.getHeight() + 0.5f, 0);
         if (this.hasLabel(abstractClientPlayerEntity) && d <= 4096.0) {
             matrixStack.translate(0.0D, 9.0F * 1.15F * 0.025F, 0.0D);
-            if (d < 100.0 && abstractClientPlayerEntity.getScoreboard().getObjectiveForSlot(2) != null) {
+            if (d < 100.0 && abstractClientPlayerEntity.getScoreboard().getObjectiveForSlot(ScoreboardDisplaySlot.BELOW_NAME) != null) {
                 matrixStack.translate(0.0D, 9.0F * 1.15F * 0.025F, 0.0D);
             }
         }
@@ -141,4 +142,4 @@ public abstract class PlayerEntityRendererMixin extends LivingEntityRenderer<Abs
     private static void drawVertex(Matrix4f model, VertexConsumer vertices, float x, float y, float z, float u, float v) {
         vertices.vertex(model, x, y, z).texture(u, v).next();
     }
-}
+}*/

@@ -3,19 +3,20 @@
   "id": "healthindicators",
   "version": "${version}",
 
-  "name": "PlayerHealthIndicators",
-  "description": "Displays a health bar above players",
+  "name": "HealthIndicators",
+  "description": "Displays a health bar above entities",
   "authors": [
-    "Gaider10"
+    "AdyTech99"
   ],
 
   "license": "MIT",
 
   "environment": "client",
   "entrypoints": {
-    "main": [
-      "me.andrew.healthindicators.HealthIndicatorsMod"
-    ]
+    "client": [
+      "io.github.adytech99.healthindicators.HealthIndicatorsMod"
+    ],
+    "modmenu" : ["io.github.adytech99.healthindicators.config.ModMenuAPIImpl"]
   },
   "mixins": [
     "healthindicators.mixins.json"
@@ -24,7 +25,7 @@
   "depends": {
     "fabricloader": ">=0.11.3",
     "fabric": "*",
-    "minecraft": "1.20.x",
-    "java": ">=17"
+    "minecraft": ">=1.20.5",
+    "java": ">=21"
   }
 }

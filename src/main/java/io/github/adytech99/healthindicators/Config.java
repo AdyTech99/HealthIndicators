@@ -1,4 +1,4 @@
-package me.andrew.healthindicators;
+package io.github.adytech99.healthindicators;
 
 import com.google.gson.Gson;
 import net.fabricmc.loader.api.FabricLoader;
@@ -15,7 +15,6 @@ public class Config {
 
     private boolean renderingEnabled = true;
     private boolean heartStackingEnabled = true;
-    private int heartOffset = 0;
 
     public static boolean getRenderingEnabled() {
         return INSTANCE.renderingEnabled;
@@ -35,14 +34,6 @@ public class Config {
         save();
     }
 
-    public static int getHeartOffset() {
-        return INSTANCE.heartOffset;
-    }
-
-    public static void setHeartOffset(int heartOffset) {
-        INSTANCE.heartOffset = heartOffset;
-        save();
-    }
 
     public static void load() {
         try (BufferedReader reader = new BufferedReader(new FileReader(FabricLoader.getInstance().getConfigDir().resolve(HealthIndicatorsMod.CONFIG_FILE).toFile()))) {
