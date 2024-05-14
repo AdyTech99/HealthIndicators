@@ -26,18 +26,23 @@ public class ModConfig {
 
     @SerialEntry
     @AutoGen(category = "toggles")
-    @Boolean
+    @TickBox
     public boolean passive_mobs = true;
 
     @SerialEntry
     @AutoGen(category = "toggles")
-    @Boolean
+    @TickBox
     public boolean hostile_mobs = true;
 
     @SerialEntry
     @AutoGen(category = "toggles")
-    @Boolean
+    @MasterTickBox(value = "self")
     public boolean players = true;
+
+    @SerialEntry
+    @AutoGen(category = "toggles")
+    @TickBox
+    public boolean self = false;
 
     @SerialEntry
     @AutoGen(category = "appearance", group = "heart_offset")
@@ -47,6 +52,10 @@ public class ModConfig {
     @AutoGen(category = "appearance", group = "heart_offset")
     @DoubleSlider(min = 0.0, max = 1.0, step = 0.1)
     public double offset_step_size = 1;
+
+    @AutoGen(category = "appearance")
+    @IntField
+    public int hearts_per_row = 10;
 
     public static Screen createScreen(@Nullable Screen parent) {
         return HANDLER.generateGui().generateScreen(parent);

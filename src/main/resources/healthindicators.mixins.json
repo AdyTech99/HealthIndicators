@@ -4,7 +4,7 @@
   "package": "io.github.adytech99.healthindicators.mixin",
   "compatibilityLevel": "JAVA_17",
   "client": [
-    "PlayerEntityRendererMixin"
+    "NewEntityRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -21,6 +21,7 @@ import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.scoreboard.ScoreboardDisplaySlot;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
 import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.Mixin;
@@ -31,12 +32,12 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(LivingEntityRenderer.class)
-public abstract class PlayerEntityRendererMixin<T extends LivingEntity, M extends EntityModel<T>> extends EntityRenderer<T> implements FeatureRendererContext<T, M> {
+public abstract class EntityRendererMixin<T extends LivingEntity, M extends EntityModel<T>> extends EntityRenderer<T> implements FeatureRendererContext<T, M> {
 
 
     @Shadow protected M model;
 
-    public PlayerEntityRendererMixin(EntityRendererFactory.Context ctx, PlayerEntityModel<AbstractClientPlayerEntity> model, float shadowRadius) {
+    public EntityRendererMixin(EntityRendererFactory.Context ctx, PlayerEntityModel<AbstractClientPlayerEntity> model, float shadowRadius) {
         super(ctx);
     }
 
@@ -53,7 +54,7 @@ public abstract class PlayerEntityRendererMixin<T extends LivingEntity, M extend
         MinecraftClient client = MinecraftClient.getInstance();
         ClientPlayerEntity player = client.player;
 
-        if (player != null && player.getVehicle() != livingEntity && livingEntity != player && !livingEntity.isInvisibleTo(player) && this.model != null) {
+        if (shouldRenderHearts(player, livingEntity)) {
             RenderLayer renderLayerEmpty = this.model.getLayer(HeartType.EMPTY.icon);
             RenderLayer renderLayerRedFull = this.model.getLayer(HeartType.RED_FULL.icon);
             RenderLayer renderLayerRedHalf = this.model.getLayer(HeartType.RED_HALF.icon);
@@ -133,7 +134,7 @@ public abstract class PlayerEntityRendererMixin<T extends LivingEntity, M extend
 
                         if(heart % heartsPerRow == 0) h = (heart / heartDensity);
 
-                        matrixStack.translate(0, livingEntity.getHeight() + 0.5f + h + (double) ModConfig.HANDLER.instance().heart_offset / 10, 0);
+                        matrixStack.translate(0, livingEntity.getHeight() + 0.5f + h + ModConfig.HANDLER.instance().heart_offset / 10, 0);
                         if (this.hasLabel(livingEntity) && d <= 4096.0) {
                             matrixStack.translate(0.0D, 9.0F * 1.15F * 0.025F, 0.0D);
                             if (d < 100.0 && livingEntity instanceof PlayerEntity && livingEntity.getEntityWorld().getScoreboard().getObjectiveForSlot(ScoreboardDisplaySlot.BELOW_NAME) != null) {
@@ -183,6 +184,16 @@ public abstract class PlayerEntityRendererMixin<T extends LivingEntity, M extend
 
     @Unique
     private static void drawVertex(Matrix4f model, VertexConsumer vertices, float x, float y, float u, float v, int light) {
+        light = 15728800;
         vertices.vertex(model, x, y, 0.0F).color(1F, 1F, 1F, 1F).texture(u, v).overlay(0, 10).light(light).normal(x, y, 0.0F).next();
+    }
+
+    @Unique
+    private boolean shouldRenderHearts(ClientPlayerEntity player, LivingEntity livingEntity){
+        return player != null
+                && player.getVehicle() != livingEntity
+                && (livingEntity != player || ModConfig.HANDLER.instance().self)
+                && !livingEntity.isInvisibleTo(player)
+                && this.model != null;
     }
 }
