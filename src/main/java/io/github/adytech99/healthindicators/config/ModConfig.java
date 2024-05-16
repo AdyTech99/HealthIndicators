@@ -1,12 +1,10 @@
 package io.github.adytech99.healthindicators.config;
 
-import dev.isxander.yacl3.api.YetAnotherConfigLib;
 import dev.isxander.yacl3.config.v2.api.ConfigClassHandler;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import dev.isxander.yacl3.config.v2.api.autogen.*;
-import dev.isxander.yacl3.config.v2.api.autogen.Boolean;
 import dev.isxander.yacl3.config.v2.api.serializer.GsonConfigSerializerBuilder;
-import io.github.adytech99.healthindicators.Config;
+import dev.isxander.yacl3.gui.image.ImageRendererFactory;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.util.Identifier;
@@ -49,10 +47,12 @@ public class ModConfig {
     @DoubleField
     public double heart_offset = 0;
 
+    @SerialEntry
     @AutoGen(category = "appearance", group = "heart_offset")
-    @DoubleSlider(min = 0.0, max = 1.0, step = 0.1)
+    @DoubleSlider(min = 0.0, max = 10.0, step = 0.5)
     public double offset_step_size = 1;
 
+    @SerialEntry
     @AutoGen(category = "appearance")
     @IntField
     public int hearts_per_row = 10;

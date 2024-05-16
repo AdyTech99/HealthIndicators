@@ -41,7 +41,7 @@ public abstract class NewEntityRendererMixin<T extends LivingEntity, M extends E
         if(!ModConfig.HANDLER.instance().passive_mobs && livingEntity instanceof PassiveEntity) return;
         if(!ModConfig.HANDLER.instance().hostile_mobs && livingEntity instanceof HostileEntity) return;
         if(!ModConfig.HANDLER.instance().players && livingEntity instanceof PlayerEntity) return;
-        //Self check is done in shouldRenderHearts
+        if(!ModConfig.HANDLER.instance().self && livingEntity == player) return;
 
         if (shouldRenderHearts(player, livingEntity)) {
             Tessellator tessellator = Tessellator.getInstance();
@@ -154,7 +154,6 @@ public abstract class NewEntityRendererMixin<T extends LivingEntity, M extends E
         return player != null
                 && Config.getRenderingEnabled()
                 && player.getVehicle() != livingEntity
-                && (livingEntity != player || ModConfig.HANDLER.instance().self)
                 && !livingEntity.isInvisibleTo(player);
     }
 }

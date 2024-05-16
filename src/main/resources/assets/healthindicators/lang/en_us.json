@@ -1,14 +1,18 @@
 {
   "yacl3.config.health-indicators:config.passive_mobs": "Show health of passive mobs",
+  "yacl3.config.health-indicators:config.passive_mobs.desc": "Displays a health bar above passive mobs",
   "yacl3.config.health-indicators:config.hostile_mobs": "Show health of hostile mobs",
+  "yacl3.config.health-indicators:config.hostile_mobs.desc": "Displays a health bar above hostile mobs",
   "yacl3.config.health-indicators:config.players": "Show health of players",
+  "yacl3.config.health-indicators:config.players.desc": "Displays a health bar above other players",
   "yacl3.config.health-indicators:config.self": "Show health of yourself",
+  "yacl3.config.health-indicators:config.self.desc": "Displays a health bar above yourself in third person and in the inventory menu",
 
   "yacl3.config.health-indicators:config.heart_offset": "Heart offset",
   "yacl3.config.health-indicators:config.heart_offset.desc": "The distance between the top of the Entity and the health bar. Negative offset values can make the health bar render below or in the middle of the entity. Extreme offset values can make the health bar render out of view.",
   "yacl3.config.health-indicators:config.offset_step_size": "Offset step size",
   "yacl3.config.health-indicators:config.offset_step_size.desc": "The amount of offset that the keybind will change per press.",
-  "yacl3.config.health-indicators:config.hearts_per_row": "Hearts per row",
+  "yacl3.config.health-indicators:config.hearts_per_row": "Hearts per row (beta)",
 
 
   "yacl3.config.health-indicators:config.category.toggles": "Toggles",
