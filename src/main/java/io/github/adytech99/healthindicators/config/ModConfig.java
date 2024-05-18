@@ -23,24 +23,34 @@ public class ModConfig {
             .build();
 
     @SerialEntry
-    @AutoGen(category = "toggles")
+    @AutoGen(category = "toggles", group = "type")
     @TickBox
     public boolean passive_mobs = true;
 
     @SerialEntry
-    @AutoGen(category = "toggles")
+    @AutoGen(category = "toggles", group = "type")
     @TickBox
     public boolean hostile_mobs = true;
 
     @SerialEntry
-    @AutoGen(category = "toggles")
+    @AutoGen(category = "toggles", group = "type")
     @MasterTickBox(value = "self")
     public boolean players = true;
 
     @SerialEntry
-    @AutoGen(category = "toggles")
+    @AutoGen(category = "toggles", group = "type")
     @TickBox
     public boolean self = false;
+
+    @SerialEntry
+    @AutoGen(category = "toggles", group = "advanced")
+    @MasterTickBox(value = "override_players_on_hit")
+    public boolean on_hit = false;
+
+    @SerialEntry
+    @AutoGen(category = "toggles", group = "advanced")
+    @TickBox
+    public boolean override_players_on_hit = true;
 
     @SerialEntry
     @AutoGen(category = "appearance", group = "heart_offset")

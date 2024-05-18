@@ -4,6 +4,8 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.adytech99.healthindicators.Config;
 import io.github.adytech99.healthindicators.HeartType;
 import io.github.adytech99.healthindicators.config.ModConfig;
+import io.github.adytech99.healthindicators.util.FilterConfig;
+import io.github.adytech99.healthindicators.util.HitTracker;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.*;
@@ -38,10 +40,8 @@ public abstract class NewEntityRendererMixin<T extends LivingEntity, M extends E
 
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
 
-        if(!ModConfig.HANDLER.instance().passive_mobs && livingEntity instanceof PassiveEntity) return;
-        if(!ModConfig.HANDLER.instance().hostile_mobs && livingEntity instanceof HostileEntity) return;
-        if(!ModConfig.HANDLER.instance().players && livingEntity instanceof PlayerEntity) return;
-        if(!ModConfig.HANDLER.instance().self && livingEntity == player) return;
+        if(!FilterConfig.isAllowed(livingEntity, player)) return;
+        if(!HitTracker.isInDamagedEntities(livingEntity) && ModConfig.HANDLER.instance().on_hit && livingEntity != player) return;
 
         if (shouldRenderHearts(player, livingEntity)) {
             Tessellator tessellator = Tessellator.getInstance();
