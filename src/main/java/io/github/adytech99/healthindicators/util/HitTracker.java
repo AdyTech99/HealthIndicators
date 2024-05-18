@@ -72,6 +72,10 @@ public class HitTracker {
         }
     }
 
+    public static void removeFromDamagedEntities(Entity entity){
+        damagedEntities.remove(entity.getUuid());
+    }
+
     public static boolean isInDamagedEntities(LivingEntity livingEntity) {
         return damagedEntities.contains(livingEntity.getUuid()) || (ModConfig.HANDLER.instance().override_players_on_hit && livingEntity instanceof PlayerEntity);
     }

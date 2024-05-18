@@ -6,6 +6,7 @@ import io.github.adytech99.healthindicators.util.Maths;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -78,6 +79,9 @@ public class HealthIndicatorsMod implements ClientModInitializer {
         });
 
         //AttackEntityCallback.EVENT.register(HitTracker::attackHandler);
+        ClientEntityEvents.ENTITY_UNLOAD.register((entity, world) -> {
+            HitTracker.removeFromDamagedEntities(entity);
+        });
 
     }
 }
