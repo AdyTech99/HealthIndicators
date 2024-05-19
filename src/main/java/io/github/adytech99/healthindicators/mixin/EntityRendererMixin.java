@@ -20,8 +20,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.scoreboard.ScoreboardDisplaySlot;
-import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
 import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.Mixin;
@@ -137,7 +135,7 @@ public abstract class EntityRendererMixin<T extends LivingEntity, M extends Enti
                         matrixStack.translate(0, livingEntity.getHeight() + 0.5f + h + ModConfig.HANDLER.instance().heart_offset / 10, 0);
                         if (this.hasLabel(livingEntity) && d <= 4096.0) {
                             matrixStack.translate(0.0D, 9.0F * 1.15F * 0.025F, 0.0D);
-                            if (d < 100.0 && livingEntity instanceof PlayerEntity && livingEntity.getEntityWorld().getScoreboard().getObjectiveForSlot(ScoreboardDisplaySlot.BELOW_NAME) != null) {
+                            if (d < 100.0 && livingEntity instanceof PlayerEntity && livingEntity.getEntityWorld().getScoreboard().getObjectiveForSlot(0) != null) {
                                 matrixStack.translate(0.0D, 9.0F * 1.15F * 0.025F, 0.0D);
                             }
                         }

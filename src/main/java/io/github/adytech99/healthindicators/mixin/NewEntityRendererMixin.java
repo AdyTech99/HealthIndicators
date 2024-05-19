@@ -16,11 +16,7 @@ import net.minecraft.client.render.entity.feature.FeatureRendererContext;
 import net.minecraft.client.render.entity.model.EntityModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.mob.HostileEntity;
-import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.scoreboard.ScoreboardDisplaySlot;
-import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
 import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.Mixin;
@@ -28,8 +24,6 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import java.util.Objects;
 
 @Mixin(LivingEntityRenderer.class)
 public abstract class NewEntityRendererMixin<T extends LivingEntity, M extends EntityModel<T>> extends EntityRenderer<T> implements FeatureRendererContext<T, M> {
@@ -81,7 +75,7 @@ public abstract class NewEntityRendererMixin<T extends LivingEntity, M extends E
                     matrixStack.translate(0, livingEntity.getHeight() + 0.5f + h, 0);
                     if (this.hasLabel(livingEntity) && d <= 4096.0) {
                         matrixStack.translate(0.0D, 9.0F * 1.15F * 0.025F, 0.0D);
-                        if (d < 100.0 && livingEntity instanceof PlayerEntity && livingEntity.getEntityWorld().getScoreboard().getObjectiveForSlot(ScoreboardDisplaySlot.BELOW_NAME) != null) {
+                        if (d < 100.0 && livingEntity instanceof PlayerEntity && livingEntity.getEntityWorld().getScoreboard().getObjectiveForSlot(0) != null) {
                             matrixStack.translate(0.0D, 9.0F * 1.15F * 0.025F, 0.0D);
                         }
                     }
