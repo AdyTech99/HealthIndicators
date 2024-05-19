@@ -49,6 +49,11 @@ public class ModConfig {
 
     @SerialEntry
     @AutoGen(category = "toggles", group = "advanced")
+    @MasterTickBox(value = "override_players_on_hit")
+    public boolean damaged_only = false;
+
+    @SerialEntry
+    @AutoGen(category = "toggles", group = "advanced")
     @TickBox
     public boolean override_players_on_hit = true;
 

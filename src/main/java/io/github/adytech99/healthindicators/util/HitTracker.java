@@ -7,8 +7,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.packet.s2c.play.EntityDamageS2CPacket;
-import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.EntityHitResult;
@@ -21,17 +19,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class HitTracker {
     private static final CopyOnWriteArrayList<UUID> damagedEntities = new CopyOnWriteArrayList<>();
-
-    public static void onPacket(EntityDamageS2CPacket packet) {
-        assert MinecraftClient.getInstance().world != null;
-        Entity entity = MinecraftClient.getInstance().world.getEntityById(packet.entityId());
-
-        if (isInvalid(entity)) return;
-
-        if(((LivingEntity) entity).getAttacker() instanceof PlayerEntity) {
-            attackHandler(MinecraftClient.getInstance().player, null, null, entity, null);
-        }
-    }
 
     public static void onDamage(DamageSource damageSource, UUID uuid) {
         if(damageSource.getAttacker() instanceof PlayerEntity){

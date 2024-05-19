@@ -20,6 +20,7 @@ import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.scoreboard.ScoreboardDisplaySlot;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
 import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.Mixin;
@@ -27,6 +28,8 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.util.Objects;
 
 @Mixin(LivingEntityRenderer.class)
 public abstract class NewEntityRendererMixin<T extends LivingEntity, M extends EntityModel<T>> extends EntityRenderer<T> implements FeatureRendererContext<T, M> {
@@ -39,9 +42,6 @@ public abstract class NewEntityRendererMixin<T extends LivingEntity, M extends E
     public void renderHealth(T livingEntity, float yaw, float tickDelta, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int light, CallbackInfo ci) {
 
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
-
-        if(!FilterConfig.isAllowed(livingEntity, player)) return;
-        if(!HitTracker.isInDamagedEntities(livingEntity) && ModConfig.HANDLER.instance().on_hit && livingEntity != player) return;
 
         if (shouldRenderHearts(player, livingEntity)) {
             Tessellator tessellator = Tessellator.getInstance();
@@ -151,6 +151,9 @@ public abstract class NewEntityRendererMixin<T extends LivingEntity, M extends E
 
     @Unique
     private boolean shouldRenderHearts(ClientPlayerEntity player, LivingEntity livingEntity){
+        if(!FilterConfig.isAllowed(livingEntity, player)) return false;
+        if(!HitTracker.isInDamagedEntities(livingEntity) && ModConfig.HANDLER.instance().on_hit && livingEntity != player) return false;
+        if(livingEntity.getHealth() != livingEntity.getMaxHealth() && ModConfig.HANDLER.instance().damaged_only && livingEntity.getAbsorptionAmount() <= 0 && livingEntity != player) return false;
         return player != null
                 && Config.getRenderingEnabled()
                 && player.getVehicle() != livingEntity
