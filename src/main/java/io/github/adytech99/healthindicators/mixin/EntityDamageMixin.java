@@ -1,10 +1,8 @@
 package io.github.adytech99.healthindicators.mixin;
 
 import io.github.adytech99.healthindicators.util.HitTracker;
-import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.network.packet.s2c.play.EntityDamageS2CPacket;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

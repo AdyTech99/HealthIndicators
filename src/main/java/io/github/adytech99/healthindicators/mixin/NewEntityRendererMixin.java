@@ -16,11 +16,8 @@ import net.minecraft.client.render.entity.feature.FeatureRendererContext;
 import net.minecraft.client.render.entity.model.EntityModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.mob.HostileEntity;
-import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.scoreboard.ScoreboardDisplaySlot;
-import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
 import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.Mixin;
@@ -28,8 +25,6 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import java.util.Objects;
 
 @Mixin(LivingEntityRenderer.class)
 public abstract class NewEntityRendererMixin<T extends LivingEntity, M extends EntityModel<T>> extends EntityRenderer<T> implements FeatureRendererContext<T, M> {
@@ -153,7 +148,7 @@ public abstract class NewEntityRendererMixin<T extends LivingEntity, M extends E
     private boolean shouldRenderHearts(ClientPlayerEntity player, LivingEntity livingEntity){
         if(!FilterConfig.isAllowed(livingEntity, player)) return false;
         if(!HitTracker.isInDamagedEntities(livingEntity) && ModConfig.HANDLER.instance().on_hit && livingEntity != player) return false;
-        if(livingEntity.getHealth() != livingEntity.getMaxHealth() && ModConfig.HANDLER.instance().damaged_only && livingEntity.getAbsorptionAmount() <= 0 && livingEntity != player) return false;
+        if(livingEntity.getHealth() == livingEntity.getMaxHealth() && ModConfig.HANDLER.instance().damaged_only && livingEntity.getAbsorptionAmount() <= 0 && livingEntity != player) return false;
         return player != null
                 && Config.getRenderingEnabled()
                 && player.getVehicle() != livingEntity
