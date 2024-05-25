@@ -1,11 +1,9 @@
 package io.github.adytech99.healthindicators.mixin;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import io.github.adytech99.healthindicators.Config;
 import io.github.adytech99.healthindicators.HeartType;
+import io.github.adytech99.healthindicators.RenderTracker;
 import io.github.adytech99.healthindicators.config.ModConfig;
-import io.github.adytech99.healthindicators.util.FilterConfig;
-import io.github.adytech99.healthindicators.util.HitTracker;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.*;
@@ -38,7 +36,7 @@ public abstract class NewEntityRendererMixin<T extends LivingEntity, M extends E
 
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
 
-        if (shouldRenderHearts(player, livingEntity)) {
+        if (RenderTracker.isInUUIDS(livingEntity)) {
             Tessellator tessellator = Tessellator.getInstance();
             BufferBuilder vertexConsumer = tessellator.getBuffer();
 
@@ -142,16 +140,5 @@ public abstract class NewEntityRendererMixin<T extends LivingEntity, M extends E
     @Unique
     private static void drawVertex(Matrix4f model, VertexConsumer vertices, float x, float y, float u, float v) {
         vertices.vertex(model, x, y, 0.0F).texture(u, v).next();
-    }
-
-    @Unique
-    private boolean shouldRenderHearts(ClientPlayerEntity player, LivingEntity livingEntity){
-        if(!FilterConfig.isAllowed(livingEntity, player)) return false;
-        if(!HitTracker.isInDamagedEntities(livingEntity) && ModConfig.HANDLER.instance().on_hit && livingEntity != player) return false;
-        if(livingEntity.getHealth() == livingEntity.getMaxHealth() && ModConfig.HANDLER.instance().damaged_only && livingEntity.getAbsorptionAmount() <= 0 && livingEntity != player) return false;
-        return player != null
-                && Config.getRenderingEnabled()
-                && player.getVehicle() != livingEntity
-                && !livingEntity.isInvisibleTo(player);
     }
 }

@@ -53,8 +53,18 @@ public class ModConfig {
 
     @SerialEntry
     @AutoGen(category = "toggles", group = "advanced")
+    @MasterTickBox(value = {"override_players_on_hit", "reach"})
+    public boolean on_crosshair = false;
+
+    @SerialEntry
+    @AutoGen(category = "toggles", group = "advanced")
+    @IntField(min = 0, max = 1024)
+    public int reach = 3;
+
+    @SerialEntry
+    @AutoGen(category = "toggles", group = "advanced")
     @TickBox
-    public boolean override_players_on_hit = true;
+    public boolean override_players = true;
 
     @SerialEntry
     @AutoGen(category = "appearance", group = "heart_offset")
@@ -70,6 +80,9 @@ public class ModConfig {
     @AutoGen(category = "appearance")
     @IntField
     public int hearts_per_row = 10;
+
+
+
 
     public static Screen createScreen(@Nullable Screen parent) {
         return HANDLER.generateGui().generateScreen(parent);

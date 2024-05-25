@@ -1,6 +1,6 @@
 package io.github.adytech99.healthindicators.mixin;
 
-import io.github.adytech99.healthindicators.util.HitTracker;
+import io.github.adytech99.healthindicators.RenderTracker;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import org.spongepowered.asm.mixin.Mixin;
@@ -11,6 +11,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class EntityDamageMixin {
     @Inject(method = "onDamaged", at = @At("HEAD"))
     private void onEntityDamage(DamageSource damageSource, CallbackInfo callbackInfo) {
-        HitTracker.onDamage(damageSource, ((LivingEntity) (Object) this).getUuid());
+        RenderTracker.onDamage(damageSource, ((LivingEntity) (Object) this));
     }
 }

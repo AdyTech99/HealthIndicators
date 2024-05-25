@@ -1,6 +1,7 @@
-package io.github.adytech99.healthindicators;
+package io.github.adytech99.healthindicators.config;
 
 import com.google.gson.Gson;
+import io.github.adytech99.healthindicators.HealthIndicatorsMod;
 import net.fabricmc.loader.api.FabricLoader;
 
 import java.io.BufferedReader;

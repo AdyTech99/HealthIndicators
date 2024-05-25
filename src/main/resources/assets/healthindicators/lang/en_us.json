@@ -1,23 +1,38 @@
 {
   "yacl3.config.health-indicators:config.passive_mobs": "Show health of passive mobs",
   "yacl3.config.health-indicators:config.passive_mobs.desc": "Displays a health bar above passive mobs",
+
   "yacl3.config.health-indicators:config.hostile_mobs": "Show health of hostile mobs",
   "yacl3.config.health-indicators:config.hostile_mobs.desc": "Displays a health bar above hostile mobs",
+
   "yacl3.config.health-indicators:config.players": "Show health of players",
   "yacl3.config.health-indicators:config.players.desc": "Displays a health bar above other players",
+
   "yacl3.config.health-indicators:config.self": "Show health of yourself",
   "yacl3.config.health-indicators:config.self.desc": "Displays a health bar above yourself in third person and in the inventory menu",
+
   "yacl3.config.health-indicators:config.on_hit": "Show health after attack",
   "yacl3.config.health-indicators:config.on_hit.desc": "Health bar will display only after the entity has been attacked.",
+
   "yacl3.config.health-indicators:config.damaged_only": "Show health if damaged",
   "yacl3.config.health-indicators:config.damaged_only.desc": "Health bar will display only if the entity's health is lower than its max health. May not work in cases where entities have absorption effect.",
-  "yacl3.config.health-indicators:config.override_players_on_hit": "Always show player health",
-  "yacl3.config.health-indicators:config.override_players_on_hit.desc": "Overrides the above options to always display health of Players, even if they have not been attacked or they are full health.",
+
+  "yacl3.config.health-indicators:config.on_crosshair": "Show health if on crosshair",
+  "yacl3.config.health-indicators:config.on_crosshair.desc": "Health will only render if the entity is being looked at.",
+
+  "yacl3.config.health-indicators:config.reach": "Crosshair range",
+  "yacl3.config.health-indicators:config.reach.desc": "How far can the entity be for the 'on crosshair' option",
+
+  "yacl3.config.health-indicators:config.override_players": "Always show player health",
+  "yacl3.config.health-indicators:config.override_players.desc": "Overrides the above options to always display health of Players, even if they have not been attacked, they are full health or they are not on crosshair",
+
 
   "yacl3.config.health-indicators:config.heart_offset": "Heart offset",
   "yacl3.config.health-indicators:config.heart_offset.desc": "The distance between the top of the Entity and the health bar. Negative offset values can make the health bar render below or in the middle of the entity. Extreme offset values can make the health bar render out of view.",
+
   "yacl3.config.health-indicators:config.offset_step_size": "Offset step size",
-  "yacl3.config.health-indicators:config.offset_step_size.desc": "The amount of offset that the keybind will change per press.",
+  "yacl3.config.health-indicators:config.offset_step_size.desc": "The offset that the keybind will change per press.",
+
   "yacl3.config.health-indicators:config.hearts_per_row": "Hearts per row (beta)",
 
 
@@ -25,7 +40,7 @@
   "yacl3.config.health-indicators:config.category.appearance": "Appearance",
 
   "yacl3.config.health-indicators:config.category.appearance.group.heart_offset": "Health Bar Location Settings",
-  "yacl3.config.health-indicators:config.category.toggles.group.type": "Toggle Entity Types",
+  "yacl3.config.health-indicators:config.category.toggles.group.type": "Entity Types",
   "yacl3.config.health-indicators:config.category.toggles.group.advanced": "Advanced",
 
 

@@ -1,7 +1,7 @@
 package io.github.adytech99.healthindicators;
 
+import io.github.adytech99.healthindicators.config.Config;
 import io.github.adytech99.healthindicators.config.ModConfig;
-import io.github.adytech99.healthindicators.util.HitTracker;
 import io.github.adytech99.healthindicators.util.Maths;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
@@ -9,12 +9,8 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
-import net.minecraft.network.packet.s2c.play.EntityDamageS2CPacket;
 import net.minecraft.text.Text;
 
 @Environment(EnvType.CLIENT)
@@ -65,6 +61,7 @@ public class HealthIndicatorsMod implements ClientModInitializer {
 
             while (INCREASE_HEART_OFFSET_KEY_BINDING.wasPressed()) {
                 ModConfig.HANDLER.instance().heart_offset = (ModConfig.HANDLER.instance().heart_offset + ModConfig.HANDLER.instance().offset_step_size);
+                ModConfig.HANDLER.save();
                 if (client.player != null) {
                     client.player.sendMessage(Text.literal("Set heart offset to " + Maths.truncate(ModConfig.HANDLER.instance().heart_offset,2)), true);
                 }
@@ -72,6 +69,7 @@ public class HealthIndicatorsMod implements ClientModInitializer {
 
             while (DECREASE_HEART_OFFSET_KEY_BINDING.wasPressed()) {
                 ModConfig.HANDLER.instance().heart_offset = (ModConfig.HANDLER.instance().heart_offset - ModConfig.HANDLER.instance().offset_step_size);
+                ModConfig.HANDLER.save();
                 if (client.player != null) {
                     client.player.sendMessage(Text.literal("Set heart offset to " + Maths.truncate(ModConfig.HANDLER.instance().heart_offset,2)), true);
                 }
@@ -80,8 +78,10 @@ public class HealthIndicatorsMod implements ClientModInitializer {
 
         //AttackEntityCallback.EVENT.register(HitTracker::attackHandler);
         ClientEntityEvents.ENTITY_UNLOAD.register((entity, world) -> {
-            HitTracker.removeFromDamagedEntities(entity);
+            RenderTracker.removeFromUUIDS(entity);
         });
+
+        ClientTickEvents.END_CLIENT_TICK.register(RenderTracker::tick);
 
     }
 }
