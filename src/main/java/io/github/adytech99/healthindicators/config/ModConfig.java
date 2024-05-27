@@ -3,6 +3,7 @@ package io.github.adytech99.healthindicators.config;
 import dev.isxander.yacl3.config.v2.api.ConfigClassHandler;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import dev.isxander.yacl3.config.v2.api.autogen.*;
+import dev.isxander.yacl3.config.v2.api.autogen.Boolean;
 import dev.isxander.yacl3.config.v2.api.serializer.GsonConfigSerializerBuilder;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.gui.screen.Screen;
@@ -80,6 +81,11 @@ public class ModConfig {
     @AutoGen(category = "appearance", group = "heart_offset")
     @DoubleSlider(min = 0.0, max = 10.0, step = 0.5)
     public double offset_step_size = 1;
+
+    @SerialEntry
+    @AutoGen(category = "appearance", group = "heart_offset")
+    @Boolean
+    public boolean force_higher_offset_for_players = false;
 
     /*@SerialEntry
     @AutoGen(category = "appearance", group = "heart_offset")

@@ -75,7 +75,7 @@ public abstract class NewEntityRendererMixin<T extends LivingEntity, M extends E
                     float pixelSize = 0.025F;
 
                     matrixStack.translate(0, livingEntity.getHeight() + 0.5f + h, 0);
-                    if (this.hasLabel(livingEntity) && d <= 4096.0) {
+                    if ((this.hasLabel(livingEntity) || (ModConfig.HANDLER.instance().force_higher_offset_for_players && livingEntity instanceof PlayerEntity)) && d <= 4096.0) {
                         matrixStack.translate(0.0D, 9.0F * 1.15F * pixelSize, 0.0D);
                         if (d < 100.0 && livingEntity instanceof PlayerEntity && livingEntity.getEntityWorld().getScoreboard().getObjectiveForSlot(ScoreboardDisplaySlot.BELOW_NAME) != null) {
                             matrixStack.translate(0.0D, 9.0F * 1.15F * pixelSize, 0.0D);
@@ -83,14 +83,9 @@ public abstract class NewEntityRendererMixin<T extends LivingEntity, M extends E
                     }
 
                     matrixStack.multiply(this.dispatcher.getRotation());
-
-
-                    matrixStack.translate(0, ModConfig.HANDLER.instance().heart_offset * pixelSize, 0);
-
-
                     matrixStack.scale(pixelSize, pixelSize, pixelSize);
+                    matrixStack.translate(0, ModConfig.HANDLER.instance().heart_offset, 0);
                     Matrix4f model = matrixStack.peek().getPositionMatrix();
-
 
                     float x = maxX - (heart % heartsPerRow) * 8;
 

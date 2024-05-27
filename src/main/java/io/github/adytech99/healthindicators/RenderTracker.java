@@ -28,10 +28,6 @@ public class RenderTracker {
     private static final ConcurrentHashMap<UUID, Integer> UUIDS = new ConcurrentHashMap<>();
     private static final CopyOnWriteArrayList<UUID> IgnoreUUIDS = new CopyOnWriteArrayList<>();
 
-    public static boolean isInUUIDS(LivingEntity livingEntity){
-        return UUIDS.containsKey(livingEntity.getUuid()) && !IgnoreUUIDS.contains(livingEntity.getUuid());
-    }
-
     public static void tick(MinecraftClient client){
         if(client.player == null || client.world == null) return;
         for(Entity entity : client.world.getEntities()){
@@ -39,10 +35,10 @@ public class RenderTracker {
                 if(doRender(client.player, livingEntity) || overridePlayers(livingEntity)){
                     addToUUIDS(livingEntity);
                 }
-                else {
+                else { // If not targeted, add to ignore entities.
                     if (!isTargeted(client.player, livingEntity) && ModConfig.HANDLER.instance().on_crosshair){
                         if(!IgnoreUUIDS.contains(livingEntity.getUuid())) IgnoreUUIDS.add(livingEntity.getUuid());
-                    }
+                    } // if
                     else removeFromUUIDS(livingEntity.getUuid());
                 }
             }
@@ -53,10 +49,10 @@ public class RenderTracker {
     public static void onDamage(DamageSource damageSource, LivingEntity livingEntity) {
         if(damageSource.getAttacker() instanceof PlayerEntity){
             assert MinecraftClient.getInstance().world != null;
-
             if (ModConfig.HANDLER.instance().after_attack
                     && livingEntity instanceof LivingEntity
                     && RenderTracker.isEntityTypeAllowed(livingEntity, MinecraftClient.getInstance().player)) {
+
                 if(!addToUUIDS(livingEntity)){
                     UUIDS.replace(livingEntity.getUuid(), (ModConfig.HANDLER.instance().time_after_hit * 20));
                 }
@@ -64,22 +60,6 @@ public class RenderTracker {
         }
     }
 
-
-    public static void removeFromUUIDS(Entity entity){
-        UUIDS.remove(entity.getUuid());
-    }
-    public static void removeFromUUIDS(UUID uuid){
-        UUIDS.remove(uuid);
-    }
-
-    public static boolean addToUUIDS(LivingEntity livingEntity){
-        IgnoreUUIDS.remove(livingEntity.getUuid());
-        if(!UUIDS.containsKey(livingEntity.getUuid())){
-            UUIDS.put(livingEntity.getUuid(), (ModConfig.HANDLER.instance().time_after_hit * 20));
-            return true;
-        }
-        else return false;
-    }
 
     public static void trimEntities(ClientWorld world) {
         // Check if there's a need to trim entries
@@ -95,6 +75,29 @@ public class RenderTracker {
         // Remove invalid entities
         UUIDS.entrySet().removeIf(entry -> isInvalid(getEntityFromUUID(entry.getKey(), world)));
         if(UUIDS.size() >= 1536) UUIDS.clear();
+    }
+
+
+    public static void removeFromUUIDS(Entity entity){
+        UUIDS.remove(entity.getUuid());
+        IgnoreUUIDS.remove(entity.getUuid());
+    }
+    public static void removeFromUUIDS(UUID uuid){
+        UUIDS.remove(uuid);
+        IgnoreUUIDS.remove(uuid);
+    }
+
+    public static boolean addToUUIDS(LivingEntity livingEntity){
+        IgnoreUUIDS.remove(livingEntity.getUuid());
+        if(!UUIDS.containsKey(livingEntity.getUuid())){
+            UUIDS.put(livingEntity.getUuid(), (ModConfig.HANDLER.instance().time_after_hit * 20));
+            return true;
+        }
+        else return false;
+    }
+
+    public static boolean isInUUIDS(LivingEntity livingEntity){
+        return UUIDS.containsKey(livingEntity.getUuid()) && !IgnoreUUIDS.contains(livingEntity.getUuid());
     }
 
     public static boolean overridePlayers(LivingEntity livingEntity){

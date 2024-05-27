@@ -14,8 +14,8 @@
   "yacl3.config.health-indicators:config.self": "Show health of yourself",
   "yacl3.config.health-indicators:config.self.desc": "Displays a health bar above yourself in third person and in the inventory menu",
 
-  "yacl3.config.health-indicators:config.on_hit": "Show health only after attack",
-  "yacl3.config.health-indicators:config.on_hit.desc": "Health bar will display only after the entity has been attacked.",
+  "yacl3.config.health-indicators:config.after_attack": "Show health only after attack",
+  "yacl3.config.health-indicators:config.after_attack.desc": "Health bar will display only after the entity has been attacked.",
 
   "yacl3.config.health-indicators:config.time_after_hit": "Seconds for health to disappear after attack",
   "yacl3.config.health-indicators:config.time_after_hit.desc": "Health bar will disappear after the set number of seconds.",
@@ -38,6 +38,9 @@
 
   "yacl3.config.health-indicators:config.offset_step_size": "Offset step size",
   "yacl3.config.health-indicators:config.offset_step_size.desc": "The offset that the keybind will change per press.",
+
+  "yacl3.config.health-indicators:config.force_higher_offset_for_players": "Force higher offset for players",
+  "yacl3.config.health-indicators:config.force_higher_offset_for_players.desc": "Normally, the hearts render at a higher offset for Players and Entities with a visible name-tag. \n \n However, some servers implement a custom name-tag which the mod does not recognize and account for. This option will forcibly raise heart offset for *all* players to fix the problem.",
 
   "yacl3.config.health-indicators:config.hearts_clipping": "Heart clipping",
   "yacl3.config.health-indicators:config.hearts_clipping.desc": "Hearts will get pushed downwards if there is a solid block at their normal rendering position.",
