@@ -7,8 +7,10 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.text.Text;
@@ -40,6 +42,8 @@ public class HealthIndicatorsMod implements ClientModInitializer {
     ));
 
 
+    boolean changed = false;
+
     @Override
     public void onInitializeClient() {
         ModConfig.HANDLER.load();
@@ -61,7 +65,7 @@ public class HealthIndicatorsMod implements ClientModInitializer {
 
             while (INCREASE_HEART_OFFSET_KEY_BINDING.wasPressed()) {
                 ModConfig.HANDLER.instance().heart_offset = (ModConfig.HANDLER.instance().heart_offset + ModConfig.HANDLER.instance().offset_step_size);
-                ModConfig.HANDLER.save();
+                changed = true;
                 if (client.player != null) {
                     client.player.sendMessage(Text.literal("Set heart offset to " + Maths.truncate(ModConfig.HANDLER.instance().heart_offset,2)), true);
                 }
@@ -69,19 +73,34 @@ public class HealthIndicatorsMod implements ClientModInitializer {
 
             while (DECREASE_HEART_OFFSET_KEY_BINDING.wasPressed()) {
                 ModConfig.HANDLER.instance().heart_offset = (ModConfig.HANDLER.instance().heart_offset - ModConfig.HANDLER.instance().offset_step_size);
-                ModConfig.HANDLER.save();
+                changed = true;
                 if (client.player != null) {
                     client.player.sendMessage(Text.literal("Set heart offset to " + Maths.truncate(ModConfig.HANDLER.instance().heart_offset,2)), true);
                 }
             }
         });
 
-        //AttackEntityCallback.EVENT.register(HitTracker::attackHandler);
         ClientEntityEvents.ENTITY_UNLOAD.register((entity, world) -> {
             RenderTracker.removeFromUUIDS(entity);
         });
 
+        ClientTickEvents.START_CLIENT_TICK.register(client -> {
+            if(client.world == null) return;
+            if(changed && client.world.getTime() % 200 == 0){
+                saveModConfig();
+                changed = false;
+            }
+        });
+
+        ClientLifecycleEvents.CLIENT_STOPPING.register(client -> {
+            saveModConfig();
+        });
+
         ClientTickEvents.END_CLIENT_TICK.register(RenderTracker::tick);
 
+    }
+
+    public void saveModConfig(){
+        ModConfig.HANDLER.save();
     }
 }

@@ -5,23 +5,29 @@
   "yacl3.config.health-indicators:config.hostile_mobs": "Show health of hostile mobs",
   "yacl3.config.health-indicators:config.hostile_mobs.desc": "Displays a health bar above hostile mobs",
 
+  "yacl3.config.health-indicators:config.angered_mobs": "Show health of angered mobs",
+  "yacl3.config.health-indicators:config.angered_mobs.desc": "Displays a health bar above angered mobs. This is different from 'Hostile Mobs,' since a passive mob (eg: iron golem, enderman) are not considered a hostile mob, but can still attack the player if provoked.",
+
   "yacl3.config.health-indicators:config.players": "Show health of players",
   "yacl3.config.health-indicators:config.players.desc": "Displays a health bar above other players",
 
   "yacl3.config.health-indicators:config.self": "Show health of yourself",
   "yacl3.config.health-indicators:config.self.desc": "Displays a health bar above yourself in third person and in the inventory menu",
 
-  "yacl3.config.health-indicators:config.on_hit": "Show health after attack",
+  "yacl3.config.health-indicators:config.on_hit": "Show health only after attack",
   "yacl3.config.health-indicators:config.on_hit.desc": "Health bar will display only after the entity has been attacked.",
 
-  "yacl3.config.health-indicators:config.damaged_only": "Show health if damaged",
+  "yacl3.config.health-indicators:config.time_after_hit": "Seconds for health to disappear after attack",
+  "yacl3.config.health-indicators:config.time_after_hit.desc": "Health bar will disappear after the set number of seconds.",
+
+  "yacl3.config.health-indicators:config.damaged_only": "Show health only if damaged",
   "yacl3.config.health-indicators:config.damaged_only.desc": "Health bar will display only if the entity's health is lower than its max health. May not work in cases where entities have absorption effect.",
 
-  "yacl3.config.health-indicators:config.on_crosshair": "Show health if on crosshair",
+  "yacl3.config.health-indicators:config.on_crosshair": "Show health only if looked at",
   "yacl3.config.health-indicators:config.on_crosshair.desc": "Health will only render if the entity is being looked at.",
 
-  "yacl3.config.health-indicators:config.reach": "Crosshair range",
-  "yacl3.config.health-indicators:config.reach.desc": "How far can the entity be for the 'on crosshair' option",
+  "yacl3.config.health-indicators:config.reach": "'Looked at' range",
+  "yacl3.config.health-indicators:config.reach.desc": "How far can the entity be for the 'looked at' option. The default value (3 blocks) is equal to the attack reach for survival minecraft.",
 
   "yacl3.config.health-indicators:config.override_players": "Always show player health",
   "yacl3.config.health-indicators:config.override_players.desc": "Overrides the above options to always display health of Players, even if they have not been attacked, they are full health or they are not on crosshair",
@@ -32,6 +38,9 @@
 
   "yacl3.config.health-indicators:config.offset_step_size": "Offset step size",
   "yacl3.config.health-indicators:config.offset_step_size.desc": "The offset that the keybind will change per press.",
+
+  "yacl3.config.health-indicators:config.hearts_clipping": "Heart clipping",
+  "yacl3.config.health-indicators:config.hearts_clipping.desc": "Hearts will get pushed downwards if there is a solid block at their normal rendering position.",
 
   "yacl3.config.health-indicators:config.hearts_per_row": "Hearts per row (beta)",
 

@@ -33,7 +33,7 @@ public class ModConfig {
 
     @SerialEntry
     @AutoGen(category = "toggles", group = "type")
-    @MasterTickBox(value = "self")
+    @MasterTickBox(value = "override_players")
     public boolean players = true;
 
     @SerialEntry
@@ -43,17 +43,22 @@ public class ModConfig {
 
     @SerialEntry
     @AutoGen(category = "toggles", group = "advanced")
-    @MasterTickBox(value = "override_players_on_hit")
-    public boolean on_hit = false;
+    @MasterTickBox(value = {"override_players", "time_after_hit"})
+    public boolean after_attack = false;
 
     @SerialEntry
     @AutoGen(category = "toggles", group = "advanced")
-    @MasterTickBox(value = "override_players_on_hit")
+    @IntSlider(min = 0, max = 120, step = 1)
+    public int time_after_hit = 60;
+
+    @SerialEntry
+    @AutoGen(category = "toggles", group = "advanced")
+    @MasterTickBox(value = "override_players")
     public boolean damaged_only = false;
 
     @SerialEntry
     @AutoGen(category = "toggles", group = "advanced")
-    @MasterTickBox(value = {"override_players_on_hit", "reach"})
+    @MasterTickBox(value = {"override_players", "reach"})
     public boolean on_crosshair = false;
 
     @SerialEntry
@@ -75,6 +80,11 @@ public class ModConfig {
     @AutoGen(category = "appearance", group = "heart_offset")
     @DoubleSlider(min = 0.0, max = 10.0, step = 0.5)
     public double offset_step_size = 1;
+
+    /*@SerialEntry
+    @AutoGen(category = "appearance", group = "heart_offset")
+    @Boolean
+    public boolean hearts_clipping = true;*/
 
     @SerialEntry
     @AutoGen(category = "appearance")

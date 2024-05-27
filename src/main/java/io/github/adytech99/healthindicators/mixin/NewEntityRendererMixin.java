@@ -24,6 +24,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+
 @Mixin(LivingEntityRenderer.class)
 public abstract class NewEntityRendererMixin<T extends LivingEntity, M extends EntityModel<T>> extends EntityRenderer<T> implements FeatureRendererContext<T, M> {
 
@@ -37,6 +38,7 @@ public abstract class NewEntityRendererMixin<T extends LivingEntity, M extends E
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
 
         if (RenderTracker.isInUUIDS(livingEntity)) {
+
             Tessellator tessellator = Tessellator.getInstance();
             BufferBuilder vertexConsumer = tessellator.getBuffer();
 
@@ -70,21 +72,23 @@ public abstract class NewEntityRendererMixin<T extends LivingEntity, M extends E
 
                     matrixStack.push();
                     vertexConsumer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
+                    float pixelSize = 0.025F;
 
                     matrixStack.translate(0, livingEntity.getHeight() + 0.5f + h, 0);
                     if (this.hasLabel(livingEntity) && d <= 4096.0) {
-                        matrixStack.translate(0.0D, 9.0F * 1.15F * 0.025F, 0.0D);
+                        matrixStack.translate(0.0D, 9.0F * 1.15F * pixelSize, 0.0D);
                         if (d < 100.0 && livingEntity instanceof PlayerEntity && livingEntity.getEntityWorld().getScoreboard().getObjectiveForSlot(ScoreboardDisplaySlot.BELOW_NAME) != null) {
-                            matrixStack.translate(0.0D, 9.0F * 1.15F * 0.025F, 0.0D);
+                            matrixStack.translate(0.0D, 9.0F * 1.15F * pixelSize, 0.0D);
                         }
                     }
 
                     matrixStack.multiply(this.dispatcher.getRotation());
 
-                    float pixelSize = 0.025F;
-                    matrixStack.scale(pixelSize, pixelSize, pixelSize);
-                    matrixStack.translate(0, ModConfig.HANDLER.instance().heart_offset, 0);
 
+                    matrixStack.translate(0, ModConfig.HANDLER.instance().heart_offset * pixelSize, 0);
+
+
+                    matrixStack.scale(pixelSize, pixelSize, pixelSize);
                     Matrix4f model = matrixStack.peek().getPositionMatrix();
 
 
