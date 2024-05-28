@@ -3,6 +3,7 @@ package io.github.adytech99.healthindicators.mixin;
 import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.adytech99.healthindicators.HeartType;
 import io.github.adytech99.healthindicators.RenderTracker;
+import io.github.adytech99.healthindicators.config.Config;
 import io.github.adytech99.healthindicators.config.ModConfig;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -34,11 +35,9 @@ public abstract class NewEntityRendererMixin<T extends LivingEntity, M extends E
 
     @Inject(method = "render(Lnet/minecraft/entity/LivingEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", at = @At("TAIL"))
     public void renderHealth(T livingEntity, float yaw, float tickDelta, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int light, CallbackInfo ci) {
-
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
-
-        if (RenderTracker.isInUUIDS(livingEntity)) {
-            if(!RenderTracker.isTargeted(livingEntity) && ModConfig.HANDLER.instance().on_crosshair || livingEntity == player) return;
+        if (RenderTracker.isInUUIDS(livingEntity) || Config.getOverrideAllFiltersEnabled()) {
+            if(!RenderTracker.isTargeted(livingEntity) && ModConfig.HANDLER.instance().on_crosshair && livingEntity != player && !Config.getOverrideAllFiltersEnabled()) return;
 
             Tessellator tessellator = Tessellator.getInstance();
             BufferBuilder vertexConsumer = tessellator.getBuffer();

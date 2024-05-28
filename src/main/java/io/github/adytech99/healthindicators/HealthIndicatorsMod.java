@@ -10,7 +10,6 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.text.Text;
@@ -25,7 +24,7 @@ public class HealthIndicatorsMod implements ClientModInitializer {
             InputUtil.UNKNOWN_KEY.getCode(),
             "key.categories." + MOD_ID
     ));
-    public static final KeyBinding HEART_STACKING_ENABLED_KEY_BINDING = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+    public static final KeyBinding OVERRIDE_ALL_FILTERS = KeyBindingHelper.registerKeyBinding(new KeyBinding(
             "key." + MOD_ID + ".heartStackingEnabled",
             InputUtil.UNKNOWN_KEY.getCode(),
             "key.categories." + MOD_ID
@@ -42,7 +41,8 @@ public class HealthIndicatorsMod implements ClientModInitializer {
     ));
 
 
-    boolean changed = false;
+    private boolean changed = false;
+    private boolean sendReImplementationMSG = false;
 
     @Override
     public void onInitializeClient() {
@@ -56,11 +56,15 @@ public class HealthIndicatorsMod implements ClientModInitializer {
                 }
             }
 
-            while (HEART_STACKING_ENABLED_KEY_BINDING.wasPressed()) {
-                Config.setHeartStackingEnabled(!Config.getHeartStackingEnabled());
+            if (OVERRIDE_ALL_FILTERS.isPressed()) {
+                Config.setOverrideAllFiltersEnabled(true);
                 if (client.player != null) {
-                    client.player.sendMessage(Text.literal((Config.getHeartStackingEnabled() ? "Enabled" : "Disabled") + " Heart Stacking"), true);
+                    client.player.sendMessage(Text.literal( " Config Filters " + (Config.getOverrideAllFiltersEnabled() ? "Overridden" : "Re-implemented")), true);
                 }
+            }
+            else {
+                Config.setOverrideAllFiltersEnabled(false);
+                client.inGameHud.setOverlayMessage(Text.literal(""), false);
             }
 
             while (INCREASE_HEART_OFFSET_KEY_BINDING.wasPressed()) {

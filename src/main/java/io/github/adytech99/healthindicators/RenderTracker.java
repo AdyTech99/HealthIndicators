@@ -99,7 +99,8 @@ public class RenderTracker {
     }
 
     public static boolean overridePlayers(LivingEntity livingEntity){
-        return (ModConfig.HANDLER.instance().override_players && livingEntity instanceof PlayerEntity) || livingEntity == MinecraftClient.getInstance().player;
+        return (ModConfig.HANDLER.instance().override_players && livingEntity instanceof PlayerEntity && livingEntity != MinecraftClient.getInstance().player)
+                || (livingEntity == MinecraftClient.getInstance().player && ModConfig.HANDLER.instance().self);
     }
 
     public static boolean isEntityTypeAllowed(LivingEntity livingEntity, PlayerEntity self){

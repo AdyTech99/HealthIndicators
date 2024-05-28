@@ -48,17 +48,17 @@
   "yacl3.config.health-indicators:config.hearts_per_row": "Hearts per row (beta)",
 
 
-  "yacl3.config.health-indicators:config.category.toggles": "Toggles",
+  "yacl3.config.health-indicators:config.category.toggles": "Filters",
   "yacl3.config.health-indicators:config.category.appearance": "Appearance",
 
   "yacl3.config.health-indicators:config.category.appearance.group.heart_offset": "Health Bar Location Settings",
-  "yacl3.config.health-indicators:config.category.toggles.group.type": "Entity Types",
-  "yacl3.config.health-indicators:config.category.toggles.group.advanced": "Advanced",
+  "yacl3.config.health-indicators:config.category.toggles.group.type": "Filter Entity Types",
+  "yacl3.config.health-indicators:config.category.toggles.group.advanced": "Advanced Filtering",
 
 
   "key.categories.healthindicators": "Player Health Indicators",
   "key.healthindicators.renderingEnabled": "Toggle Rendering",
-  "key.healthindicators.heartStackingEnabled": "Toggle Heart Stacking",
+  "key.healthindicators.heartStackingEnabled": "Override all settings and force hearts display",
   "key.healthindicators.increaseHeartOffset": "Increase Heart Offset",
   "key.healthindicators.decreaseHeartOffset": "Decrease Heart Offset"
 }

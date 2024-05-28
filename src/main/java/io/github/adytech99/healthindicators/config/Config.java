@@ -15,7 +15,7 @@ public class Config {
     private static Config INSTANCE = new Config();
 
     private boolean renderingEnabled = true;
-    private boolean heartStackingEnabled = true;
+    private boolean overrideAllFiltersEnabled = false;
 
     public static boolean getRenderingEnabled() {
         return INSTANCE.renderingEnabled;
@@ -26,12 +26,12 @@ public class Config {
         save();
     }
 
-    public static boolean getHeartStackingEnabled() {
-        return INSTANCE.heartStackingEnabled;
+    public static boolean getOverrideAllFiltersEnabled() {
+        return INSTANCE.overrideAllFiltersEnabled;
     }
 
-    public static void setHeartStackingEnabled(boolean heartStackingEnabled) {
-        INSTANCE.heartStackingEnabled = heartStackingEnabled;
+    public static void setOverrideAllFiltersEnabled(boolean overrideAllFiltersEnabled) {
+        INSTANCE.overrideAllFiltersEnabled = overrideAllFiltersEnabled;
         save();
     }
 
