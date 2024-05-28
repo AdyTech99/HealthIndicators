@@ -38,6 +38,7 @@ public abstract class NewEntityRendererMixin<T extends LivingEntity, M extends E
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
 
         if (RenderTracker.isInUUIDS(livingEntity)) {
+            if(!RenderTracker.isTargeted(livingEntity) && ModConfig.HANDLER.instance().on_crosshair || livingEntity == player) return;
 
             Tessellator tessellator = Tessellator.getInstance();
             BufferBuilder vertexConsumer = tessellator.getBuffer();
@@ -55,9 +56,7 @@ public abstract class NewEntityRendererMixin<T extends LivingEntity, M extends E
             boolean lastYellowHalf = (healthYellow & 1) == 1;
             int heartsTotal = heartsNormal + heartsYellow;
 
-
             int heartsPerRow = ModConfig.HANDLER.instance().hearts_per_row;
-
             int pixelsTotal = Math.min(heartsTotal, heartsPerRow) * 8 + 1;
             float maxX = pixelsTotal / 2.0f;
 
@@ -75,7 +74,9 @@ public abstract class NewEntityRendererMixin<T extends LivingEntity, M extends E
                     float pixelSize = 0.025F;
 
                     matrixStack.translate(0, livingEntity.getHeight() + 0.5f + h, 0);
-                    if ((this.hasLabel(livingEntity) || (ModConfig.HANDLER.instance().force_higher_offset_for_players && livingEntity instanceof PlayerEntity)) && d <= 4096.0) {
+                    if ((this.hasLabel(livingEntity)
+                            || (ModConfig.HANDLER.instance().force_higher_offset_for_players && livingEntity instanceof PlayerEntity && livingEntity != player))
+                            && d <= 4096.0) {
                         matrixStack.translate(0.0D, 9.0F * 1.15F * pixelSize, 0.0D);
                         if (d < 100.0 && livingEntity instanceof PlayerEntity && livingEntity.getEntityWorld().getScoreboard().getObjectiveForSlot(ScoreboardDisplaySlot.BELOW_NAME) != null) {
                             matrixStack.translate(0.0D, 9.0F * 1.15F * pixelSize, 0.0D);

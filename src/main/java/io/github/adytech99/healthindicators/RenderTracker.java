@@ -12,6 +12,7 @@ import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileUtil;
+import net.minecraft.text.Text;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Box;
@@ -22,11 +23,11 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 public class RenderTracker {
     private static final ConcurrentHashMap<UUID, Integer> UUIDS = new ConcurrentHashMap<>();
-    private static final CopyOnWriteArrayList<UUID> IgnoreUUIDS = new CopyOnWriteArrayList<>();
+
+    public static boolean after_attack = ModConfig.HANDLER.instance().after_attack;
 
     public static void tick(MinecraftClient client){
         if(client.player == null || client.world == null) return;
@@ -35,15 +36,15 @@ public class RenderTracker {
                 if(doRender(client.player, livingEntity) || overridePlayers(livingEntity)){
                     addToUUIDS(livingEntity);
                 }
-                else { // If not targeted, add to ignore entities.
-                    if (!isTargeted(client.player, livingEntity) && ModConfig.HANDLER.instance().on_crosshair){
-                        if(!IgnoreUUIDS.contains(livingEntity.getUuid())) IgnoreUUIDS.add(livingEntity.getUuid());
-                    } // if
-                    else removeFromUUIDS(livingEntity.getUuid());
-                }
+                else removeFromUUIDS(livingEntity.getUuid());
             }
         }
         trimEntities(client.world);
+        if(ModConfig.HANDLER.instance().after_attack != after_attack)
+            if(ModConfig.HANDLER.instance().after_attack){
+                UUIDS.clear();
+            }
+        after_attack = ModConfig.HANDLER.instance().after_attack;
     }
 
     public static void onDamage(DamageSource damageSource, LivingEntity livingEntity) {
@@ -80,24 +81,21 @@ public class RenderTracker {
 
     public static void removeFromUUIDS(Entity entity){
         UUIDS.remove(entity.getUuid());
-        IgnoreUUIDS.remove(entity.getUuid());
     }
     public static void removeFromUUIDS(UUID uuid){
         UUIDS.remove(uuid);
-        IgnoreUUIDS.remove(uuid);
     }
 
     public static boolean addToUUIDS(LivingEntity livingEntity){
-        IgnoreUUIDS.remove(livingEntity.getUuid());
         if(!UUIDS.containsKey(livingEntity.getUuid())){
-            UUIDS.put(livingEntity.getUuid(), (ModConfig.HANDLER.instance().time_after_hit * 20));
+            UUIDS.put(livingEntity.getUuid(), ModConfig.HANDLER.instance().after_attack ? (ModConfig.HANDLER.instance().time_after_hit * 20) : 2400);
             return true;
         }
         else return false;
     }
 
     public static boolean isInUUIDS(LivingEntity livingEntity){
-        return UUIDS.containsKey(livingEntity.getUuid()) && !IgnoreUUIDS.contains(livingEntity.getUuid());
+        return UUIDS.containsKey(livingEntity.getUuid());
     }
 
     public static boolean overridePlayers(LivingEntity livingEntity){
@@ -114,14 +112,13 @@ public class RenderTracker {
 
     public static boolean doRender(ClientPlayerEntity player, LivingEntity livingEntity){
         if(!isEntityTypeAllowed(livingEntity, player)) return false; //Entity Types
-        if(!UUIDS.containsKey(livingEntity.getUuid()) && ModConfig.HANDLER.instance().after_attack) return false; //Damaged by Player
+        if(!UUIDS.containsKey(livingEntity.getUuid()) && ModConfig.HANDLER.instance().after_attack) return false; //Damaged by Player, key should have been added by separate means. Necessary because removal check is done by this method.
         if(livingEntity.getHealth() == livingEntity.getMaxHealth() && ModConfig.HANDLER.instance().damaged_only && livingEntity.getAbsorptionAmount() <= 0) return false; //Damaged by Any Reason
-        if(!isTargeted(player, livingEntity) && ModConfig.HANDLER.instance().on_crosshair) return false;
 
         return !isInvalid(livingEntity);
     }
 
-    public static boolean isTargeted(ClientPlayerEntity player, LivingEntity livingEntity){
+    public static boolean isTargeted(LivingEntity livingEntity){
         Entity camera = MinecraftClient.getInstance().cameraEntity;
         double d = ModConfig.HANDLER.instance().reach;
         double e = MathHelper.square(d);
