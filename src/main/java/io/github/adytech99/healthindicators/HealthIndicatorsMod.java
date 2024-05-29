@@ -25,7 +25,7 @@ public class HealthIndicatorsMod implements ClientModInitializer {
             "key.categories." + MOD_ID
     ));
     public static final KeyBinding OVERRIDE_ALL_FILTERS = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-            "key." + MOD_ID + ".heartStackingEnabled",
+            "key." + MOD_ID + ".overrideAllFilters",
             InputUtil.UNKNOWN_KEY.getCode(),
             "key.categories." + MOD_ID
     ));
@@ -42,7 +42,7 @@ public class HealthIndicatorsMod implements ClientModInitializer {
 
 
     private boolean changed = false;
-    private boolean sendReImplementationMSG = false;
+    private boolean clearedActionbar = false;
 
     @Override
     public void onInitializeClient() {
@@ -59,10 +59,10 @@ public class HealthIndicatorsMod implements ClientModInitializer {
             if (OVERRIDE_ALL_FILTERS.isPressed()) {
                 Config.setOverrideAllFiltersEnabled(true);
                 if (client.player != null) {
-                    client.player.sendMessage(Text.literal( " Config Filters " + (Config.getOverrideAllFiltersEnabled() ? "Overridden" : "Re-implemented")), true);
+                    client.player.sendMessage(Text.literal( " Config Filters " + (Config.getOverrideAllFiltersEnabled() ? "Temporarily overridden" : "Re-implemented")), true);
                 }
             }
-            else {
+            else if(Config.getOverrideAllFiltersEnabled()) {
                 Config.setOverrideAllFiltersEnabled(false);
                 client.inGameHud.setOverlayMessage(Text.literal(""), false);
             }
