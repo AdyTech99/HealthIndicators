@@ -12,7 +12,6 @@ import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileUtil;
-import net.minecraft.text.Text;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Box;
@@ -31,12 +30,11 @@ public class RenderTracker {
 
     public static void tick(MinecraftClient client){
         if(client.player == null || client.world == null) return;
-        for(Entity entity : client.world.getEntities()){
-            if(entity instanceof LivingEntity livingEntity){
-                if(doRender(client.player, livingEntity) || overridePlayers(livingEntity)){
+        if(Config.getRenderingEnabled()) {
+            for (Entity entity : client.world.getEntities()) {
+                if (entity instanceof LivingEntity livingEntity && (doRender(client.player, livingEntity) || overridePlayers(livingEntity))) {
                     addToUUIDS(livingEntity);
-                }
-                else removeFromUUIDS(livingEntity.getUuid());
+                } else removeFromUUIDS(entity.getUuid());
             }
         }
         trimEntities(client.world);
@@ -74,7 +72,7 @@ public class RenderTracker {
         }
 
         // Remove invalid entities
-        UUIDS.entrySet().removeIf(entry -> isInvalid(getEntityFromUUID(entry.getKey(), world)));
+        UUIDS.entrySet().removeIf(entry -> isInvalid(getEntityFromUUID(entry.getKey(), world))|| !Config.getRenderingEnabled());
         if(UUIDS.size() >= 1536) UUIDS.clear();
     }
 
@@ -151,7 +149,6 @@ public class RenderTracker {
                 || entity.isRegionUnloaded()
                 || !(entity instanceof LivingEntity)
                 || MinecraftClient.getInstance().player == null
-                || !Config.getRenderingEnabled()
                 || MinecraftClient.getInstance().player.getVehicle() == entity
                 || entity.isInvisibleTo(MinecraftClient.getInstance().player));
     }

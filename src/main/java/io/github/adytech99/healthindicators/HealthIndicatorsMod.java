@@ -42,7 +42,6 @@ public class HealthIndicatorsMod implements ClientModInitializer {
 
 
     private boolean changed = false;
-    private boolean clearedActionbar = false;
 
     @Override
     public void onInitializeClient() {
@@ -59,7 +58,7 @@ public class HealthIndicatorsMod implements ClientModInitializer {
             if (OVERRIDE_ALL_FILTERS.isPressed()) {
                 Config.setOverrideAllFiltersEnabled(true);
                 if (client.player != null) {
-                    client.player.sendMessage(Text.literal( " Config Filters " + (Config.getOverrideAllFiltersEnabled() ? "Temporarily overridden" : "Re-implemented")), true);
+                    client.player.sendMessage(Text.literal( " Config Filters " + (Config.getOverrideAllFiltersEnabled() ? "Temporarily Overridden" : "Re-implemented")), true);
                 }
             }
             else if(Config.getOverrideAllFiltersEnabled()) {

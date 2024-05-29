@@ -36,8 +36,12 @@ public abstract class NewEntityRendererMixin<T extends LivingEntity, M extends E
     @Inject(method = "render(Lnet/minecraft/entity/LivingEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", at = @At("TAIL"))
     public void renderHealth(T livingEntity, float yaw, float tickDelta, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int light, CallbackInfo ci) {
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
-        if (RenderTracker.isInUUIDS(livingEntity) || Config.getOverrideAllFiltersEnabled()) {
-            if(!RenderTracker.isTargeted(livingEntity) && ModConfig.HANDLER.instance().on_crosshair && livingEntity != player && !Config.getOverrideAllFiltersEnabled()) return;
+
+        if (RenderTracker.isInUUIDS(livingEntity) || (Config.getOverrideAllFiltersEnabled() && !RenderTracker.isInvalid(livingEntity))) {
+            if(!RenderTracker.isTargeted(livingEntity)
+                    && ModConfig.HANDLER.instance().looking_at
+                    && (!Config.getOverrideAllFiltersEnabled() && !(livingEntity instanceof PlayerEntity && ModConfig.HANDLER.instance().override_players))
+                    && livingEntity != player) return;
 
             Tessellator tessellator = Tessellator.getInstance();
             BufferBuilder vertexConsumer = tessellator.getBuffer();
