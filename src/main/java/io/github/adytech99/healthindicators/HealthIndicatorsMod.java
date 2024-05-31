@@ -13,30 +13,33 @@ import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.text.Text;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Environment(EnvType.CLIENT)
 public class HealthIndicatorsMod implements ClientModInitializer {
     public static final String MOD_ID = "healthindicators";
+    public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
     public static final String CONFIG_FILE = "healthindicators.json";
 
     public static final KeyBinding RENDERING_ENABLED_KEY_BINDING = KeyBindingHelper.registerKeyBinding(new KeyBinding(
             "key." + MOD_ID + ".renderingEnabled",
-            InputUtil.UNKNOWN_KEY.getCode(),
+            InputUtil.GLFW_KEY_LEFT,
             "key.categories." + MOD_ID
     ));
     public static final KeyBinding OVERRIDE_ALL_FILTERS = KeyBindingHelper.registerKeyBinding(new KeyBinding(
             "key." + MOD_ID + ".overrideAllFilters",
-            InputUtil.UNKNOWN_KEY.getCode(),
+            InputUtil.GLFW_KEY_RIGHT,
             "key.categories." + MOD_ID
     ));
     public static final KeyBinding INCREASE_HEART_OFFSET_KEY_BINDING = KeyBindingHelper.registerKeyBinding(new KeyBinding(
             "key." + MOD_ID + ".increaseHeartOffset",
-            InputUtil.UNKNOWN_KEY.getCode(),
+            InputUtil.GLFW_KEY_UP,
             "key.categories." + MOD_ID
     ));
     public static final KeyBinding DECREASE_HEART_OFFSET_KEY_BINDING = KeyBindingHelper.registerKeyBinding(new KeyBinding(
             "key." + MOD_ID + ".decreaseHeartOffset",
-            InputUtil.UNKNOWN_KEY.getCode(),
+            InputUtil.GLFW_KEY_DOWN,
             "key.categories." + MOD_ID
     ));
 
@@ -100,7 +103,7 @@ public class HealthIndicatorsMod implements ClientModInitializer {
         });
 
         ClientTickEvents.END_CLIENT_TICK.register(RenderTracker::tick);
-
+        LOGGER.info("Never be heartless!");
     }
 
     public void saveModConfig(){

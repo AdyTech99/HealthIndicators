@@ -38,8 +38,7 @@ public abstract class NewEntityRendererMixin<T extends LivingEntity, M extends E
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
 
         if (RenderTracker.isInUUIDS(livingEntity) || (Config.getOverrideAllFiltersEnabled() && !RenderTracker.isInvalid(livingEntity))) {
-            if(!RenderTracker.isTargeted(livingEntity)
-                    && ModConfig.HANDLER.instance().looking_at
+            if((ModConfig.HANDLER.instance().looking_at && !RenderTracker.isTargeted(livingEntity))
                     && (!Config.getOverrideAllFiltersEnabled() && !(livingEntity instanceof PlayerEntity && ModConfig.HANDLER.instance().override_players))
                     && livingEntity != player) return;
 
