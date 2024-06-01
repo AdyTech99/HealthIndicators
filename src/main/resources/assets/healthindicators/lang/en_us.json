@@ -40,7 +40,7 @@
 
   "yacl3.config.health-indicators:config.number_type_settings_label.desc": "Settings for the number-type indicator",
 
-  "yacl3.config.health-indicators:config.number_color": "Color of the number",
+  "yacl3.config.health-indicators:config.number_color": "Text color",
   "yacl3.config.health-indicators:config.number_color.desc": "Color of the number",
 
   "yacl3.config.health-indicators:config.render_number_display_shadow": "Render shadow behind the number display",

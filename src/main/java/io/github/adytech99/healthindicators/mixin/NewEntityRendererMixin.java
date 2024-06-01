@@ -32,7 +32,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class NewEntityRendererMixin<T extends LivingEntity, M extends EntityModel<T>> extends EntityRenderer<T> implements FeatureRendererContext<T, M> {
 
     @Unique
-    private final ClientPlayerEntity player = MinecraftClient.getInstance().player;
+    private final MinecraftClient client = MinecraftClient.getInstance();
     protected NewEntityRendererMixin(EntityRendererFactory.Context ctx) {
         super(ctx);
     }
@@ -43,7 +43,7 @@ public abstract class NewEntityRendererMixin<T extends LivingEntity, M extends E
         if (RenderTracker.isInUUIDS(livingEntity) || (Config.getOverrideAllFiltersEnabled() && !RenderTracker.isInvalid(livingEntity))) {
             if((ModConfig.HANDLER.instance().looking_at && !RenderTracker.isTargeted(livingEntity))
                     && (!Config.getOverrideAllFiltersEnabled() && !(livingEntity instanceof PlayerEntity && ModConfig.HANDLER.instance().override_players))
-                    && livingEntity != player) return;
+                    && livingEntity != client.player) return;
 
             if(ModConfig.HANDLER.instance().indicator_type == HealthDisplayTypeEnum.HEARTS) renderHearts(livingEntity, yaw, tickDelta, matrixStack, vertexConsumerProvider, light);
             else if(ModConfig.HANDLER.instance().indicator_type == HealthDisplayTypeEnum.NUMBER) renderNumber(livingEntity, yaw, tickDelta, matrixStack, vertexConsumerProvider, light);;
@@ -87,7 +87,7 @@ public abstract class NewEntityRendererMixin<T extends LivingEntity, M extends E
 
                 matrixStack.translate(0, livingEntity.getHeight() + 0.5f + h, 0);
                 if ((this.hasLabel(livingEntity)
-                        || (ModConfig.HANDLER.instance().force_higher_offset_for_players && livingEntity instanceof PlayerEntity && livingEntity != player))
+                        || (ModConfig.HANDLER.instance().force_higher_offset_for_players && livingEntity instanceof PlayerEntity && livingEntity != client.player))
                         && d <= 4096.0) {
                     matrixStack.translate(0.0D, 9.0F * 1.15F * pixelSize, 0.0D);
                     if (d < 100.0 && livingEntity instanceof PlayerEntity && livingEntity.getEntityWorld().getScoreboard().getObjectiveForSlot(ScoreboardDisplaySlot.BELOW_NAME) != null) {
@@ -137,17 +137,14 @@ public abstract class NewEntityRendererMixin<T extends LivingEntity, M extends E
         int maxHealth = MathHelper.ceil(livingEntity.getMaxHealth());
         int absorption = MathHelper.ceil(livingEntity.getAbsorptionAmount());
 
-        String healthText = health + " / " + maxHealth;
-        if (absorption > 0) {
-            healthText += " (" + absorption + ")";
-        }
+        String healthText = health+absorption + " / " + maxHealth;
 
         matrixStack.push();
         float scale = 0.025F;
 
         matrixStack.translate(0, livingEntity.getHeight() + 0.5f, 0);
         if ((this.hasLabel(livingEntity)
-                || (ModConfig.HANDLER.instance().force_higher_offset_for_players && livingEntity instanceof PlayerEntity && livingEntity != player))
+                || (ModConfig.HANDLER.instance().force_higher_offset_for_players && livingEntity instanceof PlayerEntity && livingEntity != client.player))
                 && d <= 4096.0) {
             matrixStack.translate(0.0D, 9.0F * 1.15F * scale, 0.0D);
             if (d < 100.0 && livingEntity instanceof PlayerEntity && livingEntity.getEntityWorld().getScoreboard().getObjectiveForSlot(ScoreboardDisplaySlot.BELOW_NAME) != null) {
