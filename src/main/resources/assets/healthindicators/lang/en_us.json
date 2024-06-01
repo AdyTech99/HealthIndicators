@@ -31,17 +31,36 @@
 
   "yacl3.config.health-indicators:config.override_players": "Always show player health",
   "yacl3.config.health-indicators:config.override_players.desc": "Overrides the above options to always display health of Players, even if they have not been attacked, they are full health or they are not on crosshair",
-
   "yacl3.config.health-indicators:config.override_players_label.desc": "Overrides above criteria and always renders health for the below entity types. \n \n Currently only the playerentity type is supported here.",
 
-  "yacl3.config.health-indicators:config.heart_offset": "Heart offset",
-  "yacl3.config.health-indicators:config.heart_offset.desc": "The distance between the top of the Entity and the health bar. Negative offset values can make the health bar render below or in the middle of the entity. Extreme offset values can make the health bar render out of view.",
+
+
+  "yacl3.config.health-indicators:config.indicator_type": "Indicator Type",
+  "yacl3.config.health-indicators:config.indicator_type.desc": "Whether to render a floating hearts display or a number display.",
+
+  "yacl3.config.health-indicators:config.number_type_settings_label.desc": "Settings for the number-type indicator",
+
+  "yacl3.config.health-indicators:config.number_color": "Color of the number",
+  "yacl3.config.health-indicators:config.number_color.desc": "Color of the number",
+
+  "yacl3.config.health-indicators:config.render_number_display_shadow": "Render shadow behind the number display",
+  "yacl3.config.health-indicators:config.render_number_display_shadow.desc": "Whether there should be a shadow behind the display text",
+
+  "yacl3.config.health-indicators:config.render_number_display_background_color": "Render background",
+  "yacl3.config.health-indicators:config.render_number_display_background_color.desc": "Whether there should be a colored background behind the number display",
+
+  "yacl3.config.health-indicators:config.number_display_background_color": "Background color",
+  "yacl3.config.health-indicators:config.number_display_background_color.desc": "The background color for the number display",
+
+
+  "yacl3.config.health-indicators:config.heart_offset": "Health offset",
+  "yacl3.config.health-indicators:config.heart_offset.desc": "The distance between the top of the Entity and the health display. Negative offset values can make the health display render below or in the middle of the entity. Extreme offset values can make the health display render out of view.",
 
   "yacl3.config.health-indicators:config.offset_step_size": "Offset step size",
   "yacl3.config.health-indicators:config.offset_step_size.desc": "The offset that the keybind will change per press.",
 
   "yacl3.config.health-indicators:config.force_higher_offset_for_players": "Force higher offset for players",
-  "yacl3.config.health-indicators:config.force_higher_offset_for_players.desc": "Normally, the hearts render at a higher offset for Players and Entities with a visible name-tag. \n \n However, some servers implement a custom name-tag which the mod does not recognize and account for. This option will forcibly raise heart offset for *all* players to fix the problem.",
+  "yacl3.config.health-indicators:config.force_higher_offset_for_players.desc": "Normally, the health display renders at a higher offset for Players and Entities with a visible name-tag. \n \n However, some servers implement a custom name-tag which the mod does not recognize and account for. This option will forcibly raise offset for *all* players to fix the problem.",
 
   "yacl3.config.health-indicators:config.hearts_clipping": "Heart clipping",
   "yacl3.config.health-indicators:config.hearts_clipping.desc": "Hearts will get pushed downwards if there is a solid block at their normal rendering position.",
@@ -52,8 +71,9 @@
   "yacl3.config.health-indicators:config.category.filters": "Filters",
   "yacl3.config.health-indicators:config.category.appearance": "Appearance",
 
-  "yacl3.config.health-indicators:config.category.appearance.group.heart_offset": "Health Bar Location Settings",
-  "yacl3.config.health-indicators:config.category.filters.group.type": "Filter Entity Types",
+  "yacl3.config.health-indicators:config.category.appearance.group.offset": "Health Display Location",
+  "yacl3.config.health-indicators:config.category.appearance.group.indicator_type": "Indicator Type",
+  "yacl3.config.health-indicators:config.category.filters.group.entity_type": "Filter Entity Types",
   "yacl3.config.health-indicators:config.category.filters.group.advanced": "Advanced Filtering",
 
 

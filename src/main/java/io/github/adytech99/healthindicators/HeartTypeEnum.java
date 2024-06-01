@@ -1,10 +1,8 @@
 package io.github.adytech99.healthindicators;
 
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexFormat;
 import net.minecraft.util.Identifier;
 
-public enum HeartType {
+public enum HeartTypeEnum {
     EMPTY("container"),
     RED_FULL("full"),
     RED_HALF("half"),
@@ -13,7 +11,7 @@ public enum HeartType {
 
     public final Identifier icon;
 
-    HeartType(String heartIcon) {
+    HeartTypeEnum(String heartIcon) {
         icon = new Identifier("minecraft", "textures/gui/sprites/hud/heart/" + heartIcon + ".png");
     }
 }

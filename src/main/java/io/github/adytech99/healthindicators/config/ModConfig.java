@@ -4,17 +4,17 @@ import dev.isxander.yacl3.config.v2.api.ConfigClassHandler;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import dev.isxander.yacl3.config.v2.api.autogen.Boolean;
 import dev.isxander.yacl3.config.v2.api.autogen.*;
+import dev.isxander.yacl3.config.v2.api.autogen.Label;
 import dev.isxander.yacl3.config.v2.api.serializer.GsonConfigSerializerBuilder;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
-import org.apache.logging.log4j.core.tools.picocli.CommandLine;
 import org.jetbrains.annotations.Nullable;
 
+import java.awt.*;
 import java.nio.file.Path;
-import java.util.function.UnaryOperator;
 
 public class ModConfig {
     public static final Path CONFIG_PATH = FabricLoader.getInstance().getConfigDir().resolve("health_indicators_config.json");
@@ -27,26 +27,26 @@ public class ModConfig {
             .build();
 
     @Label
-    @AutoGen(category = "filters", group = "type")
+    @AutoGen(category = "filters", group = "entity_type")
     private final Text filtersTypeLabel = Text.literal("Enable/disable hearts display based on entity type").formatted(Formatting.BOLD, Formatting.AQUA);
 
     @SerialEntry
-    @AutoGen(category = "filters", group = "type")
+    @AutoGen(category = "filters", group = "entity_type")
     @TickBox
     public boolean passive_mobs = true;
 
     @SerialEntry
-    @AutoGen(category = "filters", group = "type")
+    @AutoGen(category = "filters", group = "entity_type")
     @TickBox
     public boolean hostile_mobs = true;
 
     @SerialEntry
-    @AutoGen(category = "filters", group = "type")
+    @AutoGen(category = "filters", group = "entity_type")
     @MasterTickBox(value = "override_players")
     public boolean players = true;
 
     @SerialEntry
-    @AutoGen(category = "filters", group = "type")
+    @AutoGen(category = "filters", group = "entity_type")
     @TickBox
     public boolean self = false;
 
@@ -101,19 +101,47 @@ public class ModConfig {
     public boolean override_players = true;
 
 
+    @SerialEntry
+    @AutoGen(category = "appearance", group = "indicator_type")
+    @EnumCycler
+    public HealthDisplayTypeEnum indicator_type = HealthDisplayTypeEnum.HEARTS;
+
+    @AutoGen(category = "appearance", group = "indicator_type")
+    @Label
+    private final Text number_type_settings_label = Text.literal("Settings for the number-type indicator").formatted(Formatting.ITALIC);
 
     @SerialEntry
-    @AutoGen(category = "appearance", group = "heart_offset")
+    @AutoGen(category = "appearance", group = "indicator_type")
+    @ColorField
+    public Color number_color = Color.RED;
+
+    @SerialEntry
+    @AutoGen(category = "appearance", group = "indicator_type")
+    @Boolean
+    public boolean render_number_display_shadow = false;
+
+    @SerialEntry
+    @AutoGen(category = "appearance", group = "indicator_type")
+    @MasterTickBox(value = {"number_display_background_color"})
+    public boolean render_number_display_background_color = false;
+
+    @SerialEntry
+    @AutoGen(category = "appearance", group = "indicator_type")
+    @ColorField
+    public Color number_display_background_color = Color.BLACK;
+
+    @SerialEntry
+    @AutoGen(category = "appearance", group = "offset")
     @DoubleField
     public double heart_offset = 0;
 
     @SerialEntry
-    @AutoGen(category = "appearance", group = "heart_offset")
+    @AutoGen(category = "appearance", group = "offset")
     @DoubleSlider(min = 0.0, max = 10.0, step = 0.5)
     public double offset_step_size = 1;
 
     @SerialEntry
-    @AutoGen(category = "appearance", group = "heart_offset")
+    @AutoGen(category = "appearance", group = "offset")
     @Boolean
     public boolean force_higher_offset_for_players = false;
 
