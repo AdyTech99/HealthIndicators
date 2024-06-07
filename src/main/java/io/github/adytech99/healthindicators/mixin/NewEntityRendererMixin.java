@@ -1,14 +1,13 @@
 package io.github.adytech99.healthindicators.mixin;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import io.github.adytech99.healthindicators.HeartTypeEnum;
+import io.github.adytech99.healthindicators.enums.HeartTypeEnum;
 import io.github.adytech99.healthindicators.RenderTracker;
 import io.github.adytech99.healthindicators.config.Config;
-import io.github.adytech99.healthindicators.config.HealthDisplayTypeEnum;
+import io.github.adytech99.healthindicators.enums.HealthDisplayTypeEnum;
 import io.github.adytech99.healthindicators.config.ModConfig;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.*;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
@@ -97,7 +96,7 @@ public abstract class NewEntityRendererMixin<T extends LivingEntity, M extends E
 
                 matrixStack.multiply(this.dispatcher.getRotation());
                 matrixStack.scale(pixelSize, pixelSize, pixelSize);
-                matrixStack.translate(0, ModConfig.HANDLER.instance().heart_offset, 0);
+                matrixStack.translate(0, ModConfig.HANDLER.instance().display_offset, 0);
                 Matrix4f model = matrixStack.peek().getPositionMatrix();
 
                 float x = maxX - (heart % heartsPerRow) * 8;
@@ -154,7 +153,7 @@ public abstract class NewEntityRendererMixin<T extends LivingEntity, M extends E
 
         matrixStack.multiply(this.dispatcher.getRotation());
         matrixStack.scale(-scale, -scale, scale);
-        matrixStack.translate(0, -ModConfig.HANDLER.instance().heart_offset, 0);
+        matrixStack.translate(0, -ModConfig.HANDLER.instance().display_offset, 0);
 
         TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
         float x = -textRenderer.getWidth(healthText) / 2.0f;

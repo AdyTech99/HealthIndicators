@@ -6,6 +6,8 @@ import dev.isxander.yacl3.config.v2.api.autogen.Boolean;
 import dev.isxander.yacl3.config.v2.api.autogen.*;
 import dev.isxander.yacl3.config.v2.api.autogen.Label;
 import dev.isxander.yacl3.config.v2.api.serializer.GsonConfigSerializerBuilder;
+import io.github.adytech99.healthindicators.enums.HealthDisplayTypeEnum;
+import io.github.adytech99.healthindicators.enums.MessageTypeEnum;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
@@ -27,8 +29,12 @@ public class ModConfig {
             .build();
 
     @Label
+    @AutoGen(category = "filters")
+    private final Text filtersProTip = Text.literal("Pro Tip: You can temporarily override the below criteria and force health display for all living entities by holding the Right-Arrow key (customizable)").formatted(Formatting.GOLD);
+
+    @Label
     @AutoGen(category = "filters", group = "entity_type")
-    private final Text filtersTypeLabel = Text.literal("Enable/disable hearts display based on entity type").formatted(Formatting.BOLD, Formatting.AQUA);
+    private final Text filtersTypeLabel = Text.literal("Enable health display based on entity type").formatted(Formatting.BOLD, Formatting.AQUA);
 
     @SerialEntry
     @AutoGen(category = "filters", group = "entity_type")
@@ -52,11 +58,12 @@ public class ModConfig {
 
     @Label
     @AutoGen(category = "filters", group = "advanced")
-    private final Text filtersAdvancedLabel = Text.literal("Enable/disable hearts display based on additional misc. criteria").formatted(Formatting.BOLD, Formatting.AQUA);
+    private final Text filtersAdvancedLabel = Text.literal("Enable health display based on additional misc. criteria").formatted(Formatting.BOLD, Formatting.AQUA);
 
-    @Label
+    /*@Label
     @AutoGen(category = "filters", group = "advanced")
-    private final Text after_attack_label = Text.literal("Settings for the 'Show on attack' criteria:").formatted(Formatting.ITALIC);
+    //private final Text after_attack_label = Text.literal("Settings for the 'Show on attack' criteria:").formatted(Formatting.ITALIC);
+    private final Text after_attack_label = Text.literal(" ").formatted(Formatting.ITALIC);*/
 
     @SerialEntry
     @AutoGen(category = "filters", group = "advanced")
@@ -70,7 +77,8 @@ public class ModConfig {
 
     @Label
     @AutoGen(category = "filters", group = "advanced")
-    private final Text damaged_only_label = Text.literal("Settings for the 'damaged entity' criteria:").formatted(Formatting.ITALIC);
+    //private final Text damaged_only_label = Text.literal("Settings for the 'damaged entity' criteria:").formatted(Formatting.ITALIC);
+    private final Text damaged_only_label = Text.literal(" ").formatted(Formatting.ITALIC);
 
     @SerialEntry
     @AutoGen(category = "filters", group = "advanced")
@@ -79,7 +87,8 @@ public class ModConfig {
 
     @Label
     @AutoGen(category = "filters", group = "advanced")
-    private final Text on_crosshair_label = Text.literal("Settings for the 'looking at entity' criteria:").formatted(Formatting.ITALIC);
+    //private final Text on_crosshair_label = Text.literal("Settings for the 'looking at entity' criteria:").formatted(Formatting.ITALIC);
+    private final Text on_crosshair_label = Text.literal(" ").formatted(Formatting.ITALIC);
 
     @SerialEntry
     @AutoGen(category = "filters", group = "advanced")
@@ -101,6 +110,14 @@ public class ModConfig {
     public boolean override_players = true;
 
 
+    //APPEARANCE
+
+
+    @SerialEntry
+    @AutoGen(category = "appearance")
+    @IntField
+    public int hearts_per_row = 10;
+
     @SerialEntry
     @AutoGen(category = "appearance", group = "indicator_type")
     @EnumCycler
@@ -108,7 +125,7 @@ public class ModConfig {
 
     @AutoGen(category = "appearance", group = "indicator_type")
     @Label
-    private final Text number_type_settings_label = Text.literal("Settings for the number-type indicator").formatted(Formatting.ITALIC);
+    private final Text number_type_settings_label = Text.literal("Settings for the number-type indicator");
 
     @SerialEntry
     @AutoGen(category = "appearance", group = "indicator_type")
@@ -123,7 +140,7 @@ public class ModConfig {
     @SerialEntry
     @AutoGen(category = "appearance", group = "indicator_type")
     @MasterTickBox(value = {"number_display_background_color"})
-    public boolean render_number_display_background_color = false;
+    public boolean render_number_display_background_color = true;
 
     @SerialEntry
     @AutoGen(category = "appearance", group = "indicator_type")
@@ -133,7 +150,7 @@ public class ModConfig {
     @SerialEntry
     @AutoGen(category = "appearance", group = "offset")
     @DoubleField
-    public double heart_offset = 0;
+    public double display_offset = 0;
 
     @SerialEntry
     @AutoGen(category = "appearance", group = "offset")
@@ -145,15 +162,33 @@ public class ModConfig {
     @Boolean
     public boolean force_higher_offset_for_players = false;
 
+
+    //MESSAGES & COMMANDS
+
+
+    @SerialEntry
+    @AutoGen(category = "messages", group = "messages_appearance")
+    @EnumCycler
+    public MessageTypeEnum message_type = MessageTypeEnum.ACTIONBAR;
+
+    @SerialEntry
+    @AutoGen(category = "messages", group = "messages_appearance")
+    @Boolean(colored = true)
+    public boolean colored_messages = true;
+
+    @Label
+    @AutoGen(category = "messages", group = "commands")
+    private final Text commandsRestartWarning = Text.literal("For this section, a restart is required to apply any modifications").formatted(Formatting.RED);
+
+    @SerialEntry
+    @AutoGen(category = "messages", group = "commands")
+    @Boolean(formatter = Boolean.Formatter.YES_NO)
+    public boolean enable_commands = true;
+
     /*@SerialEntry
     @AutoGen(category = "appearance", group = "heart_offset")
     @Boolean
     public boolean hearts_clipping = true;*/
-
-    @SerialEntry
-    @AutoGen(category = "appearance")
-    @IntField
-    public int hearts_per_row = 10;
 
 
 

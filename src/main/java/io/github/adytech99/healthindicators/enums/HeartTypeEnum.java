@@ -1,4 +1,4 @@
-package io.github.adytech99.healthindicators;
+package io.github.adytech99.healthindicators.enums;
 
 import net.minecraft.util.Identifier;
 

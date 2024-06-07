@@ -8,6 +8,7 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.decoration.ArmorStandEntity;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -32,7 +33,7 @@ public class RenderTracker {
         if(client.player == null || client.world == null) return;
         if(Config.getRenderingEnabled()) {
             for (Entity entity : client.world.getEntities()) {
-                if (entity instanceof LivingEntity livingEntity && (doRender(client.player, livingEntity) || overridePlayers(livingEntity))) {
+                if (entity instanceof LivingEntity livingEntity && (satisfiesAdvancedCriteria(client.player, livingEntity) || overridePlayers(livingEntity))) {
                     addToUUIDS(livingEntity);
                 } else removeFromUUIDS(entity.getUuid());
             }
@@ -106,10 +107,10 @@ public class RenderTracker {
         if(!ModConfig.HANDLER.instance().hostile_mobs && livingEntity instanceof HostileEntity) return false;
         if(!ModConfig.HANDLER.instance().players && livingEntity instanceof PlayerEntity) return false;
         if(!ModConfig.HANDLER.instance().self && livingEntity == self) return false;
-        return true;
+        return !(livingEntity instanceof ArmorStandEntity);
     }
 
-    public static boolean doRender(ClientPlayerEntity player, LivingEntity livingEntity){
+    public static boolean satisfiesAdvancedCriteria(ClientPlayerEntity player, LivingEntity livingEntity){
         if(!isEntityTypeAllowed(livingEntity, player)) return false; //Entity Types
         if(!UUIDS.containsKey(livingEntity.getUuid()) && ModConfig.HANDLER.instance().after_attack) return false; //Damaged by Player, key should have been added by separate means. Necessary because removal check is done by this method.
         if(livingEntity.getHealth() == livingEntity.getMaxHealth() && ModConfig.HANDLER.instance().damaged_only && livingEntity.getAbsorptionAmount() <= 0) return false; //Damaged by Any Reason

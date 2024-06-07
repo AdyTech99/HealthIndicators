@@ -1,15 +1,14 @@
-package io.github.adytech99.healthindicators.config;
+package io.github.adytech99.healthindicators.enums;
 
 import dev.isxander.yacl3.api.NameableEnum;
-import net.minecraft.component.Component;
 import net.minecraft.text.Text;
 
-public enum HealthDisplayTypeEnum implements NameableEnum {
-    NUMBER("Number"),
-    HEARTS("Hearts");
+public enum MessageTypeEnum implements NameableEnum {
+    ACTIONBAR("Actionbar"),
+    CHAT("Chat");
 
     private final String displayName;
-    HealthDisplayTypeEnum(String displayName) {
+    MessageTypeEnum(String displayName) {
         this.displayName = displayName;
     }
 
