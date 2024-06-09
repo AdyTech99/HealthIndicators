@@ -82,7 +82,7 @@ public class HealthIndicatorsMod implements ClientModInitializer {
             if (OVERRIDE_ALL_FILTERS.isPressed()) {
                 Config.setOverrideAllFiltersEnabled(true);
                 if (client.player != null) {
-                    client.player.sendMessage(Text.literal( " Config criteria " + (Config.getOverrideAllFiltersEnabled() ? "Temporarily Overridden" : "Re-implemented")), true);
+                    client.player.sendMessage(Text.literal( " Config Criteria " + (Config.getOverrideAllFiltersEnabled() ? "Temporarily Overridden" : "Re-implemented")), true);
                 }
             }
             else if(Config.getOverrideAllFiltersEnabled()) {

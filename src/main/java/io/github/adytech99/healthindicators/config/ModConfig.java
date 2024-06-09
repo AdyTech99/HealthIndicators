@@ -114,14 +114,18 @@ public class ModConfig {
 
 
     @SerialEntry
-    @AutoGen(category = "appearance")
-    @IntField
-    public int hearts_per_row = 10;
-
-    @SerialEntry
     @AutoGen(category = "appearance", group = "indicator_type")
     @EnumCycler
     public HealthDisplayTypeEnum indicator_type = HealthDisplayTypeEnum.HEARTS;
+
+    @AutoGen(category = "appearance", group = "indicator_type")
+    @Label
+    private final Text heart_type_settings_label = Text.literal("Settings for the heart-type indicator");
+
+    @SerialEntry
+    @AutoGen(category = "appearance", group = "indicator_type")
+    @IntField
+    public int hearts_per_row = 10;
 
     @AutoGen(category = "appearance", group = "indicator_type")
     @Label
