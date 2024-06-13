@@ -38,6 +38,8 @@
   "yacl3.config.health-indicators:config.indicator_type": "Indicator Type",
   "yacl3.config.health-indicators:config.indicator_type.desc": "Whether to render a floating hearts display or a number display.",
 
+  "yacl3.config.health-indicators:config.hearts_per_row": "Hearts per row (beta)",
+
   "yacl3.config.health-indicators:config.number_type_settings_label.desc": "Settings for the number-type indicator",
 
   "yacl3.config.health-indicators:config.number_color": "Text color",
@@ -63,7 +65,7 @@
   "yacl3.config.health-indicators:config.force_higher_offset_for_players.desc": "Normally, the health display renders at a higher offset for Players and Entities with a visible name-tag. \n \n However, some servers implement a custom name-tag which the mod does not recognize and account for. This option will forcibly raise offset for *all* players to fix the problem.",
 
   "yacl3.config.health-indicators:config.message_type": "Message type",
-  "yacl3.config.health-indicators:config.message_type.desc": "Whether mod messages (Indicator Enabled/Disabled, Heart Offset, etc) will appear in chat or in the actionbar",
+  "yacl3.config.health-indicators:config.message_type.desc": "Whether mod messages (Indicator Enabled/Disabled, Heart Offset, etc) will be sent in chat, actionbar or not be sent at all",
 
   "yacl3.config.health-indicators:config.colored_messages": "Colored Messages",
   "yacl3.config.health-indicators:config.colored_messages.desc": "Whether the Indicator Enabled/Disabled messages should be colored (Green and Red respectively)",
@@ -74,8 +76,6 @@
   "yacl3.config.health-indicators:config.hearts_clipping": "Heart clipping",
   "yacl3.config.health-indicators:config.hearts_clipping.desc": "Hearts will get pushed downwards if there is a solid block at their normal rendering position.",
 
-  "yacl3.config.health-indicators:config.hearts_per_row": "Hearts per row (beta)",
-
 
   "yacl3.config.health-indicators:config.category.filters": "Filters",
   "yacl3.config.health-indicators:config.category.appearance": "Appearance",
@@ -83,8 +83,8 @@
 
   "yacl3.config.health-indicators:config.category.filters.group.entity_type": "Entity Types",
   "yacl3.config.health-indicators:config.category.filters.group.advanced": "Advanced",
-  "yacl3.config.health-indicators:config.category.appearance.group.offset": "Health Display Location",
-  "yacl3.config.health-indicators:config.category.appearance.group.indicator_type": "Indicator Type",
+  "yacl3.config.health-indicators:config.category.appearance.group.indicator_type": "Indicator Appearance",
+  "yacl3.config.health-indicators:config.category.appearance.group.offset": "Indicator Location",
   "yacl3.config.health-indicators:config.category.messages.group.messages_appearance": "Mod Messages",
   "yacl3.config.health-indicators:config.category.messages.group.commands": "Mod Commands",
 

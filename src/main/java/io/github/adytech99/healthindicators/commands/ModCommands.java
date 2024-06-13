@@ -6,6 +6,7 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import io.github.adytech99.healthindicators.HealthIndicatorsMod;
 import io.github.adytech99.healthindicators.config.ModConfig;
 import io.github.adytech99.healthindicators.enums.MessageTypeEnum;
+import io.github.adytech99.healthindicators.util.ConfigUtils;
 import io.github.adytech99.healthindicators.util.Maths;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -33,7 +34,7 @@ public class ModCommands {
                                         .executes(context -> {
                                             ModConfig.HANDLER.instance().display_offset = DoubleArgumentType.getDouble(context, "offset");
                                             ModConfig.HANDLER.save();
-                                            context.getSource().getPlayer().sendMessage(Text.literal("Set heart offset to " + Maths.truncate(ModConfig.HANDLER.instance().display_offset,2)), ModConfig.HANDLER.instance().message_type == MessageTypeEnum.ACTIONBAR);
+                                            ConfigUtils.sendMessage(context.getSource().getPlayer(), Text.literal("Set heart offset to " + Maths.truncate(ModConfig.HANDLER.instance().display_offset,2)));
                                             return 1;
                                     }))));
     }

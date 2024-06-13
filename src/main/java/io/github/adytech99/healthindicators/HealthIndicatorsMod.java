@@ -5,6 +5,7 @@ import io.github.adytech99.healthindicators.commands.ModCommands;
 import io.github.adytech99.healthindicators.config.Config;
 import io.github.adytech99.healthindicators.config.ModConfig;
 import io.github.adytech99.healthindicators.enums.MessageTypeEnum;
+import io.github.adytech99.healthindicators.util.ConfigUtils;
 import io.github.adytech99.healthindicators.util.Maths;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
@@ -75,14 +76,14 @@ public class HealthIndicatorsMod implements ClientModInitializer {
                     Formatting formatting;
                     if(ModConfig.HANDLER.instance().colored_messages) formatting = Config.getRenderingEnabled() ? Formatting.GREEN : Formatting.RED;
                     else formatting = Formatting.WHITE;
-                    client.player.sendMessage(Text.literal((Config.getRenderingEnabled() ? "Enabled" : "Disabled") + " Health Indicators").formatted(formatting), overlay);
+                    ConfigUtils.sendMessage(client.player, Text.literal((Config.getRenderingEnabled() ? "Enabled" : "Disabled") + " Health Indicators").formatted(formatting));
                 }
             }
 
             if (OVERRIDE_ALL_FILTERS.isPressed()) {
                 Config.setOverrideAllFiltersEnabled(true);
                 if (client.player != null) {
-                    client.player.sendMessage(Text.literal( " Config Criteria " + (Config.getOverrideAllFiltersEnabled() ? "Temporarily Overridden" : "Re-implemented")), true);
+                    ConfigUtils.sendOverlayMessage(client.player, Text.literal( " Config Criteria " + (Config.getOverrideAllFiltersEnabled() ? "Temporarily Overridden" : "Re-implemented")));
                 }
             }
             else if(Config.getOverrideAllFiltersEnabled()) {
@@ -94,7 +95,7 @@ public class HealthIndicatorsMod implements ClientModInitializer {
                 ModConfig.HANDLER.instance().display_offset = (ModConfig.HANDLER.instance().display_offset + ModConfig.HANDLER.instance().offset_step_size);
                 changed = true;
                 if (client.player != null) {
-                    client.player.sendMessage(Text.literal("Set heart offset to " + Maths.truncate(ModConfig.HANDLER.instance().display_offset,2)), overlay);
+                    ConfigUtils.sendMessage(client.player, Text.literal("Set heart offset to " + Maths.truncate(ModConfig.HANDLER.instance().display_offset,2)));
                 }
             }
 
@@ -102,7 +103,7 @@ public class HealthIndicatorsMod implements ClientModInitializer {
                 ModConfig.HANDLER.instance().display_offset = (ModConfig.HANDLER.instance().display_offset - ModConfig.HANDLER.instance().offset_step_size);
                 changed = true;
                 if (client.player != null) {
-                    client.player.sendMessage(Text.literal("Set heart offset to " + Maths.truncate(ModConfig.HANDLER.instance().display_offset,2)), overlay);
+                    ConfigUtils.sendMessage(client.player, Text.literal("Set heart offset to " + Maths.truncate(ModConfig.HANDLER.instance().display_offset,2)));
                 }
             }
         });

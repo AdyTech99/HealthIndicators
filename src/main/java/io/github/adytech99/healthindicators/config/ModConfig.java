@@ -10,6 +10,7 @@ import io.github.adytech99.healthindicators.enums.HealthDisplayTypeEnum;
 import io.github.adytech99.healthindicators.enums.MessageTypeEnum;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
@@ -33,7 +34,7 @@ public class ModConfig {
     private final Text filtersProTip = Text.literal("Pro Tip: You can temporarily override the below criteria and force health display for all living entities by holding the Right-Arrow key (customizable)").formatted(Formatting.GOLD);
 
     @Label
-    @AutoGen(category = "filters", group = "entity_type")
+    //@AutoGen(category = "filters", group = "entity_type")
     private final Text filtersTypeLabel = Text.literal("Enable health display based on entity type").formatted(Formatting.BOLD, Formatting.AQUA);
 
     @SerialEntry
@@ -57,7 +58,7 @@ public class ModConfig {
     public boolean self = false;
 
     @Label
-    @AutoGen(category = "filters", group = "advanced")
+    //@AutoGen(category = "filters", group = "advanced")
     private final Text filtersAdvancedLabel = Text.literal("Enable health display based on additional misc. criteria").formatted(Formatting.BOLD, Formatting.AQUA);
 
     /*@Label
@@ -193,6 +194,7 @@ public class ModConfig {
     @AutoGen(category = "appearance", group = "heart_offset")
     @Boolean
     public boolean hearts_clipping = true;*/
+
 
 
 

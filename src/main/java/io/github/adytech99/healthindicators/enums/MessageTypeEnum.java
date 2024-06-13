@@ -5,7 +5,8 @@ import net.minecraft.text.Text;
 
 public enum MessageTypeEnum implements NameableEnum {
     ACTIONBAR("Actionbar"),
-    CHAT("Chat");
+    CHAT("Chat"),
+    NONE("None");
 
     private final String displayName;
     MessageTypeEnum(String displayName) {

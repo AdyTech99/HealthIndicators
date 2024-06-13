@@ -38,6 +38,8 @@
   "yacl3.config.health-indicators:config.indicator_type": "Тип индикатора",
   "yacl3.config.health-indicators:config.indicator_type.desc": "Каким образом будет отображаться здоровье сущности: полосками сердечек, или числами.",
 
+  "yacl3.config.health-indicators:config.hearts_per_row": "Сердец на полосу (бета)",
+
   "yacl3.config.health-indicators:config.number_type_settings_label.desc": "Настройки для числового индикатора",
 
   "yacl3.config.health-indicators:config.number_color": "Цвет текста",
@@ -63,7 +65,7 @@
   "yacl3.config.health-indicators:config.force_higher_offset_for_players.desc": "Обычно индикатор здоровья отображается с бо́льшим смещением для игроков и сущностей с видимым именным тегом.\n\nОднако на некоторых серверах используются собственные именные теги, которые мод не распознаёт и не учитывает. Эта настройка принудительно увеличит смещение для *всех* игроков, чтобы устранить такую проблему",
 
   "yacl3.config.health-indicators:config.message_type": "Тип сообщения",
-  "yacl3.config.health-indicators:config.message_type.desc": "Где будут отображаться сообщения мода (переключение индикатора, его смещение и др.): в чате, или на панели быстрого доступа",
+  "yacl3.config.health-indicators:config.message_type.desc": "Будут ли сообщения мода (Включен/Отключен индикатор, Смещение сердца и т.д.) отправляться в чат, панель действий или не будут отправляться вообще?",
 
   "yacl3.config.health-indicators:config.colored_messages": "Цвет сообщения",
   "yacl3.config.health-indicators:config.colored_messages.desc": "Будут ли сообщения о включении/выключении индикатора здоровья цветными (зелеными и красными соответственно).",
@@ -73,8 +75,6 @@
 
   "yacl3.config.health-indicators:config.hearts_clipping": "Смещение вниз под твёрдыми блоками",
   "yacl3.config.health-indicators:config.hearts_clipping.desc": "Будет ли индикатор здоровья смещаться вниз, если над сущностью есть твёрдый блок",
-
-  "yacl3.config.health-indicators:config.hearts_per_row": "Сердец на полосу (бета)",
 
 
   "yacl3.config.health-indicators:config.category.filters": "Фильтры",
