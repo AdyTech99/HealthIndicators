@@ -171,7 +171,6 @@ public abstract class NewEntityRendererMixin<T extends LivingEntity, M extends E
         matrixStack.pop();
     }
 
-
     @Unique
     private static void drawHeart(Matrix4f model, VertexConsumer vertexConsumer, float x, HeartTypeEnum type) {
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);

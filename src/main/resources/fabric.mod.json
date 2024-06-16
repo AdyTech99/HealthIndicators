@@ -17,7 +17,7 @@
     "client": [
       "io.github.adytech99.healthindicators.HealthIndicatorsMod"
     ],
-    "modmenu" : ["io.github.adytech99.healthindicators.config.ModMenuAPIImpl"],
+    "modmenu" : ["io.github.adytech99.healthindicators.config.ModMenuAPIImpl"]
   },
   "mixins": [
     "healthindicators.mixins.json"

@@ -141,14 +141,14 @@ public class ModConfig {
     @Boolean
     public boolean render_number_display_shadow = false;
 
-    @SerialEntry
+    /*@SerialEntry
     @AutoGen(category = "appearance", group = "indicator_type")
-    @MasterTickBox(value = {"number_display_background_color"})
-    public boolean render_number_display_background_color = true;
+    @MasterTickBox(value = {"number_display_background_color"})*/
+    public boolean render_number_display_background_color = false;
 
-    @SerialEntry
+    /*@SerialEntry
     @AutoGen(category = "appearance", group = "indicator_type")
-    @ColorField
+    @ColorField*/
     public Color number_display_background_color = Color.BLACK;
 
     @SerialEntry
