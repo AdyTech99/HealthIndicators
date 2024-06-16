@@ -28,6 +28,9 @@ dependencies {
 	//modImplementation("dev.isxander.yacl:yet-another-config-lib-fabric:${project.yacl}")
 	modImplementation "dev.isxander:yet-another-config-lib:${project.yacl}"
 }
+loom{
+	accessWidenerPath = file("src/main/resources/healthindicators.accesswidener")
+}
 
 processResources {
 	inputs.property "version", project.mod_version

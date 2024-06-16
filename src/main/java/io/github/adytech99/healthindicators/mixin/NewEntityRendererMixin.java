@@ -1,11 +1,11 @@
 package io.github.adytech99.healthindicators.mixin;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import io.github.adytech99.healthindicators.enums.HeartTypeEnum;
 import io.github.adytech99.healthindicators.RenderTracker;
 import io.github.adytech99.healthindicators.config.Config;
-import io.github.adytech99.healthindicators.enums.HealthDisplayTypeEnum;
 import io.github.adytech99.healthindicators.config.ModConfig;
+import io.github.adytech99.healthindicators.enums.HealthDisplayTypeEnum;
+import io.github.adytech99.healthindicators.enums.HeartTypeEnum;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.render.*;
@@ -45,14 +45,13 @@ public abstract class NewEntityRendererMixin<T extends LivingEntity, M extends E
                     && livingEntity != client.player) return;
 
             if(ModConfig.HANDLER.instance().indicator_type == HealthDisplayTypeEnum.HEARTS) renderHearts(livingEntity, yaw, tickDelta, matrixStack, vertexConsumerProvider, light);
-            else if(ModConfig.HANDLER.instance().indicator_type == HealthDisplayTypeEnum.NUMBER) renderNumber(livingEntity, yaw, tickDelta, matrixStack, vertexConsumerProvider, light);;
-
+            else if(ModConfig.HANDLER.instance().indicator_type == HealthDisplayTypeEnum.NUMBER) renderNumber(livingEntity, yaw, tickDelta, matrixStack, vertexConsumerProvider, light);
         }
     }
 
     @Unique private void renderHearts(T livingEntity, float yaw, float tickDelta, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int light){
         Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder vertexConsumer = tessellator.getBuffer();
+        BufferBuilder vertexConsumer;
 
         double d = this.dispatcher.getSquaredDistanceToCamera(livingEntity);
 
@@ -81,8 +80,8 @@ public abstract class NewEntityRendererMixin<T extends LivingEntity, M extends E
                 }
 
                 matrixStack.push();
-                vertexConsumer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
                 float pixelSize = 0.025F;
+                vertexConsumer = tessellator.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
 
                 matrixStack.translate(0, livingEntity.getHeight() + 0.5f + h, 0);
                 if ((this.hasLabel(livingEntity)
@@ -95,7 +94,7 @@ public abstract class NewEntityRendererMixin<T extends LivingEntity, M extends E
                 }
 
                 matrixStack.multiply(this.dispatcher.getRotation());
-                matrixStack.scale(pixelSize, pixelSize, pixelSize);
+                matrixStack.scale(-pixelSize, pixelSize, pixelSize);
                 matrixStack.translate(0, ModConfig.HANDLER.instance().display_offset, 0);
                 Matrix4f model = matrixStack.peek().getPositionMatrix();
 
@@ -122,13 +121,22 @@ public abstract class NewEntityRendererMixin<T extends LivingEntity, M extends E
                         drawHeart(model, vertexConsumer, x, type);
                     }
                 }
-                tessellator.draw();
+
+                BuiltBuffer builtBuffer;
+                try {
+                    builtBuffer = vertexConsumer.build();
+                    if(builtBuffer != null){
+                        BufferRenderer.drawWithGlobalProgram(builtBuffer);
+                        builtBuffer.close();
+                    }
+                }
+                catch (Exception e){
+                    // F off
+                }
                 matrixStack.pop();
             }
         }
     }
-
-
     @Unique
     private void renderNumber(T livingEntity, float yaw, float tickDelta, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int light){
         double d = this.dispatcher.getSquaredDistanceToCamera(livingEntity);
@@ -152,7 +160,7 @@ public abstract class NewEntityRendererMixin<T extends LivingEntity, M extends E
         }
 
         matrixStack.multiply(this.dispatcher.getRotation());
-        matrixStack.scale(-scale, -scale, scale);
+        matrixStack.scale(scale, -scale, scale);
         matrixStack.translate(0, -ModConfig.HANDLER.instance().display_offset, 0);
 
         TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
@@ -162,6 +170,7 @@ public abstract class NewEntityRendererMixin<T extends LivingEntity, M extends E
         textRenderer.draw(healthText, x, 0, ModConfig.HANDLER.instance().number_color.getRGB(), ModConfig.HANDLER.instance().render_number_display_shadow, model, vertexConsumerProvider, TextRenderer.TextLayerType.NORMAL, ModConfig.HANDLER.instance().render_number_display_background_color ? ModConfig.HANDLER.instance().number_display_background_color.getRGB() : 0, light);
         matrixStack.pop();
     }
+
 
     @Unique
     private static void drawHeart(Matrix4f model, VertexConsumer vertexConsumer, float x, HeartTypeEnum type) {
@@ -176,14 +185,14 @@ public abstract class NewEntityRendererMixin<T extends LivingEntity, M extends E
 
         float heartSize = 9F;
 
-        drawVertex(model, vertexConsumer, x, 0F - heartSize, minU, maxV);
-        drawVertex(model, vertexConsumer, x - heartSize, 0F - heartSize, maxU, maxV);
-        drawVertex(model, vertexConsumer, x - heartSize, 0F, maxU, minV);
-        drawVertex(model, vertexConsumer, x, 0F, minU, minV);
+        vertexConsumer.vertex(model, x, 0F - heartSize, 0.0F).texture(minU, maxV);
+        vertexConsumer.vertex(model, x - heartSize, 0F - heartSize, 0.0F).texture(maxU, maxV);
+        vertexConsumer.vertex(model, x - heartSize, 0F, 0.0F).texture(maxU, minV);
+        vertexConsumer.vertex(model, x, 0F, 0.0F).texture(minU, minV);
     }
 
     @Unique
     private static void drawVertex(Matrix4f model, VertexConsumer vertices, float x, float y, float u, float v) {
-        vertices.vertex(model, x, y, 0.0F).texture(u, v).next();
+        vertices.vertex(model, x, y, 0.0F).texture(u, v);
     }
 }
