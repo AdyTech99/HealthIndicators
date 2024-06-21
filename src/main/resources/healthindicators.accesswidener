@@ -1,4 +1,2 @@
 accessWidener v2 named
-accessible field net/minecraft/client/render/BufferBuilder building Z
 accessible method net/minecraft/client/render/BufferBuilder build ()Lnet/minecraft/client/render/BuiltBuffer;
-accessible field net/minecraft/client/render/BufferBuilder vertexCount I

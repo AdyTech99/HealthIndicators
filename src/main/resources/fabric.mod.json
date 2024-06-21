@@ -19,6 +19,7 @@
     ],
     "modmenu" : ["io.github.adytech99.healthindicators.config.ModMenuAPIImpl"]
   },
+  "accessWidener": "healthindicators.accesswidener",
   "mixins": [
     "healthindicators.mixins.json"
   ],
