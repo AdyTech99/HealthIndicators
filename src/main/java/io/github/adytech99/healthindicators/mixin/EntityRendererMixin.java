@@ -28,11 +28,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 
 @Mixin(LivingEntityRenderer.class)
-public abstract class NewEntityRendererMixin<T extends LivingEntity, M extends EntityModel<T>> extends EntityRenderer<T> implements FeatureRendererContext<T, M> {
+public abstract class EntityRendererMixin<T extends LivingEntity, M extends EntityModel<T>> extends EntityRenderer<T> implements FeatureRendererContext<T, M> {
 
     @Unique
     private final MinecraftClient client = MinecraftClient.getInstance();
-    protected NewEntityRendererMixin(EntityRendererFactory.Context ctx) {
+    protected EntityRendererMixin(EntityRendererFactory.Context ctx) {
         super(ctx);
     }
 
@@ -137,6 +137,7 @@ public abstract class NewEntityRendererMixin<T extends LivingEntity, M extends E
             }
         }
     }
+
     @Unique
     private void renderNumber(T livingEntity, float yaw, float tickDelta, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int light){
         double d = this.dispatcher.getSquaredDistanceToCamera(livingEntity);
@@ -190,7 +191,7 @@ public abstract class NewEntityRendererMixin<T extends LivingEntity, M extends E
         vertexConsumer.vertex(model, x, 0F, 0.0F).texture(minU, minV);
     }
 
-    @Unique
+    @Deprecated
     private static void drawVertex(Matrix4f model, VertexConsumer vertices, float x, float y, float u, float v) {
         vertices.vertex(model, x, y, 0.0F).texture(u, v);
     }
