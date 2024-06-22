@@ -54,6 +54,9 @@
   "yacl3.config.health-indicators:config.number_display_background_color": "Background color",
   "yacl3.config.health-indicators:config.number_display_background_color.desc": "The background color for the number display",
 
+  "yacl3.config.health-indicators:config.size": "Indicator Size",
+  "yacl3.config.health-indicators:config.size.desc": "The scale of the indicators",
+
 
   "yacl3.config.health-indicators:config.display_offset": "Display offset",
   "yacl3.config.health-indicators:config.display_offset.desc": "The distance between the top of the Entity and the health display. Negative offset values can make the health display render below or in the middle of the entity. Extreme offset values can make the health display render out of view.",
@@ -71,7 +74,7 @@
   "yacl3.config.health-indicators:config.colored_messages.desc": "Whether the Indicator Enabled/Disabled messages should be colored (Green and Red respectively)",
 
   "yacl3.config.health-indicators:config.enable_commands": "Enable mod commands",
-  "yacl3.config.health-indicators:config.enable_commands.desc": "Enables the /healthindicators commands",
+  "yacl3.config.health-indicators:config.enable_commands.desc": "Enables the /healthindicators command and its subcommands",
 
   "yacl3.config.health-indicators:config.hearts_clipping": "Heart clipping",
   "yacl3.config.health-indicators:config.hearts_clipping.desc": "Hearts will get pushed downwards if there is a solid block at their normal rendering position.",
@@ -89,8 +92,9 @@
   "yacl3.config.health-indicators:config.category.messages.group.commands": "Mod Commands",
 
 
-  "key.categories.healthindicators": "Player Health Indicators",
+  "key.categories.healthindicators": "Health Indicators",
   "key.healthindicators.renderingEnabled": "Toggle Rendering",
+  "key.healthindicators.armorRenderingEnabled": "Toggle Armor Points Rendering",
   "key.healthindicators.overrideAllFilters": "Override all config filters",
   "key.healthindicators.increaseHeartOffset": "Increase Heart Offset",
   "key.healthindicators.decreaseHeartOffset": "Decrease Heart Offset"

@@ -10,6 +10,7 @@ import io.github.adytech99.healthindicators.enums.HealthDisplayTypeEnum;
 import io.github.adytech99.healthindicators.enums.MessageTypeEnum;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
@@ -150,6 +151,15 @@ public class ModConfig {
     @AutoGen(category = "appearance", group = "indicator_type")
     @ColorField*/
     public Color number_display_background_color = Color.BLACK;
+
+    @AutoGen(category = "appearance", group = "indicator_type")
+    @Label
+    private final Text common_type_settings_label = Text.literal("Common settings for all indicator types");
+
+    @SerialEntry
+    @AutoGen(category = "appearance", group = "indicator_type")
+    @FloatSlider(min = 0.0f, max = 0.1f, step = 0.005f, format = "%.3f")
+    public float size = 0.025f;
 
     @SerialEntry
     @AutoGen(category = "appearance", group = "offset")

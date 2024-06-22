@@ -114,6 +114,7 @@ public class RenderTracker {
         if(!isEntityTypeAllowed(livingEntity, player)) return false; //Entity Types
         if(!UUIDS.containsKey(livingEntity.getUuid()) && ModConfig.HANDLER.instance().after_attack) return false; //Damaged by Player, key should have been added by separate means. Necessary because removal check is done by this method.
         if(livingEntity.getHealth() == livingEntity.getMaxHealth() && ModConfig.HANDLER.instance().damaged_only && livingEntity.getAbsorptionAmount() <= 0) return false; //Damaged by Any Reason
+        if(!isTargeted(livingEntity) && ModConfig.HANDLER.instance().looking_at) return false;
 
         return !isInvalid(livingEntity);
     }

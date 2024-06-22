@@ -15,6 +15,7 @@ public class Config {
     private static Config INSTANCE = new Config();
 
     private boolean renderingEnabled = true;
+    private boolean armorRenderingEnabled = true;
     private boolean overrideAllFiltersEnabled = false;
 
     public static boolean getRenderingEnabled() {
@@ -23,6 +24,14 @@ public class Config {
 
     public static void setRenderingEnabled(boolean renderingEnabled) {
         INSTANCE.renderingEnabled = renderingEnabled;
+        save();
+    }
+
+    public static boolean getArmorRenderingEnabled() {
+        return INSTANCE.armorRenderingEnabled;
+    }
+    public static void setArmorRenderingEnabled(boolean armorRenderingEnabled) {
+        INSTANCE.armorRenderingEnabled = armorRenderingEnabled;
         save();
     }
 

@@ -34,6 +34,13 @@ public class HealthIndicatorsMod implements ClientModInitializer {
             InputUtil.GLFW_KEY_LEFT,
             "key.categories." + MOD_ID
     ));
+
+    public static final KeyBinding ARMOR_RENDERING_ENABLED_KEY_BINDING = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+            "key." + MOD_ID + ".armorRenderingEnabled",
+            InputUtil.GLFW_KEY_RIGHT_SHIFT,
+            "key.categories." + MOD_ID
+    ));
+
     public static final KeyBinding OVERRIDE_ALL_FILTERS = KeyBindingHelper.registerKeyBinding(new KeyBinding(
             "key." + MOD_ID + ".overrideAllFilters",
             InputUtil.GLFW_KEY_RIGHT,
@@ -77,6 +84,16 @@ public class HealthIndicatorsMod implements ClientModInitializer {
                     if(ModConfig.HANDLER.instance().colored_messages) formatting = Config.getRenderingEnabled() ? Formatting.GREEN : Formatting.RED;
                     else formatting = Formatting.WHITE;
                     ConfigUtils.sendMessage(client.player, Text.literal((Config.getRenderingEnabled() ? "Enabled" : "Disabled") + " Health Indicators").formatted(formatting));
+                }
+            }
+
+            while (ARMOR_RENDERING_ENABLED_KEY_BINDING.wasPressed()) {
+                Config.setArmorRenderingEnabled(!Config.getArmorRenderingEnabled());
+                if (client.player != null) {
+                    Formatting formatting;
+                    if(ModConfig.HANDLER.instance().colored_messages) formatting = Config.getArmorRenderingEnabled() ? Formatting.GREEN : Formatting.RED;
+                    else formatting = Formatting.WHITE;
+                    ConfigUtils.sendMessage(client.player, Text.literal((Config.getArmorRenderingEnabled() ? "Enabled" : "Disabled") + " Armor Indicators").formatted(formatting));
                 }
             }
 
