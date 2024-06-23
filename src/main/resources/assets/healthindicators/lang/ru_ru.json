@@ -1,97 +1,96 @@
 {
-  "yacl3.config.health-indicators:config.passive_mobs": "Отображать здоровье пассивных мобов",
-  "yacl3.config.health-indicators:config.passive_mobs.desc": "Будет ли отображаться индикатор здоровья над пассивными мобами.",
+"yacl3.config.health-indicators:config.passive_mobs": "Показывать здоровье мирных мобов",
+"yacl3.config.health-indicators:config.passive_mobs.desc": "Отображает индикатор здоровья над мирными мобами",
 
-  "yacl3.config.health-indicators:config.hostile_mobs": "Отображать здоровье враждебных мобов",
-  "yacl3.config.health-indicators:config.hostile_mobs.desc": "Будет ли отображаться индикатор здоровья над враждебными мобами.",
+"yacl3.config.health-indicators:config.hostile_mobs": "Показывать здоровье враждебных мобов",
+"yacl3.config.health-indicators:config.hostile_mobs.desc": "Отображает индикатор здоровья над враждебными мобами",
 
-  "yacl3.config.health-indicators:config.angered_mobs": "Отображать здоровье разгневанных мобов",
-  "yacl3.config.health-indicators:config.angered_mobs.desc": "Будет ли отображаться индикатор здоровья над разгневанными мобами. Эта настройка отличается от настройки для враждебных мобов, так как пассивные мобы (например, железный голем или эндермен) не считаются враждебными, но все равно могут напасть на игрока, если их спровоцировать",
+"yacl3.config.health-indicators:config.angered_mobs": "Показывать здоровье разгневанных мобов",
+"yacl3.config.health-indicators:config.angered_mobs.desc": "Отображает индикатор здоровья над разгневанными мобами. Это отличается от 'враждебных мобов', так как мирный моб (например, железный голем, эндермен) не считается враждебным, но может атаковать игрока, если его спровоцировать.",
 
-  "yacl3.config.health-indicators:config.players": "Отображать здоровье игроков",
-  "yacl3.config.health-indicators:config.players.desc": "Будет ли отображаться индикатор здоровья над игроками.",
+"yacl3.config.health-indicators:config.players": "Показывать здоровье игроков",
+"yacl3.config.health-indicators:config.players.desc": "Отображает индикатор здоровья над другими игроками",
 
-  "yacl3.config.health-indicators:config.self": "Отображать ваше здоровье",
-  "yacl3.config.health-indicators:config.self.desc": "Будет ли отображаться индикатор здоровья над вами при игре от третьего лица и в меню инвентаря.",
+"yacl3.config.health-indicators:config.self": "Показывать свое здоровье",
+"yacl3.config.health-indicators:config.self.desc": "Отображает индикатор здоровья над вами в режиме от третьего лица и в меню инвентаря",
 
-  "yacl3.config.health-indicators:config.after_attack": "Отображать здоровье сущности только после атаки",
-  "yacl3.config.health-indicators:config.after_attack.desc": "Индикатор здоровья отобразится только после того, как сущность будет атакована.",
+"yacl3.config.health-indicators:config.after_attack": "Показывать здоровье только после атаки",
+"yacl3.config.health-indicators:config.after_attack.desc": "Индикатор здоровья отображается только после того, как существо было атаковано.",
 
-  "yacl3.config.health-indicators:config.time_after_hit": "Время исчезновения индикатора здоровья",
-  "yacl3.config.health-indicators:config.time_after_hit.desc": "Через сколько секунд после атаки сущности её индикатор здоровья исчезнет.",
+"yacl3.config.health-indicators:config.time_after_hit": "Секунды до исчезновения здоровья после атаки",
+"yacl3.config.health-indicators:config.time_after_hit.desc": "Индикатор здоровья исчезает после заданного количества секунд.",
 
-  "yacl3.config.health-indicators:config.damaged_only": "Отображать здоровье сущности только если у неё неполное здоровье",
-  "yacl3.config.health-indicators:config.damaged_only.desc": "Индикатор здоровья сущности отобразится только если она будет ранена. Может не работать в случаях, если сущность имеет эффект поглощения.",
+"yacl3.config.health-indicators:config.damaged_only": "Показывать здоровье только если существо ранено",
+"yacl3.config.health-indicators:config.damaged_only.desc": "Индикатор здоровья отображается только если здоровье существа ниже его максимального. Может не работать в случаях, когда у существа есть эффект поглощения.",
 
-  "yacl3.config.health-indicators:config.looking_at": "Отображать здоровье сущности только при 'Взгляде' на неё",
-  "yacl3.config.health-indicators:config.looking_at.desc": "Индикатор здоровья сущности будет отображаться только если вы смотрите на неё",
+"yacl3.config.health-indicators:config.looking_at": "Показывать здоровье только при взгляде на существо",
+"yacl3.config.health-indicators:config.looking_at.desc": "Индикатор здоровья отображается только если существо находится в поле зрения.",
 
-  "yacl3.config.health-indicators:config.reach": "Дальность 'Взгляда на сущность'",
-  "yacl3.config.health-indicators:config.reach.desc": "Насколько далеко может быть сущность, чтобы работала настройка 'Взгляд на сущность'. Значение по умолчанию - 3 блока, что равно дальности атаки игрока в выживании.",
+"yacl3.config.health-indicators:config.reach": "Дальность 'взгляда'",
+"yacl3.config.health-indicators:config.reach.desc": "На каком расстоянии может находиться существо для опции 'взгляда'. Значение по умолчанию (3 блока) равно дальности атаки в режиме выживания Minecraft.",
 
-  "yacl3.config.health-indicators:config.override_players": "Всегда отображать здоровье игрока",
-  "yacl3.config.health-indicators:config.override_players.desc": "Отменяет вышеуказанные настройки, чтобы всегда отображать здоровье игроков, даже если они не были атакованы, у них полное здоровье или на них не смотрят.",
-  "yacl3.config.health-indicators:config.override_players_label.desc": "Отменяет вышеуказанные настройки и всегда отображает здоровье для нижеперечисленных типов сущностей. \n \n В настоящее время поддерживается только тип playerentity.",
+"yacl3.config.health-indicators:config.override_players": "Всегда показывать здоровье игроков",
+"yacl3.config.health-indicators:config.override_players.desc": "Переопределяет вышеуказанные опции и всегда отображает здоровье игроков, даже если они не были атакованы, у них полное здоровье или они не находятся в прицеле.",
+"yacl3.config.health-indicators:config.override_players_label.desc": "Переопределяет вышеуказанные критерии и всегда отображает здоровье для следующих типов существ. \n \n В настоящее время поддерживается только тип playerentity.",
 
+"yacl3.config.health-indicators:config.indicator_type": "Тип индикатора",
+"yacl3.config.health-indicators:config.indicator_type.desc": "Отображать ли плавающие сердечки или числовой индикатор.",
 
+"yacl3.config.health-indicators:config.hearts_per_row": "Сердечки в строке (бета)",
 
-  "yacl3.config.health-indicators:config.indicator_type": "Тип индикатора",
-  "yacl3.config.health-indicators:config.indicator_type.desc": "Каким образом будет отображаться здоровье сущности: полосками сердечек, или числами.",
+"yacl3.config.health-indicators:config.number_type_settings_label.desc": "Настройки для числового индикатора",
 
-  "yacl3.config.health-indicators:config.hearts_per_row": "Сердец на полосу (бета)",
+"yacl3.config.health-indicators:config.number_color": "Цвет текста",
+"yacl3.config.health-indicators:config.number_color.desc": "Цвет числового индикатора",
 
-  "yacl3.config.health-indicators:config.number_type_settings_label.desc": "Настройки для числового индикатора",
+"yacl3.config.health-indicators:config.render_number_display_shadow": "Отображать тень",
+"yacl3.config.health-indicators:config.render_number_display_shadow.desc": "Должна ли быть тень за текстом индикатора",
 
-  "yacl3.config.health-indicators:config.number_color": "Цвет текста",
-  "yacl3.config.health-indicators:config.number_color.desc": "Цвет текста индикатора",
+"yacl3.config.health-indicators:config.render_number_display_background_color": "Отображать фон",
+"yacl3.config.health-indicators:config.render_number_display_background_color.desc": "Должен ли быть цветной фон за числовым индикатором",
 
-  "yacl3.config.health-indicators:config.render_number_display_shadow": "Отображать тень текста",
-  "yacl3.config.health-indicators:config.render_number_display_shadow.desc": "Будет ли отображаться тень за текстом индикатора",
+"yacl3.config.health-indicators:config.number_display_background_color": "Цвет фона",
+"yacl3.config.health-indicators:config.number_display_background_color.desc": "Цвет фона для числового индикатора",
 
-  "yacl3.config.health-indicators:config.render_number_display_background_color": "Отображать задний план",
-  "yacl3.config.health-indicators:config.render_number_display_background_color.desc": "Будет ли отображаться цветой задний план за текстом индикатора",
+"yacl3.config.health-indicators:config.size": "Размер индикатора",
+"yacl3.config.health-indicators:config.size.desc": "Масштаб индикаторов",
 
-  "yacl3.config.health-indicators:config.number_display_background_color": "Цвет заднего плана",
-  "yacl3.config.health-indicators:config.number_display_background_color.desc": "Цвет фона за текстом индикатора",
+"yacl3.config.health-indicators:config.display_offset": "Смещение отображения",
+"yacl3.config.health-indicators:config.display_offset.desc": "Расстояние между верхней частью существа и индикатором здоровья. Отрицательные значения смещения могут сделать так, что индикатор здоровья будет отображаться ниже или в середине существа. Экстремальные значения смещения могут сделать индикатор здоровья невидимым.",
 
+"yacl3.config.health-indicators:config.offset_step_size": "Шаг смещения",
+"yacl3.config.health-indicators:config.offset_step_size.desc": "Шаг смещения, который изменяется при нажатии клавиши (по умолчанию вверх-вниз).",
 
-  "yacl3.config.health-indicators:config.display_offset": "Смещение индикатора",
-  "yacl3.config.health-indicators:config.display_offset.desc": "Расстояние между верхней частью сущности и индикатором здоровья. Отрицательные значения смещения могут привести к тому, что индикатор здоровья будет отображаться ниже или в середине сущности. При больших значениях смещения индикатор здоровья может оказаться вне поля зрения",
+"yacl3.config.health-indicators:config.force_higher_offset_for_players": "Принудительное повышение смещения для игроков",
+"yacl3.config.health-indicators:config.force_higher_offset_for_players.desc": "Обычно индикатор здоровья отображается с более высоким смещением для игроков и существ с видимой меткой имени. \n \n Однако некоторые серверы реализуют пользовательскую метку имени, которую мод не распознает и не учитывает. Эта опция принудительно повышает смещение для *всех* игроков для решения проблемы.",
 
-  "yacl3.config.health-indicators:config.offset_step_size": "Размер шага смещения",
-  "yacl3.config.health-indicators:config.offset_step_size.desc": "Насколько сильно будет изменяться смещение индикатора при нажатии на привязанные клавиши (по умолчанию - стрелка вверх и стрелка вниз).",
+"yacl3.config.health-indicators:config.message_type": "Тип сообщения",
+"yacl3.config.health-indicators:config.message_type.desc": "Будут ли сообщения мода (индикатор включен/выключен, смещение сердечек и т. д.) отправляться в чат, actionbar или не отправляться вообще",
 
-  "yacl3.config.health-indicators:config.force_higher_offset_for_players": "Принудительное повышение смещения для игроков",
-  "yacl3.config.health-indicators:config.force_higher_offset_for_players.desc": "Обычно индикатор здоровья отображается с бо́льшим смещением для игроков и сущностей с видимым именным тегом.\n\nОднако на некоторых серверах используются собственные именные теги, которые мод не распознаёт и не учитывает. Эта настройка принудительно увеличит смещение для *всех* игроков, чтобы устранить такую проблему",
+"yacl3.config.health-indicators:config.colored_messages": "Цветные сообщения",
+"yacl3.config.health-indicators:config.colored_messages.desc": "Должны ли сообщения индикатора (включен/выключен) быть цветными (зеленый и красный соответственно)",
 
-  "yacl3.config.health-indicators:config.message_type": "Тип сообщения",
-  "yacl3.config.health-indicators:config.message_type.desc": "Будут ли сообщения мода (Включен/Отключен индикатор, Смещение сердца и т.д.) отправляться в чат, панель действий или не будут отправляться вообще?",
+"yacl3.config.health-indicators:config.enable_commands": "Включить команды мода",
+"yacl3.config.health-indicators:config.enable_commands.desc": "Включает команду /healthindicators и ее подкоманды",
 
-  "yacl3.config.health-indicators:config.colored_messages": "Цвет сообщения",
-  "yacl3.config.health-indicators:config.colored_messages.desc": "Будут ли сообщения о включении/выключении индикатора здоровья цветными (зелеными и красными соответственно).",
+"yacl3.config.health-indicators:config.hearts_clipping": "Обрезка сердечек",
+"yacl3.config.health-indicators:config.hearts_clipping.desc": "Сердечки будут сдвигаться вниз, если на их нормальной позиции отображения есть твердый блок.",
 
-  "yacl3.config.health-indicators:config.enable_commands": "Включить команды мода",
-  "yacl3.config.health-indicators:config.enable_commands.desc": "Включает команды /healthindicators",
+"yacl3.config.health-indicators:config.category.filters": "Фильтры",
+"yacl3.config.health-indicators:config.category.appearance": "Внешний вид",
+"yacl3.config.health-indicators:config.category.messages": "Сообщения и команды",
 
-  "yacl3.config.health-indicators:config.hearts_clipping": "Смещение вниз под твёрдыми блоками",
-  "yacl3.config.health-indicators:config.hearts_clipping.desc": "Будет ли индикатор здоровья смещаться вниз, если над сущностью есть твёрдый блок",
+"yacl3.config.health-indicators:config.category.filters.group.entity_type": "Типы существ",
+"yacl3.config.health-indicators:config.category.filters.group.advanced": "Расширенные",
+"yacl3.config.health-indicators:config.category.appearance.group.indicator_type": "Внешний вид индикатора",
+"yacl3.config.health-indicators:config.category.appearance.group.offset": "Расположение индикатора",
+"yacl3.config.health-indicators:config.category.messages.group.messages_appearance": "Сообщения мода",
+"yacl3.config.health-indicators:config.category.messages.group.commands": "Команды мода",
 
-
-  "yacl3.config.health-indicators:config.category.filters": "Фильтры",
-  "yacl3.config.health-indicators:config.category.appearance": "Внешний вид",
-  "yacl3.config.health-indicators:config.category.messages": "Сообщения и команды",
-
-  "yacl3.config.health-indicators:config.category.filters.group.entity_type": "Типы сущностей",
-  "yacl3.config.health-indicators:config.category.filters.group.advanced": "Продвинутые",
-  "yacl3.config.health-indicators:config.category.appearance.group.offset": "Позиция индикатора здоровья",
-  "yacl3.config.health-indicators:config.category.appearance.group.indicator_type": "Тип индикатора",
-  "yacl3.config.health-indicators:config.category.messages.group.messages_appearance": "Сообщения мода",
-  "yacl3.config.health-indicators:config.category.messages.group.commands": "Команды моды",
-
-
-  "key.categories.healthindicators": "Индикаторы здоровья игроков",
-  "key.healthindicators.renderingEnabled": "Переключить отображение",
-  "key.healthindicators.overrideAllFilters": "Отменить все фильтры конфигурации",
-  "key.healthindicators.increaseHeartOffset": "Увеличить смещение сердец",
-  "key.healthindicators.decreaseHeartOffset": "Уменьшить смещение сердец"
+"key.categories.healthindicators": "Индикаторы здоровья",
+"key.healthindicators.renderingEnabled": "Переключить отображение",
+"key.healthindicators.armorRenderingEnabled": "Переключить отображение брони",
+"key.healthindicators.overrideAllFilters": "Переопределить все фильтры конфигурации",
+"key.healthindicators.increaseHeartOffset": "Увеличить смещение сердечек",
+"key.healthindicators.decreaseHeartOffset": "Уменьшить смещение сердечек"
 }
