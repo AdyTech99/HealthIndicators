@@ -31,7 +31,7 @@ public class RenderTracker {
 
     public static void tick(MinecraftClient client){
         if(client.player == null || client.world == null) return;
-        if(Config.getRenderingEnabled()) {
+        if(Config.getRenderingEnabled() || Config.getArmorRenderingEnabled()) {
             for (Entity entity : client.world.getEntities()) {
                 if (entity instanceof LivingEntity livingEntity && (satisfiesAdvancedCriteria(client.player, livingEntity) || overridePlayers(livingEntity))) {
                     addToUUIDS(livingEntity);

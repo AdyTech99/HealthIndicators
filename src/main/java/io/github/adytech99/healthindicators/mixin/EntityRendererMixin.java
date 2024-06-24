@@ -19,6 +19,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.scoreboard.ScoreboardDisplaySlot;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.Mixin;
@@ -43,9 +44,12 @@ public abstract class EntityRendererMixin<T extends LivingEntity, M extends Enti
         if (RenderTracker.isInUUIDS(livingEntity) || (Config.getOverrideAllFiltersEnabled() && !RenderTracker.isInvalid(livingEntity))) {
             /*if((!Config.getOverrideAllFiltersEnabled() && !(livingEntity instanceof PlayerEntity && ModConfig.HANDLER.instance().override_players))
                     && livingEntity != client.player) return;*/
-
-            if(ModConfig.HANDLER.instance().indicator_type == HealthDisplayTypeEnum.HEARTS) renderHearts(livingEntity, yaw, tickDelta, matrixStack, vertexConsumerProvider, light);
-            else if(ModConfig.HANDLER.instance().indicator_type == HealthDisplayTypeEnum.NUMBER) renderNumber(livingEntity, yaw, tickDelta, matrixStack, vertexConsumerProvider, light);
+            if(Config.getRenderingEnabled()) {
+                if (ModConfig.HANDLER.instance().indicator_type == HealthDisplayTypeEnum.HEARTS)
+                    renderHearts(livingEntity, yaw, tickDelta, matrixStack, vertexConsumerProvider, light);
+                else if (ModConfig.HANDLER.instance().indicator_type == HealthDisplayTypeEnum.NUMBER)
+                    renderNumber(livingEntity, yaw, tickDelta, matrixStack, vertexConsumerProvider, light);
+            }
             if(Config.getArmorRenderingEnabled()) renderArmorPoints(livingEntity, yaw, tickDelta, matrixStack, vertexConsumerProvider, light);
         }
     }
@@ -258,7 +262,8 @@ public abstract class EntityRendererMixin<T extends LivingEntity, M extends Enti
     @Unique
     private static void drawArmor(Matrix4f model, VertexConsumer vertexConsumer, float x, ArmorTypeEnum type) {
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
-        RenderSystem.setShaderTexture(0, type.icon);
+        Identifier armorIcon = ModConfig.HANDLER.instance().use_vanilla_hearts ? type.vanillaIcon : type.icon;
+        RenderSystem.setShaderTexture(0, armorIcon);
         RenderSystem.enableDepthTest();
 
         float minU = 0F;
@@ -277,7 +282,8 @@ public abstract class EntityRendererMixin<T extends LivingEntity, M extends Enti
     @Unique
     private static void drawHeart(Matrix4f model, VertexConsumer vertexConsumer, float x, HeartTypeEnum type) {
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
-        RenderSystem.setShaderTexture(0, type.icon);
+        Identifier heartIcon = ModConfig.HANDLER.instance().use_vanilla_hearts ? type.vanillaIcon : type.icon;
+        RenderSystem.setShaderTexture(0, heartIcon);
         RenderSystem.enableDepthTest();
 
         float minU = 0F;

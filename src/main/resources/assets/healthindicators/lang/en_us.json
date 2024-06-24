@@ -40,6 +40,9 @@
 
   "yacl3.config.health-indicators:config.hearts_per_row": "Hearts per row (beta)",
 
+  "yacl3.config.health-indicators:config.use_vanilla_hearts": "Use vanilla textures",
+  "yacl3.config.health-indicators:config.use_vanilla_hearts.desc": "Some resource packs use a custom heart icon, which can break this mod. Enabling this setting will override the custom icon.",
+
   "yacl3.config.health-indicators:config.number_type_settings_label.desc": "Settings for the number-type indicator",
 
   "yacl3.config.health-indicators:config.number_color": "Text color",

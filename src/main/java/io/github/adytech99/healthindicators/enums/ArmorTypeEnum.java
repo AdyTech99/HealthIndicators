@@ -8,8 +8,10 @@ public enum ArmorTypeEnum {
     EMPTY("armor_empty");
 
     public final Identifier icon;
+    public final Identifier vanillaIcon;
 
-    ArmorTypeEnum(String heartIcon) {
-        icon = Identifier.of("minecraft", "textures/gui/sprites/hud/" + heartIcon + ".png");
+    ArmorTypeEnum(String armorIcon) {
+        icon = Identifier.of("minecraft", "textures/gui/sprites/hud/" + armorIcon + ".png");
+        vanillaIcon = Identifier.of("healthindicators", "textures/gui/armor/" + armorIcon + ".png");
     }
 }
