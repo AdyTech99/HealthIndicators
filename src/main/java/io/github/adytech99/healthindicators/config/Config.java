@@ -14,16 +14,20 @@ public class Config {
 
     private static Config INSTANCE = new Config();
 
-    private boolean renderingEnabled = true;
+    private boolean heartsRenderingEnabled = true;
     private boolean armorRenderingEnabled = true;
     private boolean overrideAllFiltersEnabled = false;
 
-    public static boolean getRenderingEnabled() {
-        return INSTANCE.renderingEnabled;
+    public static boolean getRenderingEnabled(){
+        return INSTANCE.heartsRenderingEnabled || INSTANCE.armorRenderingEnabled;
+    }
+
+    public static boolean getHeartsRenderingEnabled() {
+        return INSTANCE.heartsRenderingEnabled;
     }
 
     public static void setRenderingEnabled(boolean renderingEnabled) {
-        INSTANCE.renderingEnabled = renderingEnabled;
+        INSTANCE.heartsRenderingEnabled = renderingEnabled;
         save();
     }
 

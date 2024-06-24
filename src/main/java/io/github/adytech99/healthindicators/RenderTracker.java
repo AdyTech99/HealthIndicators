@@ -31,7 +31,7 @@ public class RenderTracker {
 
     public static void tick(MinecraftClient client){
         if(client.player == null || client.world == null) return;
-        if(Config.getRenderingEnabled() || Config.getArmorRenderingEnabled()) {
+        if(Config.getRenderingEnabled()) {
             for (Entity entity : client.world.getEntities()) {
                 if (entity instanceof LivingEntity livingEntity && (satisfiesAdvancedCriteria(client.player, livingEntity) || overridePlayers(livingEntity))) {
                     addToUUIDS(livingEntity);
@@ -73,7 +73,7 @@ public class RenderTracker {
         }
 
         // Remove invalid entities
-        UUIDS.entrySet().removeIf(entry -> isInvalid(getEntityFromUUID(entry.getKey(), world))|| !Config.getRenderingEnabled());
+        UUIDS.entrySet().removeIf(entry -> isInvalid(getEntityFromUUID(entry.getKey(), world))|| !Config.getRenderingEnabled() );
         if(UUIDS.size() >= 1536) UUIDS.clear();
     }
 

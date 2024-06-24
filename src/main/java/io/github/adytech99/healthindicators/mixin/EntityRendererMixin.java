@@ -44,13 +44,13 @@ public abstract class EntityRendererMixin<T extends LivingEntity, M extends Enti
         if (RenderTracker.isInUUIDS(livingEntity) || (Config.getOverrideAllFiltersEnabled() && !RenderTracker.isInvalid(livingEntity))) {
             /*if((!Config.getOverrideAllFiltersEnabled() && !(livingEntity instanceof PlayerEntity && ModConfig.HANDLER.instance().override_players))
                     && livingEntity != client.player) return;*/
-            if(Config.getRenderingEnabled()) {
+            if(Config.getHeartsRenderingEnabled() || Config.getOverrideAllFiltersEnabled()) {
                 if (ModConfig.HANDLER.instance().indicator_type == HealthDisplayTypeEnum.HEARTS)
                     renderHearts(livingEntity, yaw, tickDelta, matrixStack, vertexConsumerProvider, light);
                 else if (ModConfig.HANDLER.instance().indicator_type == HealthDisplayTypeEnum.NUMBER)
                     renderNumber(livingEntity, yaw, tickDelta, matrixStack, vertexConsumerProvider, light);
             }
-            if(Config.getArmorRenderingEnabled()) renderArmorPoints(livingEntity, yaw, tickDelta, matrixStack, vertexConsumerProvider, light);
+            if(Config.getArmorRenderingEnabled() || Config.getOverrideAllFiltersEnabled()) renderArmorPoints(livingEntity, yaw, tickDelta, matrixStack, vertexConsumerProvider, light);
         }
     }
 

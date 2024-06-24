@@ -78,12 +78,12 @@ public class HealthIndicatorsMod implements ClientModInitializer {
             }
             boolean overlay = ModConfig.HANDLER.instance().message_type == MessageTypeEnum.ACTIONBAR;
             while (RENDERING_ENABLED_KEY_BINDING.wasPressed()) {
-                Config.setRenderingEnabled(!Config.getRenderingEnabled());
+                Config.setRenderingEnabled(!Config.getHeartsRenderingEnabled());
                 if (client.player != null) {
                     Formatting formatting;
-                    if(ModConfig.HANDLER.instance().colored_messages) formatting = Config.getRenderingEnabled() ? Formatting.GREEN : Formatting.RED;
+                    if(ModConfig.HANDLER.instance().colored_messages) formatting = Config.getHeartsRenderingEnabled() ? Formatting.GREEN : Formatting.RED;
                     else formatting = Formatting.WHITE;
-                    ConfigUtils.sendMessage(client.player, Text.literal((Config.getRenderingEnabled() ? "Enabled" : "Disabled") + " Health Indicators").formatted(formatting));
+                    ConfigUtils.sendMessage(client.player, Text.literal((Config.getHeartsRenderingEnabled() ? "Enabled" : "Disabled") + " Health Indicators").formatted(formatting));
                 }
             }
 
