@@ -64,6 +64,12 @@ public abstract class EntityRendererMixin<T extends LivingEntity, M extends Enti
         int maxHealth = MathHelper.ceil(livingEntity.getMaxHealth());
         int healthYellow = MathHelper.ceil(livingEntity.getAbsorptionAmount());
 
+        if(ModConfig.HANDLER.instance().percentage_based_health) {
+            healthRed = MathHelper.ceil(((float) healthRed /maxHealth) * ModConfig.HANDLER.instance().max_health);
+            maxHealth = MathHelper.ceil(ModConfig.HANDLER.instance().max_health);
+            healthYellow = MathHelper.ceil(livingEntity.getAbsorptionAmount());
+        }
+
         int heartsRed = MathHelper.ceil(healthRed / 2.0F);
         boolean lastRedHalf = (healthRed & 1) == 1;
         int heartsNormal = MathHelper.ceil(maxHealth / 2.0F);
@@ -71,7 +77,7 @@ public abstract class EntityRendererMixin<T extends LivingEntity, M extends Enti
         boolean lastYellowHalf = (healthYellow & 1) == 1;
         int heartsTotal = heartsNormal + heartsYellow;
 
-        int heartsPerRow = ModConfig.HANDLER.instance().hearts_per_row;
+        int heartsPerRow = ModConfig.HANDLER.instance().icons_per_row;
         int pixelsTotal = Math.min(heartsTotal, heartsPerRow) * 8 + 1;
         float maxX = pixelsTotal / 2.0f;
 
@@ -146,11 +152,16 @@ public abstract class EntityRendererMixin<T extends LivingEntity, M extends Enti
     @Unique
     private void renderNumber(T livingEntity, float yaw, float tickDelta, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int light){
         double d = this.dispatcher.getSquaredDistanceToCamera(livingEntity);
-        int health = MathHelper.ceil(livingEntity.getHealth());
-        int maxHealth = MathHelper.ceil(livingEntity.getMaxHealth());
-        int absorption = MathHelper.ceil(livingEntity.getAbsorptionAmount());
+
+        float health = MathHelper.ceil(livingEntity.getHealth());
+        float maxHealth = MathHelper.ceil(livingEntity.getMaxHealth());
+        float absorption = MathHelper.ceil(livingEntity.getAbsorptionAmount());
 
         String healthText = health+absorption + " / " + maxHealth;
+
+        if(ModConfig.HANDLER.instance().percentage_based_health) {
+            healthText = ((health + absorption) / maxHealth) * 100 + " %";
+        }
 
         matrixStack.push();
         float scale = ModConfig.HANDLER.instance().size;
@@ -194,7 +205,7 @@ public abstract class EntityRendererMixin<T extends LivingEntity, M extends Enti
         int pointsNormal = MathHelper.ceil(maxArmor / 2.0F);
         int pointsTotal = 10;
 
-        int pointsPerRow = ModConfig.HANDLER.instance().hearts_per_row;
+        int pointsPerRow = ModConfig.HANDLER.instance().icons_per_row;
         int pixelsTotal = Math.min(pointsTotal, pointsPerRow) * 8 + 1;
         float maxX = pixelsTotal / 2.0f;
 
@@ -211,7 +222,7 @@ public abstract class EntityRendererMixin<T extends LivingEntity, M extends Enti
                 float scale = ModConfig.HANDLER.instance().size;
                 vertexConsumer = tessellator.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
 
-                matrixStack.translate(0, livingEntity.getHeight() + 0.75f + h, 0);
+                matrixStack.translate(0, livingEntity.getHeight() + 0.5f + + h, 0);
                 if ((this.hasLabel(livingEntity)
                         || (ModConfig.HANDLER.instance().force_higher_offset_for_players && livingEntity instanceof PlayerEntity && livingEntity != client.player))
                         && d <= 4096.0) {
@@ -262,7 +273,7 @@ public abstract class EntityRendererMixin<T extends LivingEntity, M extends Enti
     @Unique
     private static void drawArmor(Matrix4f model, VertexConsumer vertexConsumer, float x, ArmorTypeEnum type) {
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
-        Identifier armorIcon = ModConfig.HANDLER.instance().use_vanilla_hearts ? type.vanillaIcon : type.icon;
+        Identifier armorIcon = ModConfig.HANDLER.instance().use_vanilla_textures ? type.vanillaIcon : type.icon;
         RenderSystem.setShaderTexture(0, armorIcon);
         RenderSystem.enableDepthTest();
 
@@ -282,7 +293,7 @@ public abstract class EntityRendererMixin<T extends LivingEntity, M extends Enti
     @Unique
     private static void drawHeart(Matrix4f model, VertexConsumer vertexConsumer, float x, HeartTypeEnum type) {
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
-        Identifier heartIcon = ModConfig.HANDLER.instance().use_vanilla_hearts ? type.vanillaIcon : type.icon;
+        Identifier heartIcon = ModConfig.HANDLER.instance().use_vanilla_textures ? type.vanillaIcon : type.icon;
         RenderSystem.setShaderTexture(0, heartIcon);
         RenderSystem.enableDepthTest();
 
@@ -299,6 +310,7 @@ public abstract class EntityRendererMixin<T extends LivingEntity, M extends Enti
         vertexConsumer.vertex(model, x, 0F, 0.0F).texture(minU, minV);
     }
 
+    @Unique
     @Deprecated
     private static void drawVertex(Matrix4f model, VertexConsumer vertices, float x, float y, float u, float v) {
         vertices.vertex(model, x, y, 0.0F).texture(u, v);

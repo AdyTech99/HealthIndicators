@@ -10,7 +10,6 @@ import io.github.adytech99.healthindicators.enums.HealthDisplayTypeEnum;
 import io.github.adytech99.healthindicators.enums.MessageTypeEnum;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
@@ -126,12 +125,12 @@ public class ModConfig {
     @SerialEntry
     @AutoGen(category = "appearance", group = "indicator_type")
     @IntField
-    public int hearts_per_row = 10;
+    public int icons_per_row = 10;
 
     @SerialEntry
     @AutoGen(category = "appearance", group = "indicator_type")
     @Boolean
-    public boolean use_vanilla_hearts = false;
+    public boolean use_vanilla_textures = false;
 
     @AutoGen(category = "appearance", group = "indicator_type")
     @Label
@@ -163,8 +162,21 @@ public class ModConfig {
 
     @SerialEntry
     @AutoGen(category = "appearance", group = "indicator_type")
+    @MasterTickBox(value = {"max_health"})
+    public boolean percentage_based_health = false;
+
+    @SerialEntry
+    @AutoGen(category = "appearance", group = "indicator_type")
+    @IntSlider(min = 1, max = 100, step = 1)
+    public int max_health = 20;
+
+    @SerialEntry
+    @AutoGen(category = "appearance", group = "indicator_type")
     @FloatSlider(min = 0.0f, max = 0.1f, step = 0.005f, format = "%.3f")
     public float size = 0.025f;
+
+
+
 
     @SerialEntry
     @AutoGen(category = "appearance", group = "offset")

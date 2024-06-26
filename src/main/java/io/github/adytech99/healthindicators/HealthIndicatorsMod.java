@@ -29,13 +29,13 @@ public class HealthIndicatorsMod implements ClientModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
     public static final String CONFIG_FILE = "healthindicators.json";
 
-    public static final KeyBinding RENDERING_ENABLED_KEY_BINDING = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+    public static final KeyBinding RENDERING_ENABLED = KeyBindingHelper.registerKeyBinding(new KeyBinding(
             "key." + MOD_ID + ".renderingEnabled",
             InputUtil.GLFW_KEY_LEFT,
             "key.categories." + MOD_ID
     ));
 
-    public static final KeyBinding ARMOR_RENDERING_ENABLED_KEY_BINDING = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+    public static final KeyBinding ARMOR_RENDERING_ENABLED = KeyBindingHelper.registerKeyBinding(new KeyBinding(
             "key." + MOD_ID + ".armorRenderingEnabled",
             InputUtil.GLFW_KEY_RIGHT_SHIFT,
             "key.categories." + MOD_ID
@@ -46,14 +46,20 @@ public class HealthIndicatorsMod implements ClientModInitializer {
             InputUtil.GLFW_KEY_RIGHT,
             "key.categories." + MOD_ID
     ));
-    public static final KeyBinding INCREASE_HEART_OFFSET_KEY_BINDING = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+    public static final KeyBinding INCREASE_HEART_OFFSET = KeyBindingHelper.registerKeyBinding(new KeyBinding(
             "key." + MOD_ID + ".increaseHeartOffset",
             InputUtil.GLFW_KEY_UP,
             "key.categories." + MOD_ID
     ));
-    public static final KeyBinding DECREASE_HEART_OFFSET_KEY_BINDING = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+    public static final KeyBinding DECREASE_HEART_OFFSET = KeyBindingHelper.registerKeyBinding(new KeyBinding(
             "key." + MOD_ID + ".decreaseHeartOffset",
             InputUtil.GLFW_KEY_DOWN,
+            "key.categories." + MOD_ID
+    ));
+
+    public static final KeyBinding OPEN_MOD_MENU_CONFIG = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+            "key." + MOD_ID + ".openModMenuConfig",
+            InputUtil.GLFW_KEY_I,
             "key.categories." + MOD_ID
     ));
 
@@ -77,7 +83,7 @@ public class HealthIndicatorsMod implements ClientModInitializer {
                 openConfig = false;
             }
             boolean overlay = ModConfig.HANDLER.instance().message_type == MessageTypeEnum.ACTIONBAR;
-            while (RENDERING_ENABLED_KEY_BINDING.wasPressed()) {
+            while (RENDERING_ENABLED.wasPressed()) {
                 Config.setRenderingEnabled(!Config.getHeartsRenderingEnabled());
                 if (client.player != null) {
                     Formatting formatting;
@@ -87,7 +93,7 @@ public class HealthIndicatorsMod implements ClientModInitializer {
                 }
             }
 
-            while (ARMOR_RENDERING_ENABLED_KEY_BINDING.wasPressed()) {
+            while (ARMOR_RENDERING_ENABLED.wasPressed()) {
                 Config.setArmorRenderingEnabled(!Config.getArmorRenderingEnabled());
                 if (client.player != null) {
                     Formatting formatting;
@@ -97,6 +103,21 @@ public class HealthIndicatorsMod implements ClientModInitializer {
                 }
             }
 
+            while (INCREASE_HEART_OFFSET.wasPressed()) {
+                ModConfig.HANDLER.instance().display_offset = (ModConfig.HANDLER.instance().display_offset + ModConfig.HANDLER.instance().offset_step_size);
+                changed = true;
+                if (client.player != null) {
+                    ConfigUtils.sendMessage(client.player, Text.literal("Set heart offset to " + Maths.truncate(ModConfig.HANDLER.instance().display_offset,2)));
+                }
+            }
+
+            while (DECREASE_HEART_OFFSET.wasPressed()) {
+                ModConfig.HANDLER.instance().display_offset = (ModConfig.HANDLER.instance().display_offset - ModConfig.HANDLER.instance().offset_step_size);
+                changed = true;
+                if (client.player != null) {
+                    ConfigUtils.sendMessage(client.player, Text.literal("Set heart offset to " + Maths.truncate(ModConfig.HANDLER.instance().display_offset,2)));
+                }
+            }
             if (OVERRIDE_ALL_FILTERS.isPressed()) {
                 Config.setOverrideAllFiltersEnabled(true);
                 if (client.player != null) {
@@ -107,21 +128,8 @@ public class HealthIndicatorsMod implements ClientModInitializer {
                 Config.setOverrideAllFiltersEnabled(false);
                 client.inGameHud.setOverlayMessage(Text.literal(""), false);
             }
-
-            while (INCREASE_HEART_OFFSET_KEY_BINDING.wasPressed()) {
-                ModConfig.HANDLER.instance().display_offset = (ModConfig.HANDLER.instance().display_offset + ModConfig.HANDLER.instance().offset_step_size);
-                changed = true;
-                if (client.player != null) {
-                    ConfigUtils.sendMessage(client.player, Text.literal("Set heart offset to " + Maths.truncate(ModConfig.HANDLER.instance().display_offset,2)));
-                }
-            }
-
-            while (DECREASE_HEART_OFFSET_KEY_BINDING.wasPressed()) {
-                ModConfig.HANDLER.instance().display_offset = (ModConfig.HANDLER.instance().display_offset - ModConfig.HANDLER.instance().offset_step_size);
-                changed = true;
-                if (client.player != null) {
-                    ConfigUtils.sendMessage(client.player, Text.literal("Set heart offset to " + Maths.truncate(ModConfig.HANDLER.instance().display_offset,2)));
-                }
+            if(OPEN_MOD_MENU_CONFIG.isPressed()){
+                openConfig(client);
             }
         });
 

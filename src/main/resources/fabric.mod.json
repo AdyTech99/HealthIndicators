@@ -9,7 +9,7 @@
     "AdyTech99"
   ],
 
-  "license": "MIT",
+  "license": "LGPL v3",
   "icon": "assets/healthindicators/icon.png",
 
   "environment": "client",

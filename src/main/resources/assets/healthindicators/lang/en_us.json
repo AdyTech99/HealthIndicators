@@ -38,10 +38,10 @@
   "yacl3.config.health-indicators:config.indicator_type": "Indicator Type",
   "yacl3.config.health-indicators:config.indicator_type.desc": "Whether to render a floating hearts display or a number display.",
 
-  "yacl3.config.health-indicators:config.hearts_per_row": "Hearts per row (beta)",
+  "yacl3.config.health-indicators:config.icons_per_row": "Hearts per row (beta)",
 
-  "yacl3.config.health-indicators:config.use_vanilla_hearts": "Use vanilla textures",
-  "yacl3.config.health-indicators:config.use_vanilla_hearts.desc": "Some resource packs use a custom heart icon, which can break this mod. Enabling this setting will override the custom icon.",
+  "yacl3.config.health-indicators:config.use_vanilla_textures": "Use vanilla textures",
+  "yacl3.config.health-indicators:config.use_vanilla_textures.desc": "Some resource packs use a custom heart icon, which can break this mod. Enabling this setting will override the custom icon.",
 
   "yacl3.config.health-indicators:config.number_type_settings_label.desc": "Settings for the number-type indicator",
 
@@ -59,6 +59,12 @@
 
   "yacl3.config.health-indicators:config.size": "Indicator Size",
   "yacl3.config.health-indicators:config.size.desc": "The scale of the indicators",
+
+  "yacl3.config.health-indicators:config.percentage_based_health": "Percentage based health",
+  "yacl3.config.health-indicators:config.percentage_based_health.desc": "Shows health as a percentage instead of raw values. Enabling this would mean that all mobs would show the same base-health (configurable below) and their actual health would be shown out of that. \n\nFor example, an iron golem might have 40 out of 50 hearts, but the indicator will show 8 out of 10 hearts. \n\nThe number-type indicator will not follow this mechanic, and simply show a % value: e.g. 80%",
+
+  "yacl3.config.health-indicators:config.max_health": "Base health",
+  "yacl3.config.health-indicators:config.max_health.desc": "The base value (in hp, not hearts! 1 heart = 2hp) for the percentage based health.",
 
 
   "yacl3.config.health-indicators:config.display_offset": "Display offset",
@@ -100,5 +106,6 @@
   "key.healthindicators.armorRenderingEnabled": "Toggle Armor Points Rendering",
   "key.healthindicators.overrideAllFilters": "Override all config filters",
   "key.healthindicators.increaseHeartOffset": "Increase Heart Offset",
-  "key.healthindicators.decreaseHeartOffset": "Decrease Heart Offset"
+  "key.healthindicators.decreaseHeartOffset": "Decrease Heart Offset",
+  "key.healthindicators.openModMenuConfig": "Decrease Heart Offset"
 }

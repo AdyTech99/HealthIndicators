@@ -6,7 +6,6 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import io.github.adytech99.healthindicators.HealthIndicatorsMod;
 import io.github.adytech99.healthindicators.config.ModConfig;
 import io.github.adytech99.healthindicators.enums.HealthDisplayTypeEnum;
-import io.github.adytech99.healthindicators.enums.MessageTypeEnum;
 import io.github.adytech99.healthindicators.util.ConfigUtils;
 import io.github.adytech99.healthindicators.util.Maths;
 import net.fabricmc.api.EnvType;
@@ -20,12 +19,12 @@ import net.minecraft.text.Text;
 public class ModCommands {
     @Environment(EnvType.CLIENT)
     public static void registerCommands(){
-        ClientCommandRegistrationCallback.EVENT.register(ModCommands::OffsetCommand);
-        ClientCommandRegistrationCallback.EVENT.register(ModCommands::OpenModMenuConfigCommand);
+        ClientCommandRegistrationCallback.EVENT.register(ModCommands::configCommands);
+        ClientCommandRegistrationCallback.EVENT.register(ModCommands::openModMenuCommand);
         //ClientCommandRegistrationCallback.EVENT.register(ModCommands::IndicatorTypeCommand);
     }
 
-    private static void OffsetCommand(CommandDispatcher<FabricClientCommandSource> fabricClientCommandSourceCommandDispatcher, CommandRegistryAccess commandRegistryAccess) {
+    private static void configCommands(CommandDispatcher<FabricClientCommandSource> fabricClientCommandSourceCommandDispatcher, CommandRegistryAccess commandRegistryAccess) {
         fabricClientCommandSourceCommandDispatcher.register(ClientCommandManager.literal("healthindicators")
             .then(ClientCommandManager.literal("offset")
                 .then(ClientCommandManager.argument("offset", DoubleArgumentType.doubleArg())
@@ -94,11 +93,10 @@ public class ModCommands {
                                 }))));
     }
 
-    private static void OpenModMenuConfigCommand(CommandDispatcher<FabricClientCommandSource> fabricClientCommandSourceCommandDispatcher, CommandRegistryAccess commandRegistryAccess) {
+    private static void openModMenuCommand(CommandDispatcher<FabricClientCommandSource> fabricClientCommandSourceCommandDispatcher, CommandRegistryAccess commandRegistryAccess) {
         fabricClientCommandSourceCommandDispatcher.register(ClientCommandManager.literal("healthindicators")
             .executes(context -> {
                 HealthIndicatorsMod.openConfig(context.getSource().getClient());
-                //client.player.sendMessage(Text.of(configScreen.toString()));
                 return 1;
         }));
     }
