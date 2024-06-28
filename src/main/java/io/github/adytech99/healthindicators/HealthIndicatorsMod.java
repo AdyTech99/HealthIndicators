@@ -76,6 +76,7 @@ public class HealthIndicatorsMod implements ClientModInitializer {
         ModConfig.HANDLER.load();
         Config.load();
         if(ModConfig.HANDLER.instance().enable_commands) ModCommands.registerCommands();
+        ClientTickEvents.END_CLIENT_TICK.register(RenderTracker::tick);
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if(openConfig){
                 Screen configScreen = ModMenu.getConfigScreen(HealthIndicatorsMod.MOD_ID, client.currentScreen);
@@ -149,7 +150,6 @@ public class HealthIndicatorsMod implements ClientModInitializer {
             saveModConfig();
         });
 
-        ClientTickEvents.END_CLIENT_TICK.register(RenderTracker::tick);
         LOGGER.info("Never be heartless!");
     }
 
