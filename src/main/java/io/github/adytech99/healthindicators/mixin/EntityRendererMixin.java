@@ -222,7 +222,7 @@ public abstract class EntityRendererMixin<T extends LivingEntity, M extends Enti
                 float scale = ModConfig.HANDLER.instance().size;
                 vertexConsumer = tessellator.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
 
-                matrixStack.translate(0, livingEntity.getHeight() + 0.5f + + h, 0);
+                matrixStack.translate(0, livingEntity.getHeight() + 0.75f + + h, 0);
                 if ((this.hasLabel(livingEntity)
                         || (ModConfig.HANDLER.instance().force_higher_offset_for_players && livingEntity instanceof PlayerEntity && livingEntity != client.player))
                         && d <= 4096.0) {
