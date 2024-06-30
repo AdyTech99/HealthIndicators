@@ -39,14 +39,6 @@ public final class HealthIndicatorsMod {
         openConfig = client.world != null;
     }
 
-    public static final KeyBinding EXAMPLE_MAPPING =
-        new KeyBinding(
-            "key.examplemod.example1", // Will be localized using this translation key
-            InputUtil.Type.KEYSYM, // Default mapping is on the keyboard
-            GLFW.GLFW_KEY_P, // Default key is P
-            "key.categories.misc" // Mapping will be in the misc category
-        );
-
     public static final Lazy<KeyBinding> RENDERING_ENABLED = Lazy.of(() -> new KeyBinding(
             "key." + HealthIndicatorsCommon.MOD_ID + ".renderingEnabled",
             InputUtil.GLFW_KEY_LEFT,
