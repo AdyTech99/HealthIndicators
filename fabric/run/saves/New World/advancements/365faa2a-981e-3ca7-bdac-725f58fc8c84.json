@@ -1,0 +1,43 @@
+{
+  "minecraft:recipes/food/cooked_porkchop": {
+    "criteria": {
+      "has_porkchop": "2024-06-29 14:37:02 +0530"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/crafting_table": {
+    "criteria": {
+      "unlock_right_away": "2024-06-29 14:35:53 +0530"
+    },
+    "done": true
+  },
+  "minecraft:adventure/root": {
+    "criteria": {
+      "killed_something": "2024-06-29 14:37:02 +0530"
+    },
+    "done": true
+  },
+  "minecraft:recipes/food/cooked_porkchop_from_campfire_cooking": {
+    "criteria": {
+      "has_porkchop": "2024-06-29 14:37:02 +0530"
+    },
+    "done": true
+  },
+  "minecraft:recipes/food/cooked_porkchop_from_smoking": {
+    "criteria": {
+      "has_porkchop": "2024-06-29 14:37:02 +0530"
+    },
+    "done": true
+  },
+  "minecraft:adventure/adventuring_time": {
+    "criteria": {
+      "minecraft:old_growth_birch_forest": "2024-06-29 14:36:34 +0530",
+      "minecraft:forest": "2024-06-29 14:37:11 +0530",
+      "minecraft:windswept_forest": "2024-06-29 14:36:31 +0530",
+      "minecraft:swamp": "2024-06-29 14:36:09 +0530",
+      "minecraft:windswept_hills": "2024-06-29 14:35:54 +0530"
+    },
+    "done": false
+  },
+  "DataVersion": 3953
+}

@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "healthindicators",
+  "version": "4.0.0-alpha",
+
+  "name": "Health Indicators",
+  "description": "Displays a health bar above mobs and players",
+  "authors": [
+    "AdyTech99"
+  ],
+
+  "license": "LGPL v3",
+  "icon": "assets/healthindicators/icon.png",
+
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "io.github.adytech99.healthindicators.fabric.HealthIndicatorsMod"
+    ],
+    "modmenu" : ["io.github.adytech99.healthindicators.fabric.config.ModMenuAPIImpl"]
+  },
+  "accessWidener": "healthindicators.accesswidener",
+  "mixins": [
+    "healthindicators.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.15.11",
+    "fabric": "*",
+    "minecraft": ">=1.21",
+    "java": ">=21"
+  }
+}

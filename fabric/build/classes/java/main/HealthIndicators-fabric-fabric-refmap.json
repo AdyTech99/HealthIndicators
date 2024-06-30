@@ -1,0 +1,20 @@
+{
+  "mappings": {
+    "io/github/adytech99/healthindicators/fabric/mixin/EntityDamageMixin": {
+      "onDamaged": "Lnet/minecraft/class_1309;method_48922(Lnet/minecraft/class_1282;)V"
+    },
+    "io/github/adytech99/healthindicators/fabric/mixin/EntityRendererMixin": {
+      "render(Lnet/minecraft/entity/LivingEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V": "Lnet/minecraft/class_922;method_4054(Lnet/minecraft/class_1309;FFLnet/minecraft/class_4587;Lnet/minecraft/class_4597;I)V"
+    }
+  },
+  "data": {
+    "named:intermediary": {
+      "io/github/adytech99/healthindicators/fabric/mixin/EntityDamageMixin": {
+        "onDamaged": "Lnet/minecraft/class_1309;method_48922(Lnet/minecraft/class_1282;)V"
+      },
+      "io/github/adytech99/healthindicators/fabric/mixin/EntityRendererMixin": {
+        "render(Lnet/minecraft/entity/LivingEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V": "Lnet/minecraft/class_922;method_4054(Lnet/minecraft/class_1309;FFLnet/minecraft/class_4587;Lnet/minecraft/class_4597;I)V"
+      }
+    }
+  }
+}
