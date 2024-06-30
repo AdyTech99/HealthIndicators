@@ -1,5 +1,0 @@
-/gamerule doDaylightCycle false
-/healthindicators
-/healthindicators indicator-type
-/healthindicators indicator-type heart
-/healthindicators indicator-type number
