@@ -3,6 +3,7 @@ package io.github.adytech99.healthindicators.neoforge.commands;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.DoubleArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
+import io.github.adytech99.healthindicators.HealthIndicatorsCommon;
 import io.github.adytech99.healthindicators.enums.HealthDisplayTypeEnum;
 import io.github.adytech99.healthindicators.neoforge.HealthIndicatorsMod;
 import io.github.adytech99.healthindicators.config.ModConfig;
@@ -62,7 +63,7 @@ public class ModCommands {
     public static void registerOpenConfigCommand(CommandDispatcher<ServerCommandSource> dispatcher){
         dispatcher.register(CommandManager.literal("healthindicators")
                 .executes(context -> {
-                    HealthIndicatorsMod.openConfig();
+                    HealthIndicatorsCommon.openConfig();
                     return 1;
                 })
         );

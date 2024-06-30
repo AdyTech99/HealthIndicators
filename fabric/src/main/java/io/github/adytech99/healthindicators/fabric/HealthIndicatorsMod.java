@@ -1,12 +1,10 @@
 package io.github.adytech99.healthindicators.fabric;
 
-import com.terraformersmc.modmenu.ModMenu;
+import io.github.adytech99.healthindicators.HealthIndicatorsCommon;
 import io.github.adytech99.healthindicators.RenderTracker;
 import io.github.adytech99.healthindicators.config.Config;
 import io.github.adytech99.healthindicators.config.ModConfig;
 import io.github.adytech99.healthindicators.fabric.commands.ModCommands;
-import io.github.adytech99.healthindicators.util.ConfigUtils;
-import io.github.adytech99.healthindicators.util.Maths;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -14,12 +12,8 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,7 +22,7 @@ public class HealthIndicatorsMod implements ClientModInitializer {
     public static final String MOD_ID = "healthindicators";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
-    public static final KeyBinding RENDERING_ENABLED = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+    public static final KeyBinding HEARTS_RENDERING_ENABLED = KeyBindingHelper.registerKeyBinding(new KeyBinding(
             "key." + MOD_ID + ".renderingEnabled",
             InputUtil.GLFW_KEY_LEFT,
             "key.categories." + MOD_ID
@@ -56,92 +50,47 @@ public class HealthIndicatorsMod implements ClientModInitializer {
             "key.categories." + MOD_ID
     ));
 
-    public static final KeyBinding OPEN_MOD_MENU_CONFIG = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+    public static final KeyBinding OPEN_CONFIG_SCREEN = KeyBindingHelper.registerKeyBinding(new KeyBinding(
             "key." + MOD_ID + ".openModMenuConfig",
             InputUtil.GLFW_KEY_I,
             "key.categories." + MOD_ID
     ));
 
-
-    private boolean changed = false;
-    private static boolean openConfig = false;
-
-    public static void openConfig(MinecraftClient client){
-        openConfig = client.world != null;
-    }
-
     @Override
     public void onInitializeClient() {
-        ModConfig.HANDLER.load();
-        Config.load();
+        HealthIndicatorsCommon.init();
         if(ModConfig.HANDLER.instance().enable_commands) ModCommands.registerCommands();
-        ClientTickEvents.END_CLIENT_TICK.register(RenderTracker::tick);
+
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            if(openConfig){
-                Screen configScreen = ModMenu.getConfigScreen(HealthIndicatorsMod.MOD_ID, client.currentScreen);
-                client.setScreen(configScreen);
-                openConfig = false;
-            }
-            while (RENDERING_ENABLED.wasPressed()) {
-                Config.setHeartsRenderingEnabled(!Config.getHeartsRenderingEnabled());
-                if (client.player != null) {
-                    Formatting formatting;
-                    if(ModConfig.HANDLER.instance().colored_messages) formatting = Config.getHeartsRenderingEnabled() ? Formatting.GREEN : Formatting.RED;
-                    else formatting = Formatting.WHITE;
-                    ConfigUtils.sendMessage(client.player, Text.literal((Config.getHeartsRenderingEnabled() ? "Enabled" : "Disabled") + " Health Indicators").formatted(formatting));
-                }
+            HealthIndicatorsCommon.tick();
+
+            while (HEARTS_RENDERING_ENABLED.wasPressed()) {
+                HealthIndicatorsCommon.enableHeartsRendering();
             }
 
             while (ARMOR_RENDERING_ENABLED.wasPressed()) {
-                Config.setArmorRenderingEnabled(!Config.getArmorRenderingEnabled());
-                if (client.player != null) {
-                    Formatting formatting;
-                    if(ModConfig.HANDLER.instance().colored_messages) formatting = Config.getArmorRenderingEnabled() ? Formatting.GREEN : Formatting.RED;
-                    else formatting = Formatting.WHITE;
-                    ConfigUtils.sendMessage(client.player, Text.literal((Config.getArmorRenderingEnabled() ? "Enabled" : "Disabled") + " Armor Indicators").formatted(formatting));
-                }
+                HealthIndicatorsCommon.enableArmorRendering();
             }
 
             while (INCREASE_HEART_OFFSET.wasPressed()) {
-                ModConfig.HANDLER.instance().display_offset = (ModConfig.HANDLER.instance().display_offset + ModConfig.HANDLER.instance().offset_step_size);
-                changed = true;
-                if (client.player != null) {
-                    ConfigUtils.sendMessage(client.player, Text.literal("Set heart offset to " + Maths.truncate(ModConfig.HANDLER.instance().display_offset,2)));
-                }
+                HealthIndicatorsCommon.increaseOffset();
             }
 
             while (DECREASE_HEART_OFFSET.wasPressed()) {
-                ModConfig.HANDLER.instance().display_offset = (ModConfig.HANDLER.instance().display_offset - ModConfig.HANDLER.instance().offset_step_size);
-                changed = true;
-                if (client.player != null) {
-                    ConfigUtils.sendMessage(client.player, Text.literal("Set heart offset to " + Maths.truncate(ModConfig.HANDLER.instance().display_offset,2)));
-                }
+                HealthIndicatorsCommon.decreaseOffset();
             }
-            if (OVERRIDE_ALL_FILTERS.isPressed()) {
-                Config.setOverrideAllFiltersEnabled(true);
-                if (client.player != null) {
-                    ConfigUtils.sendOverlayMessage(client.player, Text.literal( " Config Criteria " + (Config.getOverrideAllFiltersEnabled() ? "Temporarily Overridden" : "Re-implemented")));
-                }
+            if (OVERRIDE_ALL_FILTERS.wasPressed()) {
+                HealthIndicatorsCommon.overrideFilters();
             }
             else if(Config.getOverrideAllFiltersEnabled()) {
-                Config.setOverrideAllFiltersEnabled(false);
-                client.inGameHud.setOverlayMessage(Text.literal(""), false);
+                HealthIndicatorsCommon.disableOverrideFilters();
             }
-            if(OPEN_MOD_MENU_CONFIG.isPressed()){
-                openConfig(client);
-            }
+
+            if(OPEN_CONFIG_SCREEN.wasPressed()) HealthIndicatorsCommon.openConfigScreen();
         });
 
         ClientEntityEvents.ENTITY_UNLOAD.register((entity, world) -> {
             RenderTracker.removeFromUUIDS(entity);
-        });
-
-        ClientTickEvents.START_CLIENT_TICK.register(client -> {
-            if(client.world == null) return;
-            if(changed && client.world.getTime() % 200 == 0){
-                saveModConfig();
-                changed = false;
-            }
         });
 
         ClientLifecycleEvents.CLIENT_STOPPING.register(client -> {

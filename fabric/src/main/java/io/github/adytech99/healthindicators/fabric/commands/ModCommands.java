@@ -3,6 +3,7 @@ package io.github.adytech99.healthindicators.fabric.commands;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.DoubleArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
+import io.github.adytech99.healthindicators.HealthIndicatorsCommon;
 import io.github.adytech99.healthindicators.config.ModConfig;
 import io.github.adytech99.healthindicators.enums.HealthDisplayTypeEnum;
 import io.github.adytech99.healthindicators.fabric.HealthIndicatorsMod;
@@ -96,7 +97,7 @@ public class ModCommands {
     private static void openModMenuCommand(CommandDispatcher<FabricClientCommandSource> fabricClientCommandSourceCommandDispatcher, CommandRegistryAccess commandRegistryAccess) {
         fabricClientCommandSourceCommandDispatcher.register(ClientCommandManager.literal("healthindicators")
             .executes(context -> {
-                HealthIndicatorsMod.openConfig(context.getSource().getClient());
+                HealthIndicatorsCommon.openConfig();
                 return 1;
         }));
     }

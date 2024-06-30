@@ -25,21 +25,15 @@ import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.NeoForge;
-import org.lwjgl.glfw.GLFW;
+import org.jetbrains.annotations.NotNull;
 
 @Mod(HealthIndicatorsCommon.MOD_ID)
 @EventBusSubscriber(value = Dist.CLIENT, modid = HealthIndicatorsCommon.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
 public final class HealthIndicatorsMod {
 
     public static MinecraftClient client = MinecraftClient.getInstance();
-    private static boolean changed = false;
-    private static boolean openConfig = false;
 
-    public static void openConfig(){
-        openConfig = client.world != null;
-    }
-
-    public static final Lazy<KeyBinding> RENDERING_ENABLED = Lazy.of(() -> new KeyBinding(
+    public static final Lazy<KeyBinding> HEARTS_RENDERING_ENABLED = Lazy.of(() -> new KeyBinding(
             "key." + HealthIndicatorsCommon.MOD_ID + ".renderingEnabled",
             InputUtil.GLFW_KEY_LEFT,
             "key.categories." + HealthIndicatorsCommon.MOD_ID
@@ -72,9 +66,17 @@ public final class HealthIndicatorsMod {
             InputUtil.GLFW_KEY_I,
             "key.categories." + HealthIndicatorsCommon.MOD_ID));
 
+
+
+    public HealthIndicatorsMod() {
+        HealthIndicatorsCommon.init();
+        if(ModConfig.HANDLER.instance().enable_commands) NeoForge.EVENT_BUS.addListener(ModCommands::onRegisterCommands);
+        NeoForge.EVENT_BUS.addListener(this::onClientTick);
+    }
+
     @SubscribeEvent
     public static void registerBindings(RegisterKeyMappingsEvent event){
-        event.register(RENDERING_ENABLED.get());
+        event.register(HEARTS_RENDERING_ENABLED.get());
         event.register(INCREASE_HEART_OFFSET.get());
         event.register(DECREASE_HEART_OFFSET.get());
         event.register(OVERRIDE_ALL_FILTERS.get());
@@ -84,84 +86,40 @@ public final class HealthIndicatorsMod {
 
 
     public void onClientTick(ClientTickEvent.Post event){
-        if(openConfig){
-            Screen configScreen = ModConfig.createScreen(client.currentScreen);
-            client.setScreen(configScreen);
-            openConfig = false;
-        }
+        HealthIndicatorsCommon.tick();
 
-        while (RENDERING_ENABLED.get().wasPressed()) {
-            Config.setHeartsRenderingEnabled(!Config.getHeartsRenderingEnabled());
-            if (client.player != null) {
-                Formatting formatting;
-                if(ModConfig.HANDLER.instance().colored_messages) formatting = Config.getHeartsRenderingEnabled() ? Formatting.GREEN : Formatting.RED;
-                else formatting = Formatting.WHITE;
-                ConfigUtils.sendMessage(client.player, Text.literal((Config.getHeartsRenderingEnabled() ? "Enabled" : "Disabled") + " Armor Indicators").formatted(formatting));
-            }
+        while (HEARTS_RENDERING_ENABLED.get().wasPressed()) {
+            HealthIndicatorsCommon.enableHeartsRendering();
         }
 
         while (ARMOR_RENDERING_ENABLED.get().wasPressed()) {
-            Config.setArmorRenderingEnabled(!Config.getArmorRenderingEnabled());
-            if (client.player != null) {
-                Formatting formatting;
-                if(ModConfig.HANDLER.instance().colored_messages) formatting = Config.getArmorRenderingEnabled() ? Formatting.GREEN : Formatting.RED;
-                else formatting = Formatting.WHITE;
-                ConfigUtils.sendMessage(client.player, Text.literal((Config.getArmorRenderingEnabled() ? "Enabled" : "Disabled") + " Armor Indicators").formatted(formatting));
-            }
+            HealthIndicatorsCommon.enableArmorRendering();
         }
 
         while (INCREASE_HEART_OFFSET.get().wasPressed()) {
-            ModConfig.HANDLER.instance().display_offset = (ModConfig.HANDLER.instance().display_offset + ModConfig.HANDLER.instance().offset_step_size);
-            changed = true;
-            if (client.player != null) {
-                ConfigUtils.sendMessage(client.player, Text.literal("Set heart offset to " + Maths.truncate(ModConfig.HANDLER.instance().display_offset,2)));
-            }
+            HealthIndicatorsCommon.increaseOffset();
         }
 
         while (DECREASE_HEART_OFFSET.get().wasPressed()) {
-            ModConfig.HANDLER.instance().display_offset = (ModConfig.HANDLER.instance().display_offset - ModConfig.HANDLER.instance().offset_step_size);
-            changed = true;
-            if (client.player != null) {
-                ConfigUtils.sendMessage(client.player, Text.literal("Set heart offset to " + Maths.truncate(ModConfig.HANDLER.instance().display_offset,2)));
-            }
+            HealthIndicatorsCommon.decreaseOffset();
         }
         if (OVERRIDE_ALL_FILTERS.get().wasPressed()) {
-            Config.setOverrideAllFiltersEnabled(true);
-            if (client.player != null) {
-                ConfigUtils.sendOverlayMessage(client.player, Text.literal( " Config Criteria " + (Config.getOverrideAllFiltersEnabled() ? "Temporarily Overridden" : "Re-implemented")));
-            }
+            HealthIndicatorsCommon.overrideFilters();
         }
         else if(Config.getOverrideAllFiltersEnabled()) {
-            Config.setOverrideAllFiltersEnabled(false);
-            client.inGameHud.setOverlayMessage(Text.literal(""), false);
+            HealthIndicatorsCommon.disableOverrideFilters();
         }
 
-        if(OPEN_CONFIG_SCREEN.get().wasPressed()) openConfig();
-
-        if(client.world == null) return;
-        if(changed && client.world.getTime() % 200 == 0){
-            ModConfig.HANDLER.save();
-            changed = false;
-        }
-
-        RenderTracker.tick(client);
+        if(OPEN_CONFIG_SCREEN.get().wasPressed()) HealthIndicatorsCommon.openConfigScreen();
     }
 
     @SubscribeEvent
     public static void constructMod(FMLConstructModEvent event){
         ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class, () -> new IConfigScreenFactory() {
             @Override
-            public Screen createScreen(MinecraftClient arg, Screen arg2) {
+            public @NotNull Screen createScreen(@NotNull MinecraftClient arg, @NotNull Screen arg2) {
                 return ModConfig.createScreen(arg2);
             }
         });
-    }
-
-    public HealthIndicatorsMod() {
-        ModConfig.HANDLER.load();
-        ModConfig.HANDLER.save();
-        HealthIndicatorsCommon.init();
-        NeoForge.EVENT_BUS.addListener(ModCommands::onRegisterCommands);
-        NeoForge.EVENT_BUS.addListener(this::onClientTick);
     }
 }
