@@ -1,10 +1,11 @@
 package io.github.adytech99.healthindicators.fabric;
 
 import com.terraformersmc.modmenu.ModMenu;
+import io.github.adytech99.healthindicators.RenderTracker;
 import io.github.adytech99.healthindicators.config.Config;
-import io.github.adytech99.healthindicators.fabric.config.ModConfig;
+import io.github.adytech99.healthindicators.config.ModConfig;
 import io.github.adytech99.healthindicators.fabric.commands.ModCommands;
-import io.github.adytech99.healthindicators.fabric.util.ConfigUtils;
+import io.github.adytech99.healthindicators.util.ConfigUtils;
 import io.github.adytech99.healthindicators.util.Maths;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;

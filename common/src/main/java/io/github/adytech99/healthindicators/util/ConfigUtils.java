@@ -1,7 +1,7 @@
-package io.github.adytech99.healthindicators.neoforge.util;
+package io.github.adytech99.healthindicators.util;
 
 import io.github.adytech99.healthindicators.enums.MessageTypeEnum;
-import io.github.adytech99.healthindicators.neoforge.config.ModConfig;
+import io.github.adytech99.healthindicators.config.ModConfig;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;

@@ -1,6 +1,6 @@
-package io.github.adytech99.healthindicators.neoforge.mixin;
+package io.github.adytech99.healthindicators.mixin;
 
-import io.github.adytech99.healthindicators.neoforge.RenderTracker;
+import io.github.adytech99.healthindicators.RenderTracker;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import org.spongepowered.asm.mixin.Mixin;

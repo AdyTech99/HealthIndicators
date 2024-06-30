@@ -1,12 +1,12 @@
-package io.github.adytech99.healthindicators.neoforge.mixin;
+package io.github.adytech99.healthindicators.mixin;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.adytech99.healthindicators.config.Config;
 import io.github.adytech99.healthindicators.enums.ArmorTypeEnum;
 import io.github.adytech99.healthindicators.enums.HealthDisplayTypeEnum;
 import io.github.adytech99.healthindicators.enums.HeartTypeEnum;
-import io.github.adytech99.healthindicators.neoforge.RenderTracker;
-import io.github.adytech99.healthindicators.neoforge.config.ModConfig;
+import io.github.adytech99.healthindicators.RenderTracker;
+import io.github.adytech99.healthindicators.config.ModConfig;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.render.*;

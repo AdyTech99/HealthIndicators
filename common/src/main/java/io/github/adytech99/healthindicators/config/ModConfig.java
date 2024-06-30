@@ -1,4 +1,4 @@
-package io.github.adytech99.healthindicators.fabric.config;
+package io.github.adytech99.healthindicators.config;
 
 import dev.architectury.platform.Platform;
 import dev.isxander.yacl3.config.v2.api.ConfigClassHandler;

@@ -1,7 +1,7 @@
-package io.github.adytech99.healthindicators.fabric;
+package io.github.adytech99.healthindicators;
 
 import io.github.adytech99.healthindicators.config.Config;
-import io.github.adytech99.healthindicators.fabric.config.ModConfig;
+import io.github.adytech99.healthindicators.config.ModConfig;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;

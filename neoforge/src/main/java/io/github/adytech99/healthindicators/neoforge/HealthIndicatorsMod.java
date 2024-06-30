@@ -1,9 +1,10 @@
 package io.github.adytech99.healthindicators.neoforge;
 
+import io.github.adytech99.healthindicators.RenderTracker;
 import io.github.adytech99.healthindicators.config.Config;
 import io.github.adytech99.healthindicators.neoforge.commands.ModCommands;
-import io.github.adytech99.healthindicators.neoforge.config.ModConfig;
-import io.github.adytech99.healthindicators.neoforge.util.ConfigUtils;
+import io.github.adytech99.healthindicators.config.ModConfig;
+import io.github.adytech99.healthindicators.util.ConfigUtils;
 import io.github.adytech99.healthindicators.util.Maths;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
@@ -13,13 +14,16 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 
 import io.github.adytech99.healthindicators.HealthIndicatorsCommon;
+import net.neoforged.fml.event.lifecycle.FMLConstructModEvent;
 import net.neoforged.jarjar.nio.util.Lazy;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
+import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.NeoForge;
 import org.lwjgl.glfw.GLFW;
 
@@ -71,6 +75,11 @@ public final class HealthIndicatorsMod {
             InputUtil.GLFW_KEY_DOWN,
             "key.categories." + HealthIndicatorsCommon.MOD_ID));
 
+    public static final Lazy<KeyBinding> OPEN_CONFIG_SCREEN = Lazy.of(() -> new KeyBinding(
+            "key." + HealthIndicatorsCommon.MOD_ID + ".openModMenuConfig",
+            InputUtil.GLFW_KEY_I,
+            "key.categories." + HealthIndicatorsCommon.MOD_ID));
+
     @SubscribeEvent
     public static void registerBindings(RegisterKeyMappingsEvent event){
         event.register(RENDERING_ENABLED.get());
@@ -78,6 +87,7 @@ public final class HealthIndicatorsMod {
         event.register(DECREASE_HEART_OFFSET.get());
         event.register(OVERRIDE_ALL_FILTERS.get());
         event.register(ARMOR_RENDERING_ENABLED.get());
+        event.register(OPEN_CONFIG_SCREEN.get());
     }
 
 
@@ -134,6 +144,8 @@ public final class HealthIndicatorsMod {
             client.inGameHud.setOverlayMessage(Text.literal(""), false);
         }
 
+        if(OPEN_CONFIG_SCREEN.get().wasPressed()) openConfig();
+
         if(client.world == null) return;
         if(changed && client.world.getTime() % 200 == 0){
             ModConfig.HANDLER.save();
@@ -143,6 +155,15 @@ public final class HealthIndicatorsMod {
         RenderTracker.tick(client);
     }
 
+    @SubscribeEvent
+    public static void constructMod(FMLConstructModEvent event){
+        ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class, () -> new IConfigScreenFactory() {
+            @Override
+            public Screen createScreen(MinecraftClient arg, Screen arg2) {
+                return ModConfig.createScreen(arg2);
+            }
+        });
+    }
 
     public HealthIndicatorsMod() {
         ModConfig.HANDLER.load();
@@ -150,7 +171,5 @@ public final class HealthIndicatorsMod {
         HealthIndicatorsCommon.init();
         NeoForge.EVENT_BUS.addListener(ModCommands::onRegisterCommands);
         NeoForge.EVENT_BUS.addListener(this::onClientTick);
-        //NeoForge.EVENT_BUS.addListener(this::registerBindings);
-        //NeoForge.EVENT_BUS.registerConfigCommands(new HealthIndicatorsMod(modBus));
     }
 }
