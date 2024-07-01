@@ -3,6 +3,7 @@
   "minVersion": "0.8",
   "package": "io.github.adytech99.healthindicators.mixin",
   "compatibilityLevel": "JAVA_21",
+  "refmap": "HealthIndicators-common-common-refmap.json",
   "client": [
     "EntityDamageMixin",
     "EntityRendererMixin"

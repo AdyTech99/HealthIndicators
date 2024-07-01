@@ -20,7 +20,6 @@ import org.slf4j.LoggerFactory;
 @Environment(EnvType.CLIENT)
 public class HealthIndicatorsMod implements ClientModInitializer {
     public static final String MOD_ID = "healthindicators";
-    public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
     public static final KeyBinding HEARTS_RENDERING_ENABLED = KeyBindingHelper.registerKeyBinding(new KeyBinding(
             "key." + MOD_ID + ".renderingEnabled",
@@ -94,13 +93,7 @@ public class HealthIndicatorsMod implements ClientModInitializer {
         });
 
         ClientLifecycleEvents.CLIENT_STOPPING.register(client -> {
-            saveModConfig();
+            ModConfig.HANDLER.save();
         });
-
-        LOGGER.info("Never be heartless!");
-    }
-
-    public void saveModConfig(){
-        ModConfig.HANDLER.save();
     }
 }

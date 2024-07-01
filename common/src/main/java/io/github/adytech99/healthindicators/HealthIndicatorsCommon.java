@@ -8,10 +8,13 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public final class HealthIndicatorsCommon {
     public static final String MOD_ID = "healthindicators";
     public static final MinecraftClient client = MinecraftClient.getInstance();
+    public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
     private static boolean changed = false;
     private static boolean openConfig = false;
@@ -19,6 +22,7 @@ public final class HealthIndicatorsCommon {
     public static void init() {
         ModConfig.HANDLER.load();
         Config.load();
+        LOGGER.info("Never be heartless!");
     }
 
     public static void tick(){
@@ -47,7 +51,7 @@ public final class HealthIndicatorsCommon {
             Formatting formatting;
             if(ModConfig.HANDLER.instance().colored_messages) formatting = Config.getHeartsRenderingEnabled() ? Formatting.GREEN : Formatting.RED;
             else formatting = Formatting.WHITE;
-            ConfigUtils.sendMessage(client.player, Text.literal((Config.getHeartsRenderingEnabled() ? "Enabled" : "Disabled") + " Armor Indicators").formatted(formatting));
+            ConfigUtils.sendMessage(client.player, Text.literal((Config.getHeartsRenderingEnabled() ? "Enabled" : "Disabled") + " Health Indicators").formatted(formatting));
         }
     }
 

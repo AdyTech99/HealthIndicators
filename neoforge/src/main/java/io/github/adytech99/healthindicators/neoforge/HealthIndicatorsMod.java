@@ -72,6 +72,7 @@ public final class HealthIndicatorsMod {
         HealthIndicatorsCommon.init();
         if(ModConfig.HANDLER.instance().enable_commands) NeoForge.EVENT_BUS.addListener(ModCommands::onRegisterCommands);
         NeoForge.EVENT_BUS.addListener(this::onClientTick);
+
     }
 
     @SubscribeEvent
