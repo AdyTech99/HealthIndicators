@@ -4,10 +4,27 @@
   "version": "${version}",
 
   "name": "Health Indicators",
-  "description": "Displays a health bar above mobs and players",
-  "authors": [
-    "AdyTech99"
+  "description": "Simple damage indicator mod that shows a floating health bar (or number) above Players and Mobs.",
+  "authors": ["AdyTech99"],
+  "contributors": [
+    "Translation key (ru_ru): Alexander317"
   ],
+
+  "contact": {
+    "homepage": "https://modrinth.com/mod/health-indicators",
+    "sources": "https://github.com/AdyTech99/HealthIndicators",
+    "issues": "https://github.com/AdyTech99/HealthIndicators/issues"
+  },
+
+  "custom": {
+    "modmenu": {
+      "links": {
+        "modmenu.discord": "https://discord.com/invite/4eWX2duHfJ"
+      },
+      "update_checker": true
+    }
+  },
+
 
   "license": "LGPL v3",
   "icon": "assets/healthindicators/icon.png",

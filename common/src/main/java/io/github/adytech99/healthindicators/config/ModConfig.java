@@ -107,7 +107,7 @@ public class ModConfig {
     @SerialEntry
     @AutoGen(category = "filters", group = "advanced")
     @TickBox
-    public boolean override_players = true;
+    public boolean override_players = false;
 
 
     //APPEARANCE

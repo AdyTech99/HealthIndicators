@@ -7,11 +7,11 @@ license = "LGPL v3"
 modId = "healthindicators"
 version = "${version}"
 displayName = "Health Indicators"
-authors = "AdyTech99!"
+authors = "AdyTech99"
 description = '''
-Health Bar!
+Simple damage indicator mod that shows a floating health bar (or number) above Players and Mobs.
 '''
-#logoFile = ""
+logoFile = "assets/healthindicators/icon.png"
 
 [[dependencies.healthindicators]]
 modId = "neoforge"

@@ -21,7 +21,7 @@ dependencies {
     modImplementation "dev.architectury:architectury:$rootProject.architectury_api_version"
     modImplementation "dev.isxander:yet-another-config-lib:${project.yacl_fabric}"
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
-    //modApi "com.terraformersmc:modmenu:${project.modmenu}"
+    modApi "com.terraformersmc:modmenu:${project.modmenu}"
 }
 
 loom {
