@@ -6,6 +6,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.decoration.ArmorStandEntity;
@@ -19,6 +20,7 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
@@ -33,7 +35,7 @@ public class RenderTracker {
         if(client.player == null || client.world == null) return;
         if(Config.getRenderingEnabled()) {
             for (Entity entity : client.world.getEntities()) {
-                if (entity instanceof LivingEntity livingEntity && (satisfiesAdvancedCriteria(client.player, livingEntity) || overridePlayers(livingEntity))) {
+                if (entity instanceof LivingEntity livingEntity && (satisfiesAdvancedCriteria(client.player, livingEntity) && satisfiesBlacklist(client.player, livingEntity) || overridePlayers(livingEntity))) {
                     addToUUIDS(livingEntity);
                 } else removeFromUUIDS(entity.getUuid());
             }
@@ -117,6 +119,14 @@ public class RenderTracker {
         if(!isTargeted(livingEntity) && ModConfig.HANDLER.instance().looking_at) return false;
 
         return !isInvalid(livingEntity);
+    }
+
+    public static boolean satisfiesBlacklist(ClientPlayerEntity player, LivingEntity livingEntity){
+        String[] blacklist1 = new String[ModConfig.HANDLER.instance().blackList.size()];
+        for(int i = 0; i < ModConfig.HANDLER.instance().blackList.size(); i++){
+            blacklist1[i] = ModConfig.HANDLER.instance().blackList.get(i);
+        }
+        return Arrays.stream(blacklist1).noneMatch(s -> s.equals(EntityType.getId(livingEntity.getType()).toString()));
     }
 
     public static boolean isTargeted(LivingEntity livingEntity){

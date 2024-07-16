@@ -1,5 +1,6 @@
 package io.github.adytech99.healthindicators.config;
 
+import com.google.common.collect.Lists;
 import dev.architectury.platform.Platform;
 import dev.isxander.yacl3.config.v2.api.ConfigClassHandler;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
@@ -17,6 +18,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.nio.file.Path;
+import java.util.List;
 
 public class ModConfig {
     public static final Path CONFIG_PATH = Platform.getConfigFolder().resolve("health_indicators_config.json");
@@ -55,6 +57,11 @@ public class ModConfig {
     @AutoGen(category = "filters", group = "entity_type")
     @TickBox
     public boolean self = false;
+
+    @SerialEntry
+    @AutoGen(category = "filters")
+    @ListGroup(valueFactory = EntitiesListGroup.class, controllerFactory = EntitiesListGroup.class)
+    public List<String> blackList = Lists.newArrayList("minecraft:armor_stand");
 
     @Label
     //@AutoGen(category = "filters", group = "advanced")
