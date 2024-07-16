@@ -61,7 +61,7 @@ public class ModConfig {
     @SerialEntry
     @AutoGen(category = "filters")
     @ListGroup(valueFactory = EntitiesListGroup.class, controllerFactory = EntitiesListGroup.class)
-    public List<String> blackList = Lists.newArrayList("minecraft:armor_stand");
+    public List<String> blacklist = Lists.newArrayList("minecraft:armor_stand");
 
     @Label
     //@AutoGen(category = "filters", group = "advanced")

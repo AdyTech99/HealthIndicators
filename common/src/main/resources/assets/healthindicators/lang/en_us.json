@@ -14,6 +14,9 @@
   "yacl3.config.health-indicators:config.self": "Show health of yourself",
   "yacl3.config.health-indicators:config.self.desc": "Displays a health bar above yourself in third person and in the inventory menu",
 
+  "yacl3.config.health-indicators:config.blacklist": "Blacklist",
+  "yacl3.config.health-indicators:config.blacklist.desc": "Prevents displaying health bars over these entity types. ",
+
   "yacl3.config.health-indicators:config.after_attack": "Show health only after attack",
   "yacl3.config.health-indicators:config.after_attack.desc": "Health bar will display only after the entity has been attacked.",
 

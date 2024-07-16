@@ -9,7 +9,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.decoration.ArmorStandEntity;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -109,7 +108,7 @@ public class RenderTracker {
         if(!ModConfig.HANDLER.instance().hostile_mobs && livingEntity instanceof HostileEntity) return false;
         if(!ModConfig.HANDLER.instance().players && livingEntity instanceof PlayerEntity) return false;
         if(!ModConfig.HANDLER.instance().self && livingEntity == self) return false;
-        return !(livingEntity instanceof ArmorStandEntity);
+        return true;
     }
 
     public static boolean satisfiesAdvancedCriteria(ClientPlayerEntity player, LivingEntity livingEntity){
@@ -122,9 +121,9 @@ public class RenderTracker {
     }
 
     public static boolean satisfiesBlacklist(ClientPlayerEntity player, LivingEntity livingEntity){
-        String[] blacklist1 = new String[ModConfig.HANDLER.instance().blackList.size()];
-        for(int i = 0; i < ModConfig.HANDLER.instance().blackList.size(); i++){
-            blacklist1[i] = ModConfig.HANDLER.instance().blackList.get(i);
+        String[] blacklist1 = new String[ModConfig.HANDLER.instance().blacklist.size()];
+        for(int i = 0; i < ModConfig.HANDLER.instance().blacklist.size(); i++){
+            blacklist1[i] = ModConfig.HANDLER.instance().blacklist.get(i);
         }
         return Arrays.stream(blacklist1).noneMatch(s -> s.equals(EntityType.getId(livingEntity.getType()).toString()));
     }
