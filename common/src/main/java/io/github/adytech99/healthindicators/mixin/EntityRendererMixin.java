@@ -29,6 +29,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import static io.github.adytech99.healthindicators.enums.HeartTypeEnum.addHardcoreIcon;
+import static io.github.adytech99.healthindicators.enums.HeartTypeEnum.addStatusIcon;
+
 
 @Mixin(LivingEntityRenderer.class)
 public abstract class EntityRendererMixin<T extends LivingEntity, M extends EntityModel<T>> extends EntityRenderer<T> implements FeatureRendererContext<T, M> {
@@ -112,7 +115,7 @@ public abstract class EntityRendererMixin<T extends LivingEntity, M extends Enti
                 float x = maxX - (heart % heartsPerRow) * 8;
 
                 if (isDrawingEmpty == 0) {
-                    drawHeart(model, vertexConsumer, x, HeartTypeEnum.EMPTY);
+                    drawHeart(model, vertexConsumer, x, HeartTypeEnum.EMPTY, livingEntity);
                 } else {
                     HeartTypeEnum type;
                     if (heart < heartsRed) {
@@ -129,7 +132,7 @@ public abstract class EntityRendererMixin<T extends LivingEntity, M extends Enti
                         }
                     }
                     if (type != HeartTypeEnum.EMPTY) {
-                        drawHeart(model, vertexConsumer, x, type);
+                        drawHeart(model, vertexConsumer, x, type, livingEntity);
                     }
                 }
 
@@ -291,10 +294,14 @@ public abstract class EntityRendererMixin<T extends LivingEntity, M extends Enti
     }
 
     @Unique
-    private static void drawHeart(Matrix4f model, VertexConsumer vertexConsumer, float x, HeartTypeEnum type) {
+    private static void drawHeart(Matrix4f model, VertexConsumer vertexConsumer, float x, HeartTypeEnum type, LivingEntity livingEntity) {
+        String additionalIconEffects = "";
+        if(type != HeartTypeEnum.YELLOW_FULL && type != HeartTypeEnum.YELLOW_HALF && type != HeartTypeEnum.EMPTY && ModConfig.HANDLER.instance().show_heart_effects) additionalIconEffects = (addStatusIcon(livingEntity) + addHardcoreIcon(livingEntity));
+        Identifier heartIcon = Identifier.of("minecraft", "textures/gui/sprites/hud/heart/" + additionalIconEffects + type.icon + ".png");
+        Identifier vanillaHeartIcon = Identifier.of("healthindicators", "textures/gui/heart/" + additionalIconEffects + type.icon + ".png");
+
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
-        Identifier heartIcon = ModConfig.HANDLER.instance().use_vanilla_textures ? type.vanillaIcon : type.icon;
-        RenderSystem.setShaderTexture(0, heartIcon);
+        RenderSystem.setShaderTexture(0, ModConfig.HANDLER.instance().use_vanilla_textures ? vanillaHeartIcon : heartIcon);
         RenderSystem.enableDepthTest();
 
         float minU = 0F;

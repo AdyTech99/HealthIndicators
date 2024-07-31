@@ -46,6 +46,9 @@
   "yacl3.config.health-indicators:config.use_vanilla_textures": "Use vanilla textures",
   "yacl3.config.health-indicators:config.use_vanilla_textures.desc": "Some resource packs use a custom heart icon, which can break this mod. Enabling this setting will override the custom icon.",
 
+  "yacl3.config.health-indicators:config.show_heart_effects": "Show effects",
+  "yacl3.config.health-indicators:config.show_heart_effects.desc": "Some status effects and conditions (poisoned, withered, hardcore, frozen) changes the texture of the hearts. Enabling this option will change the texture of the health indicator's heart's as well.",
+
   "yacl3.config.health-indicators:config.number_type_settings_label.desc": "Settings for the number-type indicator",
 
   "yacl3.config.health-indicators:config.number_color": "Text color",

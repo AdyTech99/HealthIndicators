@@ -139,6 +139,11 @@ public class ModConfig {
     @Boolean
     public boolean use_vanilla_textures = false;
 
+    @SerialEntry
+    @AutoGen(category = "appearance", group = "indicator_type")
+    @Boolean
+    public boolean show_heart_effects = true;
+
     @AutoGen(category = "appearance", group = "indicator_type")
     @Label
     private final Text number_type_settings_label = Text.literal("Settings for the number-type indicator");
