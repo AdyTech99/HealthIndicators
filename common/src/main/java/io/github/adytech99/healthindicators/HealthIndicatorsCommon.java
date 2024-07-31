@@ -1,5 +1,7 @@
 package io.github.adytech99.healthindicators;
 
+import dev.architectury.event.Event;
+import dev.architectury.event.events.client.ClientCommandRegistrationEvent;
 import io.github.adytech99.healthindicators.config.Config;
 import io.github.adytech99.healthindicators.config.ModConfig;
 import io.github.adytech99.healthindicators.util.ConfigUtils;

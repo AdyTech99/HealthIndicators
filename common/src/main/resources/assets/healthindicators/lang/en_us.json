@@ -17,20 +17,20 @@
   "yacl3.config.health-indicators:config.blacklist": "Blacklist",
   "yacl3.config.health-indicators:config.blacklist.desc": "Prevents displaying health bars over these entity types. ",
 
-  "yacl3.config.health-indicators:config.after_attack": "Show health only after attack",
-  "yacl3.config.health-indicators:config.after_attack.desc": "Health bar will display only after the entity has been attacked.",
+  "yacl3.config.health-indicators:config.after_attack": "Show for attacked entities only",
+  "yacl3.config.health-indicators:config.after_attack.desc": "Health will display only after the entity has been attacked.",
 
-  "yacl3.config.health-indicators:config.time_after_hit": "Seconds for health to disappear after attack",
-  "yacl3.config.health-indicators:config.time_after_hit.desc": "Health bar will disappear after the set number of seconds.",
+  "yacl3.config.health-indicators:config.time_after_hit": "Seconds to reset indicator",
+  "yacl3.config.health-indicators:config.time_after_hit.desc": "Health indicator will disappear after the set number of seconds.",
 
-  "yacl3.config.health-indicators:config.damaged_only": "Show health only if entity is damaged",
-  "yacl3.config.health-indicators:config.damaged_only.desc": "Health bar will display only if the entity's health is lower than its max health. May not work in cases where entities have absorption effect.",
+  "yacl3.config.health-indicators:config.damaged_only": "Show for damaged entities only",
+  "yacl3.config.health-indicators:config.damaged_only.desc": "Health will display only if the entity's health is lower than its max health. May not work in cases where entities have absorption effect.",
 
-  "yacl3.config.health-indicators:config.looking_at": "Show health only when looking at entity",
+  "yacl3.config.health-indicators:config.looking_at": "Show for targeted entities only",
   "yacl3.config.health-indicators:config.looking_at.desc": "Health will only render if the entity is being looked at.",
 
-  "yacl3.config.health-indicators:config.reach": "'Looking at' range",
-  "yacl3.config.health-indicators:config.reach.desc": "How far can the entity be for the 'looking at' option. The default value (3 blocks) is equal to the attack reach for survival minecraft.",
+  "yacl3.config.health-indicators:config.reach": "Range",
+  "yacl3.config.health-indicators:config.reach.desc": "How far can the entity be for the 'targeted' option. The default value (3 blocks) is equal to the attack reach for survival minecraft.",
 
   "yacl3.config.health-indicators:config.override_players": "Always show player health",
   "yacl3.config.health-indicators:config.override_players.desc": "Overrides the above options to always display health of Players, even if they have not been attacked, they are full health or they are not on crosshair",
@@ -92,7 +92,7 @@
   "yacl3.config.health-indicators:config.hearts_clipping.desc": "Hearts will get pushed downwards if there is a solid block at their normal rendering position.",
 
 
-  "yacl3.config.health-indicators:config.category.filters": "Filters",
+  "yacl3.config.health-indicators:config.category.filters": "Visibility",
   "yacl3.config.health-indicators:config.category.appearance": "Appearance",
   "yacl3.config.health-indicators:config.category.messages": "Messages & Commands",
 

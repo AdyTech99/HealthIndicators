@@ -13,16 +13,14 @@ import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileUtil;
+import net.minecraft.text.Text;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class RenderTracker {
@@ -34,7 +32,7 @@ public class RenderTracker {
         if(client.player == null || client.world == null) return;
         if(Config.getRenderingEnabled()) {
             for (Entity entity : client.world.getEntities()) {
-                if (entity instanceof LivingEntity livingEntity && (satisfiesAdvancedCriteria(client.player, livingEntity) && satisfiesBlacklist(client.player, livingEntity) || overridePlayers(livingEntity))) {
+                if (entity instanceof LivingEntity livingEntity && satisfiesAdvancedCriteria(client.player, livingEntity) && satisfiesBlacklist(client.player, livingEntity)) {
                     addToUUIDS(livingEntity);
                 } else removeFromUUIDS(entity.getUuid());
             }
@@ -52,7 +50,8 @@ public class RenderTracker {
             assert MinecraftClient.getInstance().world != null;
             if (ModConfig.HANDLER.instance().after_attack
                     && livingEntity instanceof LivingEntity
-                    && RenderTracker.isEntityTypeAllowed(livingEntity, MinecraftClient.getInstance().player)) {
+                    && RenderTracker.isEntityTypeAllowed(livingEntity, MinecraftClient.getInstance().player)
+                    && satisfiesBlacklist(MinecraftClient.getInstance().player, livingEntity)) {
 
                 if(!addToUUIDS(livingEntity)){
                     UUIDS.replace(livingEntity.getUuid(), (ModConfig.HANDLER.instance().time_after_hit * 20));
@@ -98,7 +97,7 @@ public class RenderTracker {
         return UUIDS.containsKey(livingEntity.getUuid());
     }
 
-    public static boolean overridePlayers(LivingEntity livingEntity){
+    public static boolean overridePlayers(ClientPlayerEntity playerEntity, LivingEntity livingEntity){
         return (ModConfig.HANDLER.instance().override_players && livingEntity instanceof PlayerEntity && livingEntity != MinecraftClient.getInstance().player)
                 || (livingEntity == MinecraftClient.getInstance().player && ModConfig.HANDLER.instance().self);
     }
@@ -112,6 +111,8 @@ public class RenderTracker {
     }
 
     public static boolean satisfiesAdvancedCriteria(ClientPlayerEntity player, LivingEntity livingEntity){
+        if(overridePlayers(player, livingEntity)) return true;
+
         if(!isEntityTypeAllowed(livingEntity, player)) return false; //Entity Types
         if(!UUIDS.containsKey(livingEntity.getUuid()) && ModConfig.HANDLER.instance().after_attack) return false; //Damaged by Player, key should have been added by separate means. Necessary because removal check is done by this method.
         if(livingEntity.getHealth() == livingEntity.getMaxHealth() && ModConfig.HANDLER.instance().damaged_only && livingEntity.getAbsorptionAmount() <= 0) return false; //Damaged by Any Reason
@@ -125,7 +126,10 @@ public class RenderTracker {
         for(int i = 0; i < ModConfig.HANDLER.instance().blacklist.size(); i++){
             blacklist1[i] = ModConfig.HANDLER.instance().blacklist.get(i);
         }
-        return Arrays.stream(blacklist1).noneMatch(s -> s.equals(EntityType.getId(livingEntity.getType()).toString()));
+        return Arrays.stream(blacklist1).noneMatch(s -> {
+            if(livingEntity instanceof PlayerEntity) return Text.of(s).equals(Objects.requireNonNull(livingEntity.getName()));
+            else return s.equals(EntityType.getId(livingEntity.getType()).toString());
+        });
     }
 
     public static boolean isTargeted(LivingEntity livingEntity){

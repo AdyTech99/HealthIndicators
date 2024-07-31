@@ -1,17 +1,12 @@
 package io.github.adytech99.healthindicators.neoforge;
 
-import io.github.adytech99.healthindicators.RenderTracker;
 import io.github.adytech99.healthindicators.config.Config;
 import io.github.adytech99.healthindicators.neoforge.commands.ModCommands;
 import io.github.adytech99.healthindicators.config.ModConfig;
-import io.github.adytech99.healthindicators.util.ConfigUtils;
-import io.github.adytech99.healthindicators.util.Maths;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModLoadingContext;

@@ -10,10 +10,15 @@ import io.github.adytech99.healthindicators.config.ModConfig;
 import io.github.adytech99.healthindicators.util.ConfigUtils;
 import io.github.adytech99.healthindicators.util.Maths;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.world.ClientWorld;
+import net.minecraft.command.suggestion.SuggestionProviders;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.client.ClientCommandHandler;
 import net.neoforged.neoforge.client.event.RegisterClientCommandsEvent;
 
 public class ModCommands {
@@ -51,7 +56,6 @@ public class ModCommands {
                                         ConfigUtils.sendMessage(MinecraftClient.getInstance().player, Text.literal("Unknown argument, please try again."));
                                         return 1;
                                     }
-
                                     ModConfig.HANDLER.instance().indicator_type = displayTypeEnum;
                                     ModConfig.HANDLER.save();
                                     ConfigUtils.sendMessage(MinecraftClient.getInstance().player, Text.literal("Set display type to " + ModConfig.HANDLER.instance().indicator_type));

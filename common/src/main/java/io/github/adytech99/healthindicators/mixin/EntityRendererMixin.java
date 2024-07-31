@@ -9,6 +9,7 @@ import io.github.adytech99.healthindicators.RenderTracker;
 import io.github.adytech99.healthindicators.config.ModConfig;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.*;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
@@ -32,8 +33,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(LivingEntityRenderer.class)
 public abstract class EntityRendererMixin<T extends LivingEntity, M extends EntityModel<T>> extends EntityRenderer<T> implements FeatureRendererContext<T, M> {
 
-    @Unique
-    private final MinecraftClient client = MinecraftClient.getInstance();
+    @Unique private final MinecraftClient client = MinecraftClient.getInstance();
     protected EntityRendererMixin(EntityRendererFactory.Context ctx) {
         super(ctx);
     }
