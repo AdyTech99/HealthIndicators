@@ -7,9 +7,9 @@ import io.github.adytech99.healthindicators.enums.HealthDisplayTypeEnum;
 import io.github.adytech99.healthindicators.enums.HeartTypeEnum;
 import io.github.adytech99.healthindicators.RenderTracker;
 import io.github.adytech99.healthindicators.config.ModConfig;
+import io.github.adytech99.healthindicators.util.HeartJumpData;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.*;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
@@ -18,6 +18,7 @@ import net.minecraft.client.render.entity.feature.FeatureRendererContext;
 import net.minecraft.client.render.entity.model.EntityModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.scoreboard.ScoreboardDisplaySlot;
 import net.minecraft.util.Identifier;
@@ -98,6 +99,13 @@ public abstract class EntityRendererMixin<T extends LivingEntity, M extends Enti
                 vertexConsumer = tessellator.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
 
                 matrixStack.translate(0, livingEntity.getHeight() + 0.5f + h, 0);
+
+                if (livingEntity.hasStatusEffect(StatusEffects.REGENERATION) && ModConfig.HANDLER.instance().show_heart_effects) {
+                        if(HeartJumpData.getWhichHeartJumping(livingEntity) == heart){
+                            matrixStack.translate(0.0D, 1.15F * scale, 0.0D);
+                        }
+                }
+
                 if ((this.hasLabel(livingEntity)
                         || (ModConfig.HANDLER.instance().force_higher_offset_for_players && livingEntity instanceof PlayerEntity && livingEntity != client.player))
                         && d <= 4096.0) {
