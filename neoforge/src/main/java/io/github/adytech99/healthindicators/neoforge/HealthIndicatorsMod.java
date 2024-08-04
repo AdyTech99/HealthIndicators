@@ -9,6 +9,7 @@ import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
@@ -113,7 +114,7 @@ public final class HealthIndicatorsMod {
     public static void constructMod(FMLConstructModEvent event){
         ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class, () -> new IConfigScreenFactory() {
             @Override
-            public @NotNull Screen createScreen(@NotNull MinecraftClient arg, @NotNull Screen arg2) {
+            public @NotNull Screen createScreen(@NotNull ModContainer arg, @NotNull Screen arg2) {
                 return ModConfig.createScreen(arg2);
             }
         });
