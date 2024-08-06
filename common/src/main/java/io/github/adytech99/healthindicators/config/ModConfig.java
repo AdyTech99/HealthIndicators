@@ -124,7 +124,7 @@ public class ModConfig {
     @SerialEntry
     @AutoGen(category = "filters", group = "advanced")
     @IntSlider(min = 0, max = 512, step = 4)
-    public int distance = 0;
+    public int distance = 64;
 
 
     @Label
