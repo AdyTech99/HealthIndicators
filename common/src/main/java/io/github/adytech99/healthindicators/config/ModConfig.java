@@ -64,8 +64,8 @@ public class ModConfig {
     public List<String> blacklist = Lists.newArrayList("minecraft:armor_stand");
 
     @Label
-    //@AutoGen(category = "filters", group = "advanced")
-    private final Text filtersAdvancedLabel = Text.literal("Enable health display based on additional misc. criteria").formatted(Formatting.BOLD, Formatting.AQUA);
+    @AutoGen(category = "filters", group = "advanced")
+    private final Text filtersAdvancedLabel = Text.literal("Show for...").formatted(Formatting.AQUA);
 
     /*@Label
     @AutoGen(category = "filters", group = "advanced")
@@ -89,13 +89,18 @@ public class ModConfig {
 
     @SerialEntry
     @AutoGen(category = "filters", group = "advanced")
-    @MasterTickBox(value = "override_players")
+    @MasterTickBox(value = {"override_players", "max_health_percentage"})
     public boolean damaged_only = false;
+
+    @SerialEntry
+    @AutoGen(category = "filters", group = "advanced")
+    @IntSlider(min = 0, max = 100, step = 1)
+    public int max_health_percentage = 100;
 
     @Label
     @AutoGen(category = "filters", group = "advanced")
     //private final Text on_crosshair_label = Text.literal("Settings for the 'looking at entity' criteria:").formatted(Formatting.ITALIC);
-    private final Text on_crosshair_label = Text.literal(" ").formatted(Formatting.ITALIC);
+    private final Text looking_at_label = Text.literal(" ").formatted(Formatting.ITALIC);
 
     @SerialEntry
     @AutoGen(category = "filters", group = "advanced")
@@ -106,6 +111,21 @@ public class ModConfig {
     @AutoGen(category = "filters", group = "advanced")
     @IntField(min = 0, max = 1024)
     public int reach = 3;
+
+    @Label
+    @AutoGen(category = "filters", group = "advanced")
+    private final Text distance_label = Text.literal(" ").formatted(Formatting.ITALIC);
+
+    @SerialEntry
+    @AutoGen(category = "filters", group = "advanced")
+    @MasterTickBox(value = "distance")
+    public boolean within_distance = false;
+
+    @SerialEntry
+    @AutoGen(category = "filters", group = "advanced")
+    @IntSlider(min = 0, max = 512, step = 4)
+    public int distance = 0;
+
 
     @Label
     @AutoGen(category = "filters", group = "advanced")

@@ -1,36 +1,45 @@
 {
-  "yacl3.config.health-indicators:config.passive_mobs": "Show health of passive mobs",
+  "yacl3.config.health-indicators:config.passive_mobs": "Show for passive mobs",
   "yacl3.config.health-indicators:config.passive_mobs.desc": "Displays a health bar above passive mobs",
 
-  "yacl3.config.health-indicators:config.hostile_mobs": "Show health of hostile mobs",
+  "yacl3.config.health-indicators:config.hostile_mobs": "Show for hostile mobs",
   "yacl3.config.health-indicators:config.hostile_mobs.desc": "Displays a health bar above hostile mobs",
 
-  "yacl3.config.health-indicators:config.angered_mobs": "Show health of angered mobs",
+  "yacl3.config.health-indicators:config.angered_mobs": "Show for angered mobs",
   "yacl3.config.health-indicators:config.angered_mobs.desc": "Displays a health bar above angered mobs. This is different from 'Hostile Mobs,' since a passive mob (eg: iron golem, enderman) are not considered a hostile mob, but can still attack the player if provoked.",
 
-  "yacl3.config.health-indicators:config.players": "Show health of players",
+  "yacl3.config.health-indicators:config.players": "Show for players",
   "yacl3.config.health-indicators:config.players.desc": "Displays a health bar above other players",
 
-  "yacl3.config.health-indicators:config.self": "Show health of yourself",
+  "yacl3.config.health-indicators:config.self": "Show for yourself",
   "yacl3.config.health-indicators:config.self.desc": "Displays a health bar above yourself in third person and in the inventory menu",
 
   "yacl3.config.health-indicators:config.blacklist": "Blacklist",
   "yacl3.config.health-indicators:config.blacklist.desc": "Prevents displaying health bars over these entity types. ",
 
-  "yacl3.config.health-indicators:config.after_attack": "Show for attacked entities only",
+  "yacl3.config.health-indicators:config.after_attack": "Attacked entities only",
   "yacl3.config.health-indicators:config.after_attack.desc": "Health will display only after the entity has been attacked.",
 
   "yacl3.config.health-indicators:config.time_after_hit": "Seconds to reset indicator",
   "yacl3.config.health-indicators:config.time_after_hit.desc": "Health indicator will disappear after the set number of seconds.",
 
-  "yacl3.config.health-indicators:config.damaged_only": "Show for damaged entities only",
+  "yacl3.config.health-indicators:config.damaged_only": "Damaged entities only",
   "yacl3.config.health-indicators:config.damaged_only.desc": "Health will display only if the entity's health is lower than its max health. May not work in cases where entities have absorption effect.",
 
-  "yacl3.config.health-indicators:config.looking_at": "Show for targeted entities only",
+  "yacl3.config.health-indicators:config.max_health_percentage": "Health threshold",
+  "yacl3.config.health-indicators:config.max_health_percentage.desc": "The maximum amount of health, as a percentage of the total, that it needs to be for the indicator to display. \n\nFor example, if you set it to 40%, then entities with health above 40% will not display an indicator. Set this to 100% to display for all entities.",
+
+  "yacl3.config.health-indicators:config.looking_at": "Targeted entities only",
   "yacl3.config.health-indicators:config.looking_at.desc": "Health will only render if the entity is being looked at.",
 
   "yacl3.config.health-indicators:config.reach": "Range",
   "yacl3.config.health-indicators:config.reach.desc": "How far can the entity be for the 'targeted' option. The default value (3 blocks) is equal to the attack reach for survival minecraft.",
+
+  "yacl3.config.health-indicators:config.within_distance": "Within distance only",
+  "yacl3.config.health-indicators:config.within_distance.desc": "Entities beyond this distance will not render health. Note: This is different from the 'range' option; the range option modifies the targeted distance while this option limits all visibility beyond a certain distance",
+
+  "yacl3.config.health-indicators:config.distance": "Distance",
+  "yacl3.config.health-indicators:config.distance.desc": "Distance for the 'within distance' option",
 
   "yacl3.config.health-indicators:config.override_players": "Always show player health",
   "yacl3.config.health-indicators:config.override_players.desc": "Overrides the above options to always display health of Players, even if they have not been attacked, they are full health or they are not on crosshair",

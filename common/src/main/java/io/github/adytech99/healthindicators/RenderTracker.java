@@ -24,6 +24,8 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class RenderTracker {
+    private static final MinecraftClient client = MinecraftClient.getInstance();
+
     private static final ConcurrentHashMap<UUID, Integer> UUIDS = new ConcurrentHashMap<>();
 
     public static boolean after_attack = ModConfig.HANDLER.instance().after_attack;
@@ -38,20 +40,19 @@ public class RenderTracker {
             }
         }
         trimEntities(client.world);
-        if(ModConfig.HANDLER.instance().after_attack != after_attack)
-            if(ModConfig.HANDLER.instance().after_attack){
-                UUIDS.clear();
-            }
-        after_attack = ModConfig.HANDLER.instance().after_attack;
+        if(ModConfig.HANDLER.instance().after_attack != after_attack) {
+            UUIDS.clear();
+            after_attack = ModConfig.HANDLER.instance().after_attack;
+        }
     }
 
     public static void onDamage(DamageSource damageSource, LivingEntity livingEntity) {
         if(damageSource.getAttacker() instanceof PlayerEntity){
-            assert MinecraftClient.getInstance().world != null;
+            assert client.world != null;
             if (ModConfig.HANDLER.instance().after_attack
                     && livingEntity instanceof LivingEntity
-                    && RenderTracker.isEntityTypeAllowed(livingEntity, MinecraftClient.getInstance().player)
-                    && satisfiesBlacklist(MinecraftClient.getInstance().player, livingEntity)) {
+                    && RenderTracker.isEntityTypeAllowed(livingEntity, client.player)
+                    && satisfiesBlacklist(client.player, livingEntity)) {
 
                 if(!addToUUIDS(livingEntity)){
                     UUIDS.replace(livingEntity.getUuid(), (ModConfig.HANDLER.instance().time_after_hit * 20));
@@ -98,8 +99,8 @@ public class RenderTracker {
     }
 
     public static boolean overridePlayers(ClientPlayerEntity playerEntity, LivingEntity livingEntity){
-        return (ModConfig.HANDLER.instance().override_players && livingEntity instanceof PlayerEntity && livingEntity != MinecraftClient.getInstance().player)
-                || (livingEntity == MinecraftClient.getInstance().player && ModConfig.HANDLER.instance().self);
+        return (ModConfig.HANDLER.instance().override_players && livingEntity instanceof PlayerEntity && livingEntity != client.player)
+                || (livingEntity == client.player && ModConfig.HANDLER.instance().self);
     }
 
     public static boolean isEntityTypeAllowed(LivingEntity livingEntity, PlayerEntity self){
@@ -114,9 +115,10 @@ public class RenderTracker {
         if(overridePlayers(player, livingEntity)) return true;
 
         if(!isEntityTypeAllowed(livingEntity, player)) return false; //Entity Types
-        if(!UUIDS.containsKey(livingEntity.getUuid()) && ModConfig.HANDLER.instance().after_attack) return false; //Damaged by Player, key should have been added by separate means. Necessary because removal check is done by this method.
-        if(livingEntity.getHealth() == livingEntity.getMaxHealth() && ModConfig.HANDLER.instance().damaged_only && livingEntity.getAbsorptionAmount() <= 0) return false; //Damaged by Any Reason
-        if(!isTargeted(livingEntity) && ModConfig.HANDLER.instance().looking_at) return false;
+        if(ModConfig.HANDLER.instance().after_attack && !UUIDS.containsKey(livingEntity.getUuid())) return false; //Damaged by Player, key should have been added by separate means. Necessary because removal check is done by this method.
+        if(ModConfig.HANDLER.instance().damaged_only && (livingEntity.getHealth() == livingEntity.getMaxHealth() || livingEntity.getHealth() > livingEntity.getMaxHealth()*((float) ModConfig.HANDLER.instance().max_health_percentage / 100)) && livingEntity.getAbsorptionAmount() <= 0) return false; //Damaged by Any Reason
+        if(ModConfig.HANDLER.instance().looking_at && !isTargeted(livingEntity)) return false;
+        if(ModConfig.HANDLER.instance().within_distance && livingEntity.distanceTo(player) > ModConfig.HANDLER.instance().distance) return false;
 
         return !isInvalid(livingEntity);
     }
@@ -133,7 +135,7 @@ public class RenderTracker {
     }
 
     public static boolean isTargeted(LivingEntity livingEntity){
-        Entity camera = MinecraftClient.getInstance().cameraEntity;
+        Entity camera = client.cameraEntity;
         double d = ModConfig.HANDLER.instance().reach;
         double e = MathHelper.square(d);
         Vec3d vec3d = camera.getCameraPosVec(0);
@@ -147,8 +149,8 @@ public class RenderTracker {
         Vec3d vec3d3 = vec3d.add(vec3d2.x * d, vec3d2.y * d, vec3d2.z * d);
         float g = 1.0f;
         Box box = camera.getBoundingBox().stretch(vec3d2.multiply(d)).expand(1.0, 1.0, 1.0);
-        assert MinecraftClient.getInstance().cameraEntity != null;
-        EntityHitResult entityHitResult = ProjectileUtil.raycast(MinecraftClient.getInstance().cameraEntity, vec3d, vec3d3, box, entity -> !entity.isSpectator() && entity.canHit(), e);
+        assert client.cameraEntity != null;
+        EntityHitResult entityHitResult = ProjectileUtil.raycast(client.cameraEntity, vec3d, vec3d3, box, entity -> !entity.isSpectator() && entity.canHit(), e);
 
         if (entityHitResult != null && entityHitResult.getEntity() instanceof LivingEntity livingEntity1){
             return livingEntity1 == livingEntity;
@@ -163,9 +165,9 @@ public class RenderTracker {
                 || !entity.isLiving()
                 || entity.isRegionUnloaded()
                 || !(entity instanceof LivingEntity)
-                || MinecraftClient.getInstance().player == null
-                || MinecraftClient.getInstance().player.getVehicle() == entity
-                || entity.isInvisibleTo(MinecraftClient.getInstance().player));
+                || client.player == null
+                || client.player.getVehicle() == entity
+                || entity.isInvisibleTo(client.player));
     }
     private static Entity getEntityFromUUID(UUID uuid, ClientWorld world) {
         for (Entity entity : world.getEntities()) {
