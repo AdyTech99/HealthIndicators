@@ -39,7 +39,6 @@ public final class HealthIndicatorsCommon {
         }
 
         RenderTracker.tick(client);
-        //HeartJumpData.tick(client);
     }
 
     public static void openConfig(){

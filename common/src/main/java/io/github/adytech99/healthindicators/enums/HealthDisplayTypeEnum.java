@@ -5,7 +5,8 @@ import net.minecraft.text.Text;
 
 public enum HealthDisplayTypeEnum implements NameableEnum {
     NUMBER("Number"),
-    HEARTS("Hearts");
+    HEARTS("Hearts"),
+    DYNAMIC("Dynamic");
 
     private final String displayName;
     HealthDisplayTypeEnum(String displayName) {

@@ -51,6 +51,10 @@ public abstract class EntityRendererMixin<T extends LivingEntity, M extends Enti
                     renderHearts(livingEntity, yaw, tickDelta, matrixStack, vertexConsumerProvider, light);
                 else if (ModConfig.HANDLER.instance().indicator_type == HealthDisplayTypeEnum.NUMBER)
                     renderNumber(livingEntity, yaw, tickDelta, matrixStack, vertexConsumerProvider, light);
+                else if (ModConfig.HANDLER.instance().indicator_type == HealthDisplayTypeEnum.DYNAMIC) {
+                    if(livingEntity.getMaxHealth() > 50) renderNumber(livingEntity, yaw, tickDelta, matrixStack, vertexConsumerProvider, light);
+                    else renderHearts(livingEntity, yaw, tickDelta, matrixStack, vertexConsumerProvider, light);
+                }
             }
             if(Config.getArmorRenderingEnabled() || Config.getOverrideAllFiltersEnabled()) renderArmorPoints(livingEntity, yaw, tickDelta, matrixStack, vertexConsumerProvider, light);
         }

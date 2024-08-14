@@ -25,7 +25,7 @@ import org.jetbrains.annotations.NotNull;
 
 @Mod(HealthIndicatorsCommon.MOD_ID)
 @EventBusSubscriber(value = Dist.CLIENT, modid = HealthIndicatorsCommon.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
-public final class HealthIndicatorsMod {
+public final class HealthIndicatorsNeoForge {
 
     public static MinecraftClient client = MinecraftClient.getInstance();
 
@@ -64,7 +64,7 @@ public final class HealthIndicatorsMod {
 
 
 
-    public HealthIndicatorsMod() {
+    public HealthIndicatorsNeoForge() {
         HealthIndicatorsCommon.init();
         if(ModConfig.HANDLER.instance().enable_commands) NeoForge.EVENT_BUS.addListener(ModCommands::onRegisterCommands);
         NeoForge.EVENT_BUS.addListener(this::onClientTick);
