@@ -118,7 +118,7 @@ public class ModConfig {
 
     @SerialEntry
     @AutoGen(category = "filters", group = "advanced")
-    @MasterTickBox(value = "distance")
+    @MasterTickBox(value = {"override_players", "reach"})
     public boolean within_distance = false;
 
     @SerialEntry

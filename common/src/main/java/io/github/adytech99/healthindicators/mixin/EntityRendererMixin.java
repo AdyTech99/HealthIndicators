@@ -52,7 +52,7 @@ public abstract class EntityRendererMixin<T extends LivingEntity, M extends Enti
                 else if (ModConfig.HANDLER.instance().indicator_type == HealthDisplayTypeEnum.NUMBER)
                     renderNumber(livingEntity, yaw, tickDelta, matrixStack, vertexConsumerProvider, light);
                 else if (ModConfig.HANDLER.instance().indicator_type == HealthDisplayTypeEnum.DYNAMIC) {
-                    if(livingEntity.getMaxHealth() > 50) renderNumber(livingEntity, yaw, tickDelta, matrixStack, vertexConsumerProvider, light);
+                    if(livingEntity.getMaxHealth() > 100) renderNumber(livingEntity, yaw, tickDelta, matrixStack, vertexConsumerProvider, light);
                     else renderHearts(livingEntity, yaw, tickDelta, matrixStack, vertexConsumerProvider, light);
                 }
             }

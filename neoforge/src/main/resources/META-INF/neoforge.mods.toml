@@ -16,7 +16,7 @@ logoFile = "assets/healthindicators/icon.png"
 [[dependencies.healthindicators]]
 modId = "neoforge"
 type = "required"
-versionRange = "[20.6,)"
+versionRange = "[21.0,)"
 ordering = "NONE"
 side = "BOTH"
 

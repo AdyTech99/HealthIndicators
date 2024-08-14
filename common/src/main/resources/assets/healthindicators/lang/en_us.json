@@ -48,7 +48,7 @@
 
 
   "yacl3.config.health-indicators:config.indicator_type": "Indicator Type",
-  "yacl3.config.health-indicators:config.indicator_type.desc": "Whether to render a floating hearts display or a number display.",
+  "yacl3.config.health-indicators:config.indicator_type.desc": "Whether to render a floating hearts display or a number display. Settings this to 'dynamic' will render hearts for entities with less than 100 health, and numbers for entities with more than 100 health.",
 
   "yacl3.config.health-indicators:config.icons_per_row": "Hearts per row (beta)",
 
