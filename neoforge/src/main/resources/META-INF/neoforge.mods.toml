@@ -30,7 +30,7 @@ side = "BOTH"
 [[dependencies.healthindicators]]
 modId = "architectury"
 type = "required"
-versionRange = "[12.1.2,)"
+versionRange = "[13.0.2,)"
 ordering = "AFTER"
 side = "BOTH"
 

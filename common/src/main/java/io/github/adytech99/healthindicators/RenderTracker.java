@@ -34,7 +34,7 @@ public class RenderTracker {
         if(client.player == null || client.world == null) return;
         if(Config.getRenderingEnabled()) {
             for (Entity entity : client.world.getEntities()) {
-                if (entity instanceof LivingEntity livingEntity && satisfiesAdvancedCriteria(client.player, livingEntity) && satisfiesBlacklist(client.player, livingEntity)) {
+                if (entity instanceof LivingEntity livingEntity && satisfiesAdvancedCriteria(client.player, livingEntity) && satisfiesList(client.player, livingEntity)) {
                     addToUUIDS(livingEntity);
                 } else removeFromUUIDS(entity.getUuid());
             }
@@ -52,7 +52,7 @@ public class RenderTracker {
             if (ModConfig.HANDLER.instance().after_attack
                     && livingEntity instanceof LivingEntity
                     && RenderTracker.isEntityTypeAllowed(livingEntity, client.player)
-                    && satisfiesBlacklist(client.player, livingEntity)) {
+                    && satisfiesList(client.player, livingEntity)) {
 
                 if(!addToUUIDS(livingEntity)){
                     UUIDS.replace(livingEntity.getUuid(), (ModConfig.HANDLER.instance().time_after_hit * 20));
@@ -123,16 +123,39 @@ public class RenderTracker {
         return !isInvalid(livingEntity);
     }
 
-    public static boolean satisfiesBlacklist(ClientPlayerEntity player, LivingEntity livingEntity){
-        String[] blacklist1 = new String[ModConfig.HANDLER.instance().blacklist.size()];
-        for(int i = 0; i < ModConfig.HANDLER.instance().blacklist.size(); i++){
-            blacklist1[i] = ModConfig.HANDLER.instance().blacklist.get(i);
+    public static boolean satisfiesList(ClientPlayerEntity player, LivingEntity livingEntity){
+        if(!ModConfig.HANDLER.instance().blacklistOrWhitelist){
+            if(ModConfig.HANDLER.instance().list.isEmpty()) return true;
+            if(ModConfig.HANDLER.instance().list.contains("minecraft:player") && livingEntity instanceof PlayerEntity) return true;
         }
-        return Arrays.stream(blacklist1).noneMatch(s -> {
+
+        String[] blacklist1 = new String[ModConfig.HANDLER.instance().list.size()];
+        for(int i = 0; i < ModConfig.HANDLER.instance().list.size(); i++){
+            blacklist1[i] = ModConfig.HANDLER.instance().list.get(i);
+        }
+
+        if(ModConfig.HANDLER.instance().blacklistOrWhitelist) return Arrays.stream(blacklist1).noneMatch(s -> {
+            if(livingEntity instanceof PlayerEntity) return Text.of(s).equals(Objects.requireNonNull(livingEntity.getName()));
+            else return s.equals(EntityType.getId(livingEntity.getType()).toString());
+        });
+        else return Arrays.stream(blacklist1).anyMatch(s -> {
             if(livingEntity instanceof PlayerEntity) return Text.of(s).equals(Objects.requireNonNull(livingEntity.getName()));
             else return s.equals(EntityType.getId(livingEntity.getType()).toString());
         });
     }
+
+    /*public static boolean satisfiesWhitelist(ClientPlayerEntity player, LivingEntity livingEntity){
+        if(ModConfig.HANDLER.instance().whitelist.isEmpty()) return true;
+        if(ModConfig.HANDLER.instance().whitelist.contains("minecraft:player") && livingEntity instanceof PlayerEntity) return true;
+        String[] whitelist1 = new String[ModConfig.HANDLER.instance().whitelist.size()];
+        for(int i = 0; i < ModConfig.HANDLER.instance().whitelist.size(); i++){
+            whitelist1[i] = ModConfig.HANDLER.instance().whitelist.get(i);
+        }
+        return Arrays.stream(whitelist1).anyMatch(s -> {
+            if(livingEntity instanceof PlayerEntity) return Text.of(s).equals(Objects.requireNonNull(livingEntity.getName()));
+            else return s.equals(EntityType.getId(livingEntity.getType()).toString());
+        });
+    }*/
 
     public static boolean isTargeted(LivingEntity livingEntity){
         Entity camera = client.cameraEntity;

@@ -16,7 +16,7 @@ import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 
 @Environment(EnvType.CLIENT)
-public class HealthIndicatorsMod implements ClientModInitializer {
+public class HealthIndicatorsFabric implements ClientModInitializer {
     public static final String MOD_ID = HealthIndicatorsCommon.MOD_ID;
 
     public static final KeyBinding HEARTS_RENDERING_ENABLED = KeyBindingHelper.registerKeyBinding(new KeyBinding(
@@ -76,7 +76,7 @@ public class HealthIndicatorsMod implements ClientModInitializer {
             while (DECREASE_HEART_OFFSET.wasPressed()) {
                 HealthIndicatorsCommon.decreaseOffset();
             }
-            if (OVERRIDE_ALL_FILTERS.wasPressed()) {
+            if (OVERRIDE_ALL_FILTERS.isPressed()) {
                 HealthIndicatorsCommon.overrideFilters();
             }
             else if(Config.getOverrideAllFiltersEnabled()) {

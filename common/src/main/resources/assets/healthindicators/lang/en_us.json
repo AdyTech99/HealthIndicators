@@ -14,8 +14,16 @@
   "yacl3.config.health-indicators:config.self": "Show for yourself",
   "yacl3.config.health-indicators:config.self.desc": "Displays a health bar above yourself in third person and in the inventory menu",
 
-  "yacl3.config.health-indicators:config.blacklist": "Blacklist",
-  "yacl3.config.health-indicators:config.blacklist.desc": "Prevents displaying health bars over these entity types. ",
+  "yacl3.config.health-indicators:config.blacklistOrWhitelist": "Blacklist or Whitelist",
+  "yacl3.config.health-indicators:config.blacklistOrWhitelist.desc": "Toggles Blacklist/Whitelist mode for the below list \n\n If you choose Blacklist, then the list below will prevent displaying health bars over the entered entity types. \n\n If you choose Whitelist, then Health bars will only display over the entity types listed in the list. Leave the list empty to disable.",
+  "yacl3.config.health-indicators:config.blacklistOrWhitelist.fmt.true": "Blacklist",
+  "yacl3.config.health-indicators:config.blacklistOrWhitelist.fmt.false": "Whitelist",
+
+  "yacl3.config.health-indicators:config.list": "Entity Type List",
+  "yacl3.config.health-indicators:config.list.desc": "Blacklist/whitelists the entity types from having their health rendered.",
+
+  "yacl3.config.health-indicators:config.whitelist": "Whitelist",
+  "yacl3.config.health-indicators:config.whitelist.desc": "Health bars will only display over the entity types listed in this list. Leave this list empty to disable.",
 
   "yacl3.config.health-indicators:config.after_attack": "Attacked entities only",
   "yacl3.config.health-indicators:config.after_attack.desc": "Health will display only after the entity has been attacked.",

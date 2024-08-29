@@ -60,8 +60,14 @@ public class ModConfig {
 
     @SerialEntry
     @AutoGen(category = "filters")
+    @Boolean(formatter = Boolean.Formatter.CUSTOM)
+    public boolean blacklistOrWhitelist = true;
+
+    @SerialEntry
+    @AutoGen(category = "filters")
     @ListGroup(valueFactory = EntitiesListGroup.class, controllerFactory = EntitiesListGroup.class)
-    public List<String> blacklist = Lists.newArrayList("minecraft:armor_stand");
+    public List<String> list = Lists.newArrayList("minecraft:armor_stand");
+
 
     @Label
     @AutoGen(category = "filters", group = "advanced")
@@ -118,7 +124,7 @@ public class ModConfig {
 
     @SerialEntry
     @AutoGen(category = "filters", group = "advanced")
-    @MasterTickBox(value = {"override_players", "reach"})
+    @MasterTickBox(value = {"override_players", "distance"})
     public boolean within_distance = false;
 
     @SerialEntry
@@ -252,8 +258,6 @@ public class ModConfig {
     @AutoGen(category = "appearance", group = "heart_offset")
     @Boolean
     public boolean hearts_clipping = true;*/
-
-
 
 
 

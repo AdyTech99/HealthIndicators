@@ -100,7 +100,7 @@ public final class HealthIndicatorsNeoForge {
         while (DECREASE_HEART_OFFSET.get().wasPressed()) {
             HealthIndicatorsCommon.decreaseOffset();
         }
-        if (OVERRIDE_ALL_FILTERS.get().wasPressed()) {
+        if (OVERRIDE_ALL_FILTERS.get().isPressed()) {
             HealthIndicatorsCommon.overrideFilters();
         }
         else if(Config.getOverrideAllFiltersEnabled()) {
