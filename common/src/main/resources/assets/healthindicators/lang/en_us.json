@@ -116,7 +116,7 @@
   "yacl3.config.health-indicators:config.category.appearance": "Appearance",
   "yacl3.config.health-indicators:config.category.messages": "Messages & Commands",
 
-  "yacl3.config.health-indicators:config.category.filters.group.entity_type": "Entity Types",
+  "yacl3.config.health-indicators:config.category.filters.group.entity_type": "Entity Categories",
   "yacl3.config.health-indicators:config.category.filters.group.advanced": "Advanced",
   "yacl3.config.health-indicators:config.category.appearance.group.indicator_type": "Indicator Appearance",
   "yacl3.config.health-indicators:config.category.appearance.group.offset": "Indicator Location",
