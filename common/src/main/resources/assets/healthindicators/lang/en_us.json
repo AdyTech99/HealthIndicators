@@ -19,7 +19,7 @@
   "yacl3.config.health-indicators:config.blacklistOrWhitelist.fmt.true": "Blacklist",
   "yacl3.config.health-indicators:config.blacklistOrWhitelist.fmt.false": "Whitelist",
 
-  "yacl3.config.health-indicators:config.list": "Entity Type List",
+  "yacl3.config.health-indicators:config.list": "Filtered Entities",
   "yacl3.config.health-indicators:config.list.desc": "Blacklist/whitelists the entity types from having their health rendered.",
 
   "yacl3.config.health-indicators:config.whitelist": "Whitelist",
