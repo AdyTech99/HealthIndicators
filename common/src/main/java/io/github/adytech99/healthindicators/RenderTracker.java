@@ -144,19 +144,6 @@ public class RenderTracker {
         });
     }
 
-    /*public static boolean satisfiesWhitelist(ClientPlayerEntity player, LivingEntity livingEntity){
-        if(ModConfig.HANDLER.instance().whitelist.isEmpty()) return true;
-        if(ModConfig.HANDLER.instance().whitelist.contains("minecraft:player") && livingEntity instanceof PlayerEntity) return true;
-        String[] whitelist1 = new String[ModConfig.HANDLER.instance().whitelist.size()];
-        for(int i = 0; i < ModConfig.HANDLER.instance().whitelist.size(); i++){
-            whitelist1[i] = ModConfig.HANDLER.instance().whitelist.get(i);
-        }
-        return Arrays.stream(whitelist1).anyMatch(s -> {
-            if(livingEntity instanceof PlayerEntity) return Text.of(s).equals(Objects.requireNonNull(livingEntity.getName()));
-            else return s.equals(EntityType.getId(livingEntity.getType()).toString());
-        });
-    }*/
-
     public static boolean isTargeted(LivingEntity livingEntity){
         Entity camera = client.cameraEntity;
         double d = ModConfig.HANDLER.instance().reach;
