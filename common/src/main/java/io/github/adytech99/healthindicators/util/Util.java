@@ -2,7 +2,6 @@ package io.github.adytech99.healthindicators.util;
 
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
-import net.minecraft.server.world.ServerWorld;
 
 import java.util.Objects;
 
