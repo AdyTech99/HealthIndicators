@@ -25,10 +25,19 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class RenderTracker {
     private static final MinecraftClient client = MinecraftClient.getInstance();
-
     private static final ConcurrentHashMap<UUID, Integer> UUIDS = new ConcurrentHashMap<>();
-
     public static boolean after_attack = ModConfig.HANDLER.instance().after_attack;
+
+    private static LivingEntity trackedEntity;
+
+    public static LivingEntity getTrackedEntity() {
+        return trackedEntity;
+    }
+
+    public static void setTrackedEntity(LivingEntity trackedEntity) {
+        RenderTracker.trackedEntity = trackedEntity;
+    }
+
 
     public static void tick(MinecraftClient client){
         if(client.player == null || client.world == null) return;
@@ -44,17 +53,15 @@ public class RenderTracker {
             UUIDS.clear();
             after_attack = ModConfig.HANDLER.instance().after_attack;
         }
+        if(getTrackedEntity() == null || getTrackedEntity().isDead() || getTrackedEntity().isRemoved()) setTrackedEntity(null);
     }
 
     public static void onDamage(DamageSource damageSource, LivingEntity livingEntity) {
         if(damageSource.getAttacker() instanceof PlayerEntity){
             assert client.world != null;
-            if (ModConfig.HANDLER.instance().after_attack
-                    && livingEntity instanceof LivingEntity
-                    && RenderTracker.isEntityTypeAllowed(livingEntity, client.player)
-                    && satisfiesList(client.player, livingEntity)) {
-
-                if(!addToUUIDS(livingEntity)){
+            if(ModConfig.HANDLER.instance().after_attack && livingEntity instanceof LivingEntity && RenderTracker.isEntityTypeAllowed(livingEntity, client.player) && satisfiesList(client.player, livingEntity)) {
+                setTrackedEntity(livingEntity);
+                if (!addToUUIDS(livingEntity)) {
                     UUIDS.replace(livingEntity.getUuid(), (ModConfig.HANDLER.instance().time_after_hit * 20));
                 }
             }
@@ -117,7 +124,7 @@ public class RenderTracker {
         if(!isEntityTypeAllowed(livingEntity, player)) return false; //Entity Types
         if(ModConfig.HANDLER.instance().after_attack && !UUIDS.containsKey(livingEntity.getUuid())) return false; //Damaged by Player, key should have been added by separate means. Necessary because removal check is done by this method.
         if(ModConfig.HANDLER.instance().damaged_only && (livingEntity.getHealth() == livingEntity.getMaxHealth() || livingEntity.getHealth() > livingEntity.getMaxHealth()*((float) ModConfig.HANDLER.instance().max_health_percentage / 100)) && livingEntity.getAbsorptionAmount() <= 0) return false; //Damaged by Any Reason
-        if(ModConfig.HANDLER.instance().looking_at && !isTargeted(livingEntity)) return false;
+        if(!isTargeted(livingEntity) && ModConfig.HANDLER.instance().looking_at) return false;
         if(ModConfig.HANDLER.instance().within_distance && livingEntity.distanceTo(player) > ModConfig.HANDLER.instance().distance) return false;
 
         return !isInvalid(livingEntity);
@@ -163,7 +170,9 @@ public class RenderTracker {
         EntityHitResult entityHitResult = ProjectileUtil.raycast(client.cameraEntity, vec3d, vec3d3, box, entity -> !entity.isSpectator() && entity.canHit(), e);
 
         if (entityHitResult != null && entityHitResult.getEntity() instanceof LivingEntity livingEntity1){
-            return livingEntity1 == livingEntity;
+            if(livingEntity1 == livingEntity) {
+                return true;
+            }
         }
         return false;
     }

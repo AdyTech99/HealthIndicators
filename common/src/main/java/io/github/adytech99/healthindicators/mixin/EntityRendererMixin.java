@@ -1,13 +1,16 @@
 package io.github.adytech99.healthindicators.mixin;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import io.github.adytech99.healthindicators.HudRenderer;
 import io.github.adytech99.healthindicators.config.Config;
 import io.github.adytech99.healthindicators.enums.ArmorTypeEnum;
 import io.github.adytech99.healthindicators.enums.HealthDisplayTypeEnum;
 import io.github.adytech99.healthindicators.enums.HeartTypeEnum;
 import io.github.adytech99.healthindicators.RenderTracker;
 import io.github.adytech99.healthindicators.config.ModConfig;
+import io.github.adytech99.healthindicators.enums.IndicatorLocationEnum;
 import io.github.adytech99.healthindicators.util.HeartJumpData;
+import io.github.adytech99.healthindicators.util.RenderUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.render.*;
@@ -32,6 +35,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static io.github.adytech99.healthindicators.enums.HeartTypeEnum.addHardcoreIcon;
 import static io.github.adytech99.healthindicators.enums.HeartTypeEnum.addStatusIcon;
+import static io.github.adytech99.healthindicators.util.RenderUtils.drawHeart;
 
 
 @Mixin(LivingEntityRenderer.class)
@@ -44,7 +48,6 @@ public abstract class EntityRendererMixin<T extends LivingEntity, M extends Enti
 
     @Inject(method = "render(Lnet/minecraft/entity/LivingEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", at = @At("TAIL"))
     public void render(T livingEntity, float yaw, float tickDelta, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int light, CallbackInfo ci) {
-
         if (RenderTracker.isInUUIDS(livingEntity) || (Config.getOverrideAllFiltersEnabled() && !RenderTracker.isInvalid(livingEntity))) {
             if(Config.getHeartsRenderingEnabled() || Config.getOverrideAllFiltersEnabled()) {
                 if (ModConfig.HANDLER.instance().indicator_type == HealthDisplayTypeEnum.HEARTS)
@@ -52,7 +55,8 @@ public abstract class EntityRendererMixin<T extends LivingEntity, M extends Enti
                 else if (ModConfig.HANDLER.instance().indicator_type == HealthDisplayTypeEnum.NUMBER)
                     renderNumber(livingEntity, yaw, tickDelta, matrixStack, vertexConsumerProvider, light);
                 else if (ModConfig.HANDLER.instance().indicator_type == HealthDisplayTypeEnum.DYNAMIC) {
-                    if(livingEntity.getMaxHealth() > 100) renderNumber(livingEntity, yaw, tickDelta, matrixStack, vertexConsumerProvider, light);
+                    if (livingEntity.getMaxHealth() > 100)
+                        renderNumber(livingEntity, yaw, tickDelta, matrixStack, vertexConsumerProvider, light);
                     else renderHearts(livingEntity, yaw, tickDelta, matrixStack, vertexConsumerProvider, light);
                 }
             }
@@ -165,16 +169,7 @@ public abstract class EntityRendererMixin<T extends LivingEntity, M extends Enti
     @Unique
     private void renderNumber(T livingEntity, float yaw, float tickDelta, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int light){
         double d = this.dispatcher.getSquaredDistanceToCamera(livingEntity);
-
-        float health = MathHelper.ceil(livingEntity.getHealth());
-        float maxHealth = MathHelper.ceil(livingEntity.getMaxHealth());
-        float absorption = MathHelper.ceil(livingEntity.getAbsorptionAmount());
-
-        String healthText = health+absorption + " / " + maxHealth;
-
-        if(ModConfig.HANDLER.instance().percentage_based_health) {
-            healthText = ((health + absorption) / maxHealth) * 100 + " %";
-        }
+        String healthText = RenderUtils.getHealthText(livingEntity);
 
         matrixStack.push();
         float scale = ModConfig.HANDLER.instance().size;
@@ -288,30 +283,6 @@ public abstract class EntityRendererMixin<T extends LivingEntity, M extends Enti
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         Identifier armorIcon = ModConfig.HANDLER.instance().use_vanilla_textures ? type.vanillaIcon : type.icon;
         RenderSystem.setShaderTexture(0, armorIcon);
-        RenderSystem.enableDepthTest();
-
-        float minU = 0F;
-        float maxU = 1F;
-        float minV = 0F;
-        float maxV = 1F;
-
-        float heartSize = 9F;
-
-        vertexConsumer.vertex(model, x, 0F - heartSize, 0.0F).texture(minU, maxV);
-        vertexConsumer.vertex(model, x - heartSize, 0F - heartSize, 0.0F).texture(maxU, maxV);
-        vertexConsumer.vertex(model, x - heartSize, 0F, 0.0F).texture(maxU, minV);
-        vertexConsumer.vertex(model, x, 0F, 0.0F).texture(minU, minV);
-    }
-
-    @Unique
-    private static void drawHeart(Matrix4f model, VertexConsumer vertexConsumer, float x, HeartTypeEnum type, LivingEntity livingEntity) {
-        String additionalIconEffects = "";
-        if(type != HeartTypeEnum.YELLOW_FULL && type != HeartTypeEnum.YELLOW_HALF && type != HeartTypeEnum.EMPTY && ModConfig.HANDLER.instance().show_heart_effects) additionalIconEffects = (addStatusIcon(livingEntity) + addHardcoreIcon(livingEntity));
-        Identifier heartIcon = Identifier.of("minecraft", "textures/gui/sprites/hud/heart/" + additionalIconEffects + type.icon + ".png");
-        Identifier vanillaHeartIcon = Identifier.of("healthindicators", "textures/gui/heart/" + additionalIconEffects + type.icon + ".png");
-
-        RenderSystem.setShader(GameRenderer::getPositionTexProgram);
-        RenderSystem.setShaderTexture(0, ModConfig.HANDLER.instance().use_vanilla_textures ? vanillaHeartIcon : heartIcon);
         RenderSystem.enableDepthTest();
 
         float minU = 0F;

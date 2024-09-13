@@ -4,16 +4,23 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.DoubleArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import io.github.adytech99.healthindicators.HealthIndicatorsCommon;
+import io.github.adytech99.healthindicators.RenderTracker;
 import io.github.adytech99.healthindicators.enums.HealthDisplayTypeEnum;
 import io.github.adytech99.healthindicators.config.ModConfig;
 import io.github.adytech99.healthindicators.util.ConfigUtils;
-import io.github.adytech99.healthindicators.util.Maths;
+import io.github.adytech99.healthindicators.util.Util;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientCommandSource;
+import net.minecraft.command.CommandSource;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.client.event.RegisterClientCommandsEvent;
+
+import java.util.Objects;
 
 public class ModCommands {
     @SubscribeEvent
@@ -28,7 +35,7 @@ public class ModCommands {
                                 .executes(context -> {
                                     ModConfig.HANDLER.instance().display_offset = DoubleArgumentType.getDouble(context, "offset");
                                     ModConfig.HANDLER.save();
-                                    ConfigUtils.sendMessage(MinecraftClient.getInstance().player, Text.literal("Set heart offset to " + Maths.truncate(ModConfig.HANDLER.instance().display_offset, 2)));
+                                    ConfigUtils.sendMessage(MinecraftClient.getInstance().player, Text.literal("Set heart offset to " + Util.truncate(ModConfig.HANDLER.instance().display_offset, 2)));
                                     return 1;
                                 })))
 
@@ -55,6 +62,25 @@ public class ModCommands {
                                     ConfigUtils.sendMessage(MinecraftClient.getInstance().player, Text.literal("Set display type to " + ModConfig.HANDLER.instance().indicator_type));
                                     return 1;
                                 })))
+
+                .then(CommandManager.literal("monitor")
+                        .then(CommandManager.argument("entity_name", StringArgumentType.string())
+                                .suggests((context, builder) -> {
+                            for(Entity entity : MinecraftClient.getInstance().world.getEntities()){
+                                if(entity.hasCustomName()) builder.suggest(Objects.requireNonNull(entity.getCustomName()).getString());
+                                if(entity.isPlayer()) builder.suggest(Objects.requireNonNull(entity.getDisplayName()).getString());
+                            }
+                            return builder.buildFuture();
+                        })
+                        .executes(context -> {
+                            assert MinecraftClient.getInstance().world != null;
+                            if(Util.getEntityFromName(MinecraftClient.getInstance().world, StringArgumentType.getString(context, "entity_name")) != null) {
+                                ConfigUtils.sendMessage(MinecraftClient.getInstance().player, (Text.literal("Now monitoring " + StringArgumentType.getString(context, "entity_name"))));
+                                RenderTracker.setTrackedEntity((LivingEntity) Util.getEntityFromName(MinecraftClient.getInstance().world, StringArgumentType.getString(context, "entity_name")));
+                            }
+                            else ConfigUtils.sendMessage(context.getSource().getPlayer(), (Text.literal("There is no entity named " + StringArgumentType.getString(context, "entity_name") + " in the world. It may have died or gone out of render distance.")));
+                            return 0;
+                        })))
         );
     }
 

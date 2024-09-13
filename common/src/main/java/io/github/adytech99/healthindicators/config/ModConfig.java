@@ -9,6 +9,7 @@ import dev.isxander.yacl3.config.v2.api.autogen.Label;
 import dev.isxander.yacl3.config.v2.api.autogen.*;
 import dev.isxander.yacl3.config.v2.api.serializer.GsonConfigSerializerBuilder;
 import io.github.adytech99.healthindicators.enums.HealthDisplayTypeEnum;
+import io.github.adytech99.healthindicators.enums.IndicatorLocationEnum;
 import io.github.adytech99.healthindicators.enums.MessageTypeEnum;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;

@@ -5,8 +5,8 @@
   "compatibilityLevel": "JAVA_21",
   "refmap": "HealthIndicators-common-common-refmap.json",
   "client": [
-    "EntityRendererMixin",
-    "EntityDamageMixin"
+    "EntityDamageMixin",
+    "EntityRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

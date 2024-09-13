@@ -2,10 +2,27 @@ plugins {
     id 'dev.architectury.loom' version '1.6-SNAPSHOT' apply false
     id 'architectury-plugin' version '3.4-SNAPSHOT'
     id 'com.github.johnrengelman.shadow' version '8.1.1' apply false
+    id 'io.github.pacifistmc.forgix' version "1.2.9"
 }
 
 architectury {
     minecraft = project.minecraft_version
+}
+
+forgix {
+    group = rootProject.maven_group
+    mergedJarName = "HealthIndicators-${rootProject.mod_version}.jar"
+
+    neoforge {
+        projectName = "neoforge"
+        jarLocation = "build/libs/HealthIndicators-neoforge-${rootProject.mod_version}.jar"
+//        mixin "neoforge/src/main/resources/jahealthindicators.mixins.json"
+    }
+    fabric {
+        projectName = "fabric"
+        jarLocation = "build/libs/HealthIndicators-fabric-${rootProject.mod_version}.jar"
+//        mixin "fabric/src/main/resources/healthindicators.mixins.json"
+    }
 }
 
 allprojects {
@@ -73,4 +90,6 @@ subprojects {
             // retrieving dependencies.
         }
     }
+    build.finalizedBy(mergeJars)
+    assemble.finalizedBy(mergeJars)
 }

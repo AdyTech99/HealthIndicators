@@ -1,11 +1,14 @@
 package io.github.adytech99.healthindicators;
 
+import dev.architectury.event.events.client.ClientGuiEvent;
 import io.github.adytech99.healthindicators.config.Config;
 import io.github.adytech99.healthindicators.config.ModConfig;
 import io.github.adytech99.healthindicators.util.ConfigUtils;
-import io.github.adytech99.healthindicators.util.Maths;
+import io.github.adytech99.healthindicators.util.Util;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import org.slf4j.Logger;
@@ -19,9 +22,11 @@ public final class HealthIndicatorsCommon {
     private static boolean changed = false;
     private static boolean openConfig = false;
 
+
     public static void init() {
         ModConfig.HANDLER.load();
         Config.load();
+        ClientGuiEvent.RENDER_HUD.register(HealthIndicatorsCommon::onHudRender);
         LOGGER.info("Never be heartless!");
     }
 
@@ -37,8 +42,11 @@ public final class HealthIndicatorsCommon {
             ModConfig.HANDLER.save();
             changed = false;
         }
-
         RenderTracker.tick(client);
+    }
+
+    public static void onHudRender(DrawContext drawContext1, RenderTickCounter renderTickCounter1) {
+        if(RenderTracker.getTrackedEntity() != null) HudRenderer.onHudRender(drawContext1, renderTickCounter1);
     }
 
     public static void openConfig(){
@@ -69,14 +77,14 @@ public final class HealthIndicatorsCommon {
         ModConfig.HANDLER.instance().display_offset = (ModConfig.HANDLER.instance().display_offset + ModConfig.HANDLER.instance().offset_step_size);
         changed = true;
         if (client.player != null) {
-            ConfigUtils.sendMessage(client.player, Text.literal("Set heart offset to " + Maths.truncate(ModConfig.HANDLER.instance().display_offset,2)));
+            ConfigUtils.sendMessage(client.player, Text.literal("Set heart offset to " + Util.truncate(ModConfig.HANDLER.instance().display_offset,2)));
         }
     }
     public static void decreaseOffset(){
         ModConfig.HANDLER.instance().display_offset = (ModConfig.HANDLER.instance().display_offset - ModConfig.HANDLER.instance().offset_step_size);
         changed = true;
         if (client.player != null) {
-            ConfigUtils.sendMessage(client.player, Text.literal("Set heart offset to " + Maths.truncate(ModConfig.HANDLER.instance().display_offset,2)));
+            ConfigUtils.sendMessage(client.player, Text.literal("Set heart offset to " + Util.truncate(ModConfig.HANDLER.instance().display_offset,2)));
         }
     }
 
