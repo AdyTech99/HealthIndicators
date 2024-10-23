@@ -14,7 +14,7 @@ public class Config {
     private static Config INSTANCE = new Config();
 
     private boolean heartsRenderingEnabled = true;
-    private boolean armorRenderingEnabled = true;
+    private boolean armorRenderingEnabled = false;
     private boolean overrideAllFiltersEnabled = false;
 
     public static boolean getRenderingEnabled(){
