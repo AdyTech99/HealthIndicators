@@ -96,17 +96,19 @@ public abstract class EntityRendererMixin<T extends LivingEntity, S extends Livi
         int pixelsTotal = Math.min(heartsTotal, heartsPerRow) * 8 + 1;
         float maxX = pixelsTotal / 2.0f;
 
-        double heartDensity = 50F - (Math.max(4F - Math.ceil((double) heartsTotal / heartsPerRow), -3F) * 5F);
+        float scale = ModConfig.HANDLER.instance().size;
+
+        //double heartDensity = 50F - (Math.max(4F - Math.ceil((double) heartsTotal / heartsPerRow), -3F) * 5F);
         double h = 0;
+        //matrixStack.translate(0, livingEntity.getHeight() + 0.75f +  + h, 0);
 
         for (int isDrawingEmpty = 0; isDrawingEmpty < 2; isDrawingEmpty++) {
             for (int heart = 0; heart < heartsTotal; heart++) {
                 if (heart % heartsPerRow == 0) {
-                    h = heart / heartDensity;
+                    h = (scale*10)*((heart/2 + heartsPerRow - 1) / heartsPerRow);
                 }
 
                 matrixStack.push();
-                float scale = ModConfig.HANDLER.instance().size;
                 vertexConsumer = tessellator.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
 
                 matrixStack.translate(0, livingEntity.getHeight() + 0.5f + h, 0);
@@ -221,6 +223,8 @@ public abstract class EntityRendererMixin<T extends LivingEntity, S extends Livi
         int pointsPerRow = ModConfig.HANDLER.instance().icons_per_row;
         int pixelsTotal = Math.min(pointsTotal, pointsPerRow) * 8 + 1;
         float maxX = pixelsTotal / 2.0f;
+        float scale = ModConfig.HANDLER.instance().size;
+
 
         double pointDensity = 50F - (Math.max(4F - Math.ceil((double) pointsTotal / pointsPerRow), -3F) * 5F);
         double h = 0;
@@ -228,11 +232,11 @@ public abstract class EntityRendererMixin<T extends LivingEntity, S extends Livi
         for (int isDrawingEmpty = 0; isDrawingEmpty < 2; isDrawingEmpty++) {
             for (int pointCount = 0; pointCount < pointsTotal; pointCount++) {
                 if (pointCount % pointsPerRow == 0) {
-                    h = pointCount / pointDensity;
+                    //h = pointCount / pointDensity;
+                    h = (scale*10)*((pointCount/2 + pointsPerRow - 1) / pointsPerRow);
                 }
 
                 matrixStack.push();
-                float scale = ModConfig.HANDLER.instance().size;
                 vertexConsumer = tessellator.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
 
                 int extraHeight = (int) (((livingEntity.getMaxHealth() + livingEntity.getAbsorptionAmount())/2 + pointsPerRow - 1) / pointsPerRow);
