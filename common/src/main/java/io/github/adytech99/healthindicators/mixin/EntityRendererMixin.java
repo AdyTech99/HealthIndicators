@@ -1,6 +1,5 @@
 package io.github.adytech99.healthindicators.mixin;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.adytech99.healthindicators.config.Config;
 import io.github.adytech99.healthindicators.enums.ArmorTypeEnum;
 import io.github.adytech99.healthindicators.enums.HealthDisplayTypeEnum;
@@ -17,12 +16,12 @@ import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.LivingEntityRenderer;
 import net.minecraft.client.render.entity.feature.FeatureRendererContext;
 import net.minecraft.client.render.entity.model.EntityModel;
+import net.minecraft.client.render.entity.state.LivingEntityRenderState;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.scoreboard.ScoreboardDisplaySlot;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.Mixin;
@@ -31,38 +30,46 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static io.github.adytech99.healthindicators.enums.HeartTypeEnum.addHardcoreIcon;
-import static io.github.adytech99.healthindicators.enums.HeartTypeEnum.addStatusIcon;
+import static io.github.adytech99.healthindicators.util.RenderUtils.drawArmor;
 import static io.github.adytech99.healthindicators.util.RenderUtils.drawHeart;
 
 
 @Mixin(LivingEntityRenderer.class)
-public abstract class EntityRendererMixin<T extends LivingEntity, M extends EntityModel<T>> extends EntityRenderer<T> implements FeatureRendererContext<T, M> {
+public abstract class EntityRendererMixin<T extends LivingEntity, S extends LivingEntityRenderState, M extends EntityModel<? super S>>
+        extends EntityRenderer<T, S>
+        implements FeatureRendererContext<S, M> {
+
+    @Unique private LivingEntity mainLivingEntityThing;
 
     @Unique private final MinecraftClient client = MinecraftClient.getInstance();
     protected EntityRendererMixin(EntityRendererFactory.Context ctx) {
         super(ctx);
     }
 
-    @Inject(method = "render(Lnet/minecraft/entity/LivingEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", at = @At("TAIL"))
-    public void render(T livingEntity, float yaw, float tickDelta, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int light, CallbackInfo ci) {
-        if (RenderTracker.isInUUIDS(livingEntity) || (Config.getOverrideAllFiltersEnabled() && !RenderTracker.isInvalid(livingEntity))) {
+    @Inject(method = "updateRenderState(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/client/render/entity/state/LivingEntityRenderState;F)V", at = @At("TAIL"))
+    public void updateRenderState(T livingEntity, S livingEntityRenderState, float f, CallbackInfo ci){
+        mainLivingEntityThing = livingEntity;
+    }
+
+    @Inject(method = "render(Lnet/minecraft/client/render/entity/state/LivingEntityRenderState;Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", at = @At("TAIL"))
+    public void render(S livingEntityRenderState, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, CallbackInfo ci) {
+        if (RenderTracker.isInUUIDS(mainLivingEntityThing) || (Config.getOverrideAllFiltersEnabled() && !RenderTracker.isInvalid(mainLivingEntityThing))) {
             if(Config.getHeartsRenderingEnabled() || Config.getOverrideAllFiltersEnabled()) {
                 if (ModConfig.HANDLER.instance().indicator_type == HealthDisplayTypeEnum.HEARTS)
-                    renderHearts(livingEntity, yaw, tickDelta, matrixStack, vertexConsumerProvider, light);
+                    renderHearts(mainLivingEntityThing, livingEntityRenderState.yawDegrees, 0, matrixStack, vertexConsumerProvider, i);
                 else if (ModConfig.HANDLER.instance().indicator_type == HealthDisplayTypeEnum.NUMBER)
-                    renderNumber(livingEntity, yaw, tickDelta, matrixStack, vertexConsumerProvider, light);
+                    renderNumber(mainLivingEntityThing, livingEntityRenderState.yawDegrees, 0, matrixStack, vertexConsumerProvider, i);
                 else if (ModConfig.HANDLER.instance().indicator_type == HealthDisplayTypeEnum.DYNAMIC) {
-                    if (livingEntity.getMaxHealth() > 100)
-                        renderNumber(livingEntity, yaw, tickDelta, matrixStack, vertexConsumerProvider, light);
-                    else renderHearts(livingEntity, yaw, tickDelta, matrixStack, vertexConsumerProvider, light);
+                    if (mainLivingEntityThing.getMaxHealth() > 100)
+                        renderNumber(mainLivingEntityThing, livingEntityRenderState.yawDegrees, 0, matrixStack, vertexConsumerProvider, i);
+                    else renderHearts(mainLivingEntityThing, livingEntityRenderState.yawDegrees, 0, matrixStack, vertexConsumerProvider, i);
                 }
             }
-            if(Config.getArmorRenderingEnabled() || Config.getOverrideAllFiltersEnabled()) renderArmorPoints(livingEntity, yaw, tickDelta, matrixStack, vertexConsumerProvider, light);
+            if(Config.getArmorRenderingEnabled() || Config.getOverrideAllFiltersEnabled()) renderArmorPoints(mainLivingEntityThing, livingEntityRenderState.yawDegrees, 0, matrixStack, vertexConsumerProvider, i);
         }
     }
 
-    @Unique private void renderHearts(T livingEntity, float yaw, float tickDelta, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int light){
+    @Unique private void renderHearts(LivingEntity livingEntity, float yaw, float tickDelta, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int light){
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder vertexConsumer;
 
@@ -110,7 +117,7 @@ public abstract class EntityRendererMixin<T extends LivingEntity, M extends Enti
                         }
                 }
 
-                if ((this.hasLabel(livingEntity)
+                if ((this.hasLabel((T) livingEntity, d)
                         || (ModConfig.HANDLER.instance().force_higher_offset_for_players && livingEntity instanceof PlayerEntity && livingEntity != client.player))
                         && d <= 4096.0) {
                     matrixStack.translate(0.0D, 9.0F * 1.15F * scale, 0.0D);
@@ -165,7 +172,7 @@ public abstract class EntityRendererMixin<T extends LivingEntity, M extends Enti
     }
 
     @Unique
-    private void renderNumber(T livingEntity, float yaw, float tickDelta, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int light){
+    private void renderNumber(LivingEntity livingEntity, float yaw, float tickDelta, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int light){
         double d = this.dispatcher.getSquaredDistanceToCamera(livingEntity);
         String healthText = RenderUtils.getHealthText(livingEntity);
 
@@ -173,7 +180,7 @@ public abstract class EntityRendererMixin<T extends LivingEntity, M extends Enti
         float scale = ModConfig.HANDLER.instance().size;
 
         matrixStack.translate(0, livingEntity.getHeight() + 0.5f, 0);
-        if ((this.hasLabel(livingEntity)
+        if ((this.hasLabel((T) livingEntity, d)
                 || (ModConfig.HANDLER.instance().force_higher_offset_for_players && livingEntity instanceof PlayerEntity && livingEntity != client.player))
                 && d <= 4096.0) {
             matrixStack.translate(0.0D, 9.0F * 1.15F * scale, 0.0D);
@@ -195,7 +202,7 @@ public abstract class EntityRendererMixin<T extends LivingEntity, M extends Enti
     }
 
 
-    @Unique private void renderArmorPoints(T livingEntity, float yaw, float tickDelta, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int light){
+    @Unique private void renderArmorPoints(LivingEntity livingEntity, float yaw, float tickDelta, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int light){
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder vertexConsumer;
 
@@ -228,8 +235,9 @@ public abstract class EntityRendererMixin<T extends LivingEntity, M extends Enti
                 float scale = ModConfig.HANDLER.instance().size;
                 vertexConsumer = tessellator.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
 
-                matrixStack.translate(0, livingEntity.getHeight() + 0.75f + + h, 0);
-                if ((this.hasLabel(livingEntity)
+                int extraHeight = (int) (((livingEntity.getMaxHealth() + livingEntity.getAbsorptionAmount())/2 + pointsPerRow - 1) / pointsPerRow);
+                matrixStack.translate(0, livingEntity.getHeight() + 0.75f + (scale*10)*(extraHeight-1) + h, 0);
+                if ((this.hasLabel((T) livingEntity, d)
                         || (ModConfig.HANDLER.instance().force_higher_offset_for_players && livingEntity instanceof PlayerEntity && livingEntity != client.player))
                         && d <= 4096.0) {
                     matrixStack.translate(0.0D, 9.0F * 1.15F * scale, 0.0D);
@@ -274,26 +282,6 @@ public abstract class EntityRendererMixin<T extends LivingEntity, M extends Enti
                 matrixStack.pop();
             }
         }
-    }
-
-    @Unique
-    private static void drawArmor(Matrix4f model, VertexConsumer vertexConsumer, float x, ArmorTypeEnum type) {
-        RenderSystem.setShader(GameRenderer::getPositionTexProgram);
-        Identifier armorIcon = ModConfig.HANDLER.instance().use_vanilla_textures ? type.vanillaIcon : type.icon;
-        RenderSystem.setShaderTexture(0, armorIcon);
-        RenderSystem.enableDepthTest();
-
-        float minU = 0F;
-        float maxU = 1F;
-        float minV = 0F;
-        float maxV = 1F;
-
-        float heartSize = 9F;
-
-        vertexConsumer.vertex(model, x, 0F - heartSize, 0.0F).texture(minU, maxV);
-        vertexConsumer.vertex(model, x - heartSize, 0F - heartSize, 0.0F).texture(maxU, maxV);
-        vertexConsumer.vertex(model, x - heartSize, 0F, 0.0F).texture(maxU, minV);
-        vertexConsumer.vertex(model, x, 0F, 0.0F).texture(minU, minV);
     }
 
     @Unique

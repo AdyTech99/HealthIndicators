@@ -174,7 +174,7 @@ public class HudRenderer {
 
     private static void drawHeart(DrawContext context, HudHeartType type, int x, int y, boolean hardcore, boolean blinking, boolean half) {
         RenderSystem.enableBlend();
-        context.drawGuiTexture(type.getTexture(hardcore, half, blinking), 50, 50, 9, 9);
+//        context.drawGuiTexture(type.getTexture(hardcore, half, blinking), 50, 50, 9, 9);
         RenderSystem.disableBlend();
     }
 

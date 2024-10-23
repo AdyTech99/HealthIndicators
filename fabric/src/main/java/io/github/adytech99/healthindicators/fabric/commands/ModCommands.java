@@ -3,7 +3,6 @@ package io.github.adytech99.healthindicators.fabric.commands;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.DoubleArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
-import com.mojang.brigadier.suggestion.SuggestionProvider;
 import io.github.adytech99.healthindicators.HealthIndicatorsCommon;
 import io.github.adytech99.healthindicators.RenderTracker;
 import io.github.adytech99.healthindicators.config.ModConfig;
@@ -16,14 +15,9 @@ import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.command.CommandRegistryAccess;
-import net.minecraft.command.CommandSource;
-import net.minecraft.command.suggestion.SuggestionProviders;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
 
 import java.util.Objects;
 
@@ -32,10 +26,8 @@ public class ModCommands {
     public static void registerCommands(){
         ClientCommandRegistrationCallback.EVENT.register(ModCommands::configCommands);
         ClientCommandRegistrationCallback.EVENT.register(ModCommands::openModMenuCommand);
-        //ClientCommandRegistrationCallback.EVENT.register(ModCommands::IndicatorTypeCommand);
     }
 
-    public static final SuggestionProvider<FabricClientCommandSource> CLIENT_SUMMONABLE_ENTITIES = SuggestionProviders.register(Identifier.of("healthindicators","summonable_entities"), (context, builder) -> CommandSource.suggestFromIdentifier(Registries.ENTITY_TYPE.stream().filter(entityType -> entityType.isEnabled(((CommandSource)context.getSource()).getEnabledFeatures()) && entityType.isSummonable()), builder, EntityType::getId, entityType -> Text.translatable(net.minecraft.util.Util.createTranslationKey("entity", EntityType.getId(entityType)))));
 
     private static void configCommands(CommandDispatcher<FabricClientCommandSource> fabricClientCommandSourceCommandDispatcher, CommandRegistryAccess commandRegistryAccess) {
         fabricClientCommandSourceCommandDispatcher.register(ClientCommandManager.literal("healthindicators")
@@ -90,6 +82,13 @@ public class ModCommands {
                             else ConfigUtils.sendMessage(context.getSource().getPlayer(), (Text.literal("There is no entity named " + StringArgumentType.getString(context, "entity_name") + " in the world. It may have died or gone out of render distance.")));
                             return 0;
                         })))
+
+            .then(ClientCommandManager.literal("stop-monitoring")
+                .executes(context -> {
+                    RenderTracker.setTrackedEntity(null);
+                    ConfigUtils.sendMessage(context.getSource().getPlayer(), (Text.literal("Stopped monitoring ")));
+                    return 0;
+                }))
         );
     }
 

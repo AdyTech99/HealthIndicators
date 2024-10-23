@@ -60,7 +60,7 @@ public class RenderTracker {
         if(damageSource.getAttacker() instanceof PlayerEntity){
             assert client.world != null;
             if(ModConfig.HANDLER.instance().after_attack && livingEntity instanceof LivingEntity && RenderTracker.isEntityTypeAllowed(livingEntity, client.player) && satisfiesList(client.player, livingEntity)) {
-                setTrackedEntity(livingEntity);
+                //setTrackedEntity(livingEntity);
                 if (!addToUUIDS(livingEntity)) {
                     UUIDS.replace(livingEntity.getUuid(), (ModConfig.HANDLER.instance().time_after_hit * 20));
                 }

@@ -78,9 +78,16 @@ public class ModCommands {
                                 ConfigUtils.sendMessage(MinecraftClient.getInstance().player, (Text.literal("Now monitoring " + StringArgumentType.getString(context, "entity_name"))));
                                 RenderTracker.setTrackedEntity((LivingEntity) Util.getEntityFromName(MinecraftClient.getInstance().world, StringArgumentType.getString(context, "entity_name")));
                             }
-                            else ConfigUtils.sendMessage(context.getSource().getPlayer(), (Text.literal("There is no entity named " + StringArgumentType.getString(context, "entity_name") + " in the world. It may have died or gone out of render distance.")));
+                            else ConfigUtils.sendMessage(MinecraftClient.getInstance().player, (Text.literal("There is no entity named " + StringArgumentType.getString(context, "entity_name") + " in the world. It may have died or gone out of render distance.")));
                             return 0;
                         })))
+
+                .then(CommandManager.literal("stop-monitoring")
+                        .executes(context -> {
+                            RenderTracker.setTrackedEntity(null);
+                            ConfigUtils.sendMessage(MinecraftClient.getInstance().player, (Text.literal("Stopped monitoring ")));
+                            return 0;
+                        }))
         );
     }
 
