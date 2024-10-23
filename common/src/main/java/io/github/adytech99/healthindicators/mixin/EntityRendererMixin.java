@@ -98,14 +98,14 @@ public abstract class EntityRendererMixin<T extends LivingEntity, S extends Livi
 
         float scale = ModConfig.HANDLER.instance().size;
 
-        //double heartDensity = 50F - (Math.max(4F - Math.ceil((double) heartsTotal / heartsPerRow), -3F) * 5F);
+        double heartDensity = 50F - (Math.max(4F - Math.ceil((double) heartsTotal / heartsPerRow), -3F) * 5F);
         double h = 0;
-        //matrixStack.translate(0, livingEntity.getHeight() + 0.75f +  + h, 0);
 
         for (int isDrawingEmpty = 0; isDrawingEmpty < 2; isDrawingEmpty++) {
             for (int heart = 0; heart < heartsTotal; heart++) {
                 if (heart % heartsPerRow == 0) {
-                    h = (scale*10)*((heart/2 + heartsPerRow - 1) / heartsPerRow);
+                    //h = (scale*10)*((heart/2 + heartsPerRow - 1) / heartsPerRow);
+                    h = heart / heartDensity;
                 }
 
                 matrixStack.push();
