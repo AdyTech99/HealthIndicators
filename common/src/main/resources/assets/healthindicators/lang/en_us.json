@@ -77,6 +77,9 @@
   "yacl3.config.health-indicators:config.render_number_display_background_color": "Render background",
   "yacl3.config.health-indicators:config.render_number_display_background_color.desc": "Whether there should be a colored background behind the number display",
 
+  "yacl3.config.health-indicators:config.decimal_places": "Decimal Places",
+  "yacl3.config.health-indicators:config.decimal_places.desc": "The number of decimal places that should appear in the number display.",
+
   "yacl3.config.health-indicators:config.number_display_background_color": "Background color",
   "yacl3.config.health-indicators:config.number_display_background_color.desc": "The background color for the number display",
 

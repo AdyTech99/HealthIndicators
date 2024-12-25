@@ -185,6 +185,11 @@ public class ModConfig {
     @Boolean
     public boolean render_number_display_shadow = false;
 
+    @SerialEntry
+    @AutoGen(category = "appearance", group = "indicator_type")
+    @IntSlider(min = 0, max = 12, step = 1)
+    public int decimal_places = 1;
+
     /*@SerialEntry
     @AutoGen(category = "appearance", group = "indicator_type")
     @MasterTickBox(value = {"number_display_background_color"})*/
