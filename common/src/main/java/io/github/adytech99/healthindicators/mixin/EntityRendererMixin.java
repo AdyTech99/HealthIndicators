@@ -53,7 +53,7 @@ public abstract class EntityRendererMixin<T extends LivingEntity, S extends Livi
 
     @Inject(method = "render(Lnet/minecraft/client/render/entity/state/LivingEntityRenderState;Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", at = @At("TAIL"))
     public void render(S livingEntityRenderState, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, CallbackInfo ci) {
-        if (RenderTracker.isInUUIDS(mainLivingEntityThing) || (Config.getOverrideAllFiltersEnabled() && !RenderTracker.isInvalid(mainLivingEntityThing))) {
+        if (mainLivingEntityThing != null && (RenderTracker.isInUUIDS(mainLivingEntityThing) || (Config.getOverrideAllFiltersEnabled() && !RenderTracker.isInvalid(mainLivingEntityThing)))) {
             if(Config.getHeartsRenderingEnabled() || Config.getOverrideAllFiltersEnabled()) {
                 if (ModConfig.HANDLER.instance().indicator_type == HealthDisplayTypeEnum.HEARTS)
                     renderHearts(mainLivingEntityThing, livingEntityRenderState.yawDegrees, 0, matrixStack, vertexConsumerProvider, i);
