@@ -8,8 +8,8 @@ import dev.isxander.yacl3.config.v2.api.autogen.Boolean;
 import dev.isxander.yacl3.config.v2.api.autogen.Label;
 import dev.isxander.yacl3.config.v2.api.autogen.*;
 import dev.isxander.yacl3.config.v2.api.serializer.GsonConfigSerializerBuilder;
+import io.github.adytech99.healthindicators.HealthIndicatorsCommon;
 import io.github.adytech99.healthindicators.enums.HealthDisplayTypeEnum;
-import io.github.adytech99.healthindicators.enums.IndicatorLocationEnum;
 import io.github.adytech99.healthindicators.enums.MessageTypeEnum;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
@@ -25,7 +25,7 @@ public class ModConfig {
     public static final Path CONFIG_PATH = Platform.getConfigFolder().resolve("health_indicators_config.json");
 
     public static final ConfigClassHandler<ModConfig> HANDLER = ConfigClassHandler.createBuilder(ModConfig.class)
-            .id(Identifier.of("health-indicators", "config"))
+            .id(Identifier.of(HealthIndicatorsCommon.MOD_ID, "config"))
             .serializer(config -> GsonConfigSerializerBuilder.create(config)
                     .setPath(CONFIG_PATH)
                     .build())
@@ -265,6 +265,18 @@ public class ModConfig {
     @Boolean
     public boolean hearts_clipping = true;*/
 
+    //DAMAGE DIRECTION INDICATORS
+
+    @SerialEntry
+    @AutoGen(category = "damage_direction_indicators")
+    @CustomImage(value = "images/damage_direction_indicator_example.png", width = 2160, height = 2160)
+    @Boolean
+    public boolean enable_damage_direction_indicators = false;
+
+    @SerialEntry
+    @AutoGen(category = "damage_direction_indicators")
+    @IntSlider(min = 1, max = 8, step = 1)
+    public int damage_direction_indicators_scale = 2;
 
 
     public static Screen createScreen(@Nullable Screen parent) {

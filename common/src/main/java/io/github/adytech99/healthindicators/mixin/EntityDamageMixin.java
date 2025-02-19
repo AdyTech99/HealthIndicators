@@ -16,7 +16,7 @@ public class EntityDamageMixin {
     private void onEntityDamage(DamageSource damageSource, CallbackInfo callbackInfo) {
         RenderTracker.onDamage(damageSource, ((LivingEntity) (Object) this));
 
-        if(damageSource.getAttacker() instanceof LivingEntity attacker && attacker != null && (Object) this == HealthIndicatorsCommon.client.player){
+        if (damageSource.getAttacker() instanceof LivingEntity attacker && attacker != null && (Object) this == HealthIndicatorsCommon.client.player) {
             DamageDirectionIndicatorRenderer.markDamageToPlayer(attacker);
         }
     }

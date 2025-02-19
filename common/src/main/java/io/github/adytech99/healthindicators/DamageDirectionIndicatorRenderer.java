@@ -1,8 +1,10 @@
 package io.github.adytech99.healthindicators;
 
+import com.mojang.blaze3d.systems.RenderSystem;
+import io.github.adytech99.healthindicators.config.ModConfig;
+import net.minecraft.client.gl.ShaderProgramKeys;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.RenderTickCounter;
+import net.minecraft.client.render.*;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.MathHelper;
@@ -21,13 +23,17 @@ public class DamageDirectionIndicatorRenderer {
     }
 
     public static void tick(){
+        player = HealthIndicatorsCommon.client.player;
         if(timeSinceLastDamage != Integer.MAX_VALUE) timeSinceLastDamage++;
-        if (attacker == null) timeSinceLastDamage = Integer.MAX_VALUE;
+        if (attacker == null || attacker.isDead() || attacker.isRemoved()){
+            timeSinceLastDamage = Integer.MAX_VALUE;
+            attacker = null;
+        }
+        if(timeSinceLastDamage == Integer.MAX_VALUE) attacker = null;
     }
 
     public static void render(DrawContext drawContext, RenderTickCounter renderTickCounter) {
         if (player == null) return;
-
         if (timeSinceLastDamage <= 80 && attacker != null) {
             // Get positions and calculate direction
             Vec3d playerPos = player.getPos();
@@ -46,8 +52,7 @@ public class DamageDirectionIndicatorRenderer {
             float radius = 24.0f;
             float angle = (float) Math.toRadians(deltaYaw);
 
-            // Corrected calculation of indicator position:
-            // We add on the sin for X so that a positive angle moves the indicator to the right.
+            // Calculate indicator position
             float indicatorX = centerX + radius * (float) Math.sin(angle);
             float indicatorY = centerY - radius * (float) Math.cos(angle);
 
@@ -55,28 +60,44 @@ public class DamageDirectionIndicatorRenderer {
             int timeSinceHit = timeSinceLastDamage;
             int alpha = 255 - (int) (255 * (timeSinceHit / 80.0f));
 
-            // Draw directional chevron using transformed coordinates
+            // Draw directional wedge
             drawContext.getMatrices().push();
             drawContext.getMatrices().translate(indicatorX, indicatorY, 0);
 
-            // Correctly create and apply rotation matrix
-            Matrix4f rotationMatrix = new Matrix4f().rotationZ(angle);
+            // Apply rotation to face the attacker
             drawContext.getMatrices().multiply(new Quaternionf().rotationZ(angle));
 
-            // Chevron shape coordinates (rotated to face outward)
-            int[] xPoints = {0, -3, 3};
-            int[] yPoints = {-4, 4, 4};
+            // Define wedge shape as a triangle (tip at 0,-4; base at -3,4 and 3,4)
+            Matrix4f matrix = drawContext.getMatrices().peek().getPositionMatrix();
+            Tessellator tessellator = Tessellator.getInstance();
+            BufferBuilder buffer = tessellator.begin(VertexFormat.DrawMode.TRIANGLES, VertexFormats.POSITION_COLOR);
 
-            // Draw filled chevron with fading red color
-            for (int i = 0; i < xPoints.length - 1; i++) {
-                drawContext.fill(RenderLayer.getGui(),
-                        xPoints[i], yPoints[i],
-                        xPoints[i + 1], yPoints[i + 1],
-                        (alpha << 24) | 0x00FF0000); // ARGB red with alpha
+            // Set up rendering for transparent color
+            RenderSystem.enableBlend();
+            RenderSystem.defaultBlendFunc();
+            RenderSystem.setShader(ShaderProgramKeys.POSITION_COLOR);
+
+            float scale = ModConfig.HANDLER.instance().damage_direction_indicators_scale;
+            // Tip of the wedge (top center)
+            buffer.vertex(matrix, 0 * scale, -4 * scale, 0).color(255, 0, 0, alpha);
+            // Left base point
+            buffer.vertex(matrix, -3 * scale, 4 * scale, 0).color(255, 0, 0, alpha);
+            // Right base point
+            buffer.vertex(matrix, 3 * scale, 4 * scale, 0).color(255, 0, 0, alpha);
+
+            BuiltBuffer builtBuffer;
+            try {
+                builtBuffer = buffer.endNullable();
+                if(builtBuffer != null){
+                    BufferRenderer.drawWithGlobalProgram(builtBuffer);
+                    builtBuffer.close();
+                }
             }
-
+            catch (Exception e){
+                // F off
+            }
+            RenderSystem.disableBlend();
             drawContext.getMatrices().pop();
         }
-
     }
 }

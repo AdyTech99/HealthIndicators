@@ -1,130 +1,137 @@
 {
-  "yacl3.config.health-indicators:config.passive_mobs": "Show for passive mobs",
-  "yacl3.config.health-indicators:config.passive_mobs.desc": "Displays a health bar above passive mobs",
+  "yacl3.config.healthindicators:config.passive_mobs": "Show for passive mobs",
+  "yacl3.config.healthindicators:config.passive_mobs.desc": "Displays a health bar above passive mobs",
 
-  "yacl3.config.health-indicators:config.hostile_mobs": "Show for hostile mobs",
-  "yacl3.config.health-indicators:config.hostile_mobs.desc": "Displays a health bar above hostile mobs",
+  "yacl3.config.healthindicators:config.hostile_mobs": "Show for hostile mobs",
+  "yacl3.config.healthindicators:config.hostile_mobs.desc": "Displays a health bar above hostile mobs",
 
-  "yacl3.config.health-indicators:config.angered_mobs": "Show for angered mobs",
-  "yacl3.config.health-indicators:config.angered_mobs.desc": "Displays a health bar above angered mobs. This is different from 'Hostile Mobs,' since a passive mob (eg: iron golem, enderman) are not considered a hostile mob, but can still attack the player if provoked.",
+  "yacl3.config.healthindicators:config.angered_mobs": "Show for angered mobs",
+  "yacl3.config.healthindicators:config.angered_mobs.desc": "Displays a health bar above angered mobs. This is different from 'Hostile Mobs,' since a passive mob (eg: iron golem, enderman) are not considered a hostile mob, but can still attack the player if provoked.",
 
-  "yacl3.config.health-indicators:config.players": "Show for players",
-  "yacl3.config.health-indicators:config.players.desc": "Displays a health bar above other players",
+  "yacl3.config.healthindicators:config.players": "Show for players",
+  "yacl3.config.healthindicators:config.players.desc": "Displays a health bar above other players",
 
-  "yacl3.config.health-indicators:config.self": "Show for yourself",
-  "yacl3.config.health-indicators:config.self.desc": "Displays a health bar above yourself in third person and in the inventory menu",
+  "yacl3.config.healthindicators:config.self": "Show for yourself",
+  "yacl3.config.healthindicators:config.self.desc": "Displays a health bar above yourself in third person and in the inventory menu",
 
-  "yacl3.config.health-indicators:config.blacklistOrWhitelist": "Blacklist or Whitelist",
-  "yacl3.config.health-indicators:config.blacklistOrWhitelist.desc": "Toggles Blacklist/Whitelist mode for the below list \n\n If you choose Blacklist, then the list below will prevent displaying health bars over the entered entity types. \n\n If you choose Whitelist, then Health bars will only display over the entity types listed in the list. Leave the list empty to disable.",
-  "yacl3.config.health-indicators:config.blacklistOrWhitelist.fmt.true": "Blacklist",
-  "yacl3.config.health-indicators:config.blacklistOrWhitelist.fmt.false": "Whitelist",
+  "yacl3.config.healthindicators:config.blacklistOrWhitelist": "Blacklist or Whitelist",
+  "yacl3.config.healthindicators:config.blacklistOrWhitelist.desc": "Toggles Blacklist/Whitelist mode for the below list \n\n If you choose Blacklist, then the list below will prevent displaying health bars over the entered entity types. \n\n If you choose Whitelist, then Health bars will only display over the entity types listed in the list. Leave the list empty to disable.",
+  "yacl3.config.healthindicators:config.blacklistOrWhitelist.fmt.true": "Blacklist",
+  "yacl3.config.healthindicators:config.blacklistOrWhitelist.fmt.false": "Whitelist",
 
-  "yacl3.config.health-indicators:config.list": "Filtered Entities",
-  "yacl3.config.health-indicators:config.list.desc": "Blacklist/whitelists the entity types from having their health rendered.",
+  "yacl3.config.healthindicators:config.list": "Filtered Entities",
+  "yacl3.config.healthindicators:config.list.desc": "Blacklist/whitelists the entity types from having their health rendered.",
 
-  "yacl3.config.health-indicators:config.whitelist": "Whitelist",
-  "yacl3.config.health-indicators:config.whitelist.desc": "Health bars will only display over the entity types listed in this list. Leave this list empty to disable.",
+  "yacl3.config.healthindicators:config.whitelist": "Whitelist",
+  "yacl3.config.healthindicators:config.whitelist.desc": "Health bars will only display over the entity types listed in this list. Leave this list empty to disable.",
 
-  "yacl3.config.health-indicators:config.after_attack": "Attacked entities only",
-  "yacl3.config.health-indicators:config.after_attack.desc": "Health will display only after the entity has been attacked.",
+  "yacl3.config.healthindicators:config.after_attack": "Attacked entities only",
+  "yacl3.config.healthindicators:config.after_attack.desc": "Health will display only after the entity has been attacked.",
 
-  "yacl3.config.health-indicators:config.time_after_hit": "Seconds to reset indicator",
-  "yacl3.config.health-indicators:config.time_after_hit.desc": "Health indicator will disappear after the set number of seconds.",
+  "yacl3.config.healthindicators:config.time_after_hit": "Seconds to reset indicator",
+  "yacl3.config.healthindicators:config.time_after_hit.desc": "Health indicator will disappear after the set number of seconds.",
 
-  "yacl3.config.health-indicators:config.damaged_only": "Damaged entities only",
-  "yacl3.config.health-indicators:config.damaged_only.desc": "Health will display only if the entity's health is lower than its max health. May not work in cases where entities have absorption effect.",
+  "yacl3.config.healthindicators:config.damaged_only": "Damaged entities only",
+  "yacl3.config.healthindicators:config.damaged_only.desc": "Health will display only if the entity's health is lower than its max health. May not work in cases where entities have absorption effect.",
 
-  "yacl3.config.health-indicators:config.max_health_percentage": "Health threshold",
-  "yacl3.config.health-indicators:config.max_health_percentage.desc": "The maximum amount of health, as a percentage of the total, that it needs to be for the indicator to display. \n\nFor example, if you set it to 40%, then entities with health above 40% will not display an indicator. Set this to 100% to display for all entities.",
+  "yacl3.config.healthindicators:config.max_health_percentage": "Health threshold",
+  "yacl3.config.healthindicators:config.max_health_percentage.desc": "The maximum amount of health, as a percentage of the total, that it needs to be for the indicator to display. \n\nFor example, if you set it to 40%, then entities with health above 40% will not display an indicator. Set this to 100% to display for all entities.",
 
-  "yacl3.config.health-indicators:config.looking_at": "Targeted entities only",
-  "yacl3.config.health-indicators:config.looking_at.desc": "Health will only render if the entity is being looked at.",
+  "yacl3.config.healthindicators:config.looking_at": "Targeted entities only",
+  "yacl3.config.healthindicators:config.looking_at.desc": "Health will only render if the entity is being looked at.",
 
-  "yacl3.config.health-indicators:config.reach": "Range",
-  "yacl3.config.health-indicators:config.reach.desc": "How far can the entity be for the 'targeted' option. The default value (3 blocks) is equal to the attack reach for survival minecraft.",
+  "yacl3.config.healthindicators:config.reach": "Range",
+  "yacl3.config.healthindicators:config.reach.desc": "How far can the entity be for the 'targeted' option. The default value (3 blocks) is equal to the attack reach for survival minecraft.",
 
-  "yacl3.config.health-indicators:config.within_distance": "Within distance only",
-  "yacl3.config.health-indicators:config.within_distance.desc": "Entities beyond this distance will not render health. Note: This is different from the 'range' option; the range option modifies the targeted distance while this option limits all visibility beyond a certain distance",
+  "yacl3.config.healthindicators:config.within_distance": "Within distance only",
+  "yacl3.config.healthindicators:config.within_distance.desc": "Entities beyond this distance will not render health. Note: This is different from the 'range' option; the range option modifies the targeted distance while this option limits all visibility beyond a certain distance",
 
-  "yacl3.config.health-indicators:config.distance": "Distance",
-  "yacl3.config.health-indicators:config.distance.desc": "Distance for the 'within distance' option",
+  "yacl3.config.healthindicators:config.distance": "Distance",
+  "yacl3.config.healthindicators:config.distance.desc": "Distance for the 'within distance' option",
 
-  "yacl3.config.health-indicators:config.override_players": "Always show player health",
-  "yacl3.config.health-indicators:config.override_players.desc": "Overrides the above options to always display health of Players, even if they have not been attacked, they are full health or they are not on crosshair",
-  "yacl3.config.health-indicators:config.override_players_label.desc": "Overrides above criteria and always renders health for the below entity types. \n \n Currently only the playerentity type is supported here.",
-
-
-
-  "yacl3.config.health-indicators:config.indicator_type": "Indicator Type",
-  "yacl3.config.health-indicators:config.indicator_type.desc": "Whether to render a floating hearts display or a number display. Settings this to 'dynamic' will render hearts for entities with less than 100 health, and numbers for entities with more than 100 health.",
-
-  "yacl3.config.health-indicators:config.icons_per_row": "Hearts per row (beta)",
-
-  "yacl3.config.health-indicators:config.use_vanilla_textures": "Use vanilla textures",
-  "yacl3.config.health-indicators:config.use_vanilla_textures.desc": "Some resource packs use a custom heart icon, which can break this mod. Enabling this setting will override the custom icon.",
-
-  "yacl3.config.health-indicators:config.show_heart_effects": "Show effects",
-  "yacl3.config.health-indicators:config.show_heart_effects.desc": "Some status effects and conditions (poisoned, withered, hardcore, frozen) changes the texture of the hearts. Enabling this option will change the texture of the health indicator's heart's as well.",
-
-  "yacl3.config.health-indicators:config.number_type_settings_label.desc": "Settings for the number-type indicator",
-
-  "yacl3.config.health-indicators:config.number_color": "Text color",
-  "yacl3.config.health-indicators:config.number_color.desc": "Color of the number",
-
-  "yacl3.config.health-indicators:config.render_number_display_shadow": "Render shadow",
-  "yacl3.config.health-indicators:config.render_number_display_shadow.desc": "Whether there should be a shadow behind the display text",
-
-  "yacl3.config.health-indicators:config.render_number_display_background_color": "Render background",
-  "yacl3.config.health-indicators:config.render_number_display_background_color.desc": "Whether there should be a colored background behind the number display",
-
-  "yacl3.config.health-indicators:config.decimal_places": "Decimal Places",
-  "yacl3.config.health-indicators:config.decimal_places.desc": "The number of decimal places that should appear in the number display.",
-
-  "yacl3.config.health-indicators:config.number_display_background_color": "Background color",
-  "yacl3.config.health-indicators:config.number_display_background_color.desc": "The background color for the number display",
-
-  "yacl3.config.health-indicators:config.size": "Indicator Size",
-  "yacl3.config.health-indicators:config.size.desc": "The scale of the indicators",
-
-  "yacl3.config.health-indicators:config.percentage_based_health": "Percentage based health",
-  "yacl3.config.health-indicators:config.percentage_based_health.desc": "Shows health as a percentage instead of raw values. Enabling this would mean that all mobs would show the same base-health (configurable below) and their actual health would be shown out of that. \n\nFor example, an iron golem might have 40 out of 50 hearts, but the indicator will show 8 out of 10 hearts. \n\nThe number-type indicator will not follow this mechanic, and simply show a % value: e.g. 80%",
-
-  "yacl3.config.health-indicators:config.max_health": "Base health",
-  "yacl3.config.health-indicators:config.max_health.desc": "The base value (in hp, not hearts! 1 heart = 2hp) for the percentage based health.",
+  "yacl3.config.healthindicators:config.override_players": "Always show player health",
+  "yacl3.config.healthindicators:config.override_players.desc": "Overrides the above options to always display health of Players, even if they have not been attacked, they are full health or they are not on crosshair",
+  "yacl3.config.healthindicators:config.override_players_label.desc": "Overrides above criteria and always renders health for the below entity types. \n \n Currently only the playerentity type is supported here.",
 
 
-  "yacl3.config.health-indicators:config.display_offset": "Display offset",
-  "yacl3.config.health-indicators:config.display_offset.desc": "The distance between the top of the Entity and the health display. Negative offset values can make the health display render below or in the middle of the entity. Extreme offset values can make the health display render out of view.",
 
-  "yacl3.config.health-indicators:config.offset_step_size": "Offset step size",
-  "yacl3.config.health-indicators:config.offset_step_size.desc": "The offset that the keybind (default up-arrow and down-arrow) will change per click.",
+  "yacl3.config.healthindicators:config.indicator_type": "Indicator Type",
+  "yacl3.config.healthindicators:config.indicator_type.desc": "Whether to render a floating hearts display or a number display. Settings this to 'dynamic' will render hearts for entities with less than 100 health, and numbers for entities with more than 100 health.",
 
-  "yacl3.config.health-indicators:config.force_higher_offset_for_players": "Force higher offset for players",
-  "yacl3.config.health-indicators:config.force_higher_offset_for_players.desc": "Normally, the health display renders at a higher offset for Players and Entities with a visible name-tag. \n \n However, some servers implement a custom name-tag which the mod does not recognize and account for. This option will forcibly raise offset for *all* players to fix the problem.",
+  "yacl3.config.healthindicators:config.icons_per_row": "Hearts per row (beta)",
 
-  "yacl3.config.health-indicators:config.message_type": "Message type",
-  "yacl3.config.health-indicators:config.message_type.desc": "Whether mod messages (Indicator Enabled/Disabled, Heart Offset, etc) will be sent in chat, actionbar or not be sent at all",
+  "yacl3.config.healthindicators:config.use_vanilla_textures": "Use vanilla textures",
+  "yacl3.config.healthindicators:config.use_vanilla_textures.desc": "Some resource packs use a custom heart icon, which can break this mod. Enabling this setting will override the custom icon.",
 
-  "yacl3.config.health-indicators:config.colored_messages": "Colored Messages",
-  "yacl3.config.health-indicators:config.colored_messages.desc": "Whether the Indicator Enabled/Disabled messages should be colored (Green and Red respectively)",
+  "yacl3.config.healthindicators:config.show_heart_effects": "Show effects",
+  "yacl3.config.healthindicators:config.show_heart_effects.desc": "Some status effects and conditions (poisoned, withered, hardcore, frozen) changes the texture of the hearts. Enabling this option will change the texture of the health indicator's heart's as well.",
 
-  "yacl3.config.health-indicators:config.enable_commands": "Enable mod commands",
-  "yacl3.config.health-indicators:config.enable_commands.desc": "Enables the /healthindicators command and its subcommands",
+  "yacl3.config.healthindicators:config.number_type_settings_label.desc": "Settings for the number-type indicator",
 
-  "yacl3.config.health-indicators:config.hearts_clipping": "Heart clipping",
-  "yacl3.config.health-indicators:config.hearts_clipping.desc": "Hearts will get pushed downwards if there is a solid block at their normal rendering position.",
+  "yacl3.config.healthindicators:config.number_color": "Text color",
+  "yacl3.config.healthindicators:config.number_color.desc": "Color of the number",
+
+  "yacl3.config.healthindicators:config.render_number_display_shadow": "Render shadow",
+  "yacl3.config.healthindicators:config.render_number_display_shadow.desc": "Whether there should be a shadow behind the display text",
+
+  "yacl3.config.healthindicators:config.render_number_display_background_color": "Render background",
+  "yacl3.config.healthindicators:config.render_number_display_background_color.desc": "Whether there should be a colored background behind the number display",
+
+  "yacl3.config.healthindicators:config.decimal_places": "Decimal Places",
+  "yacl3.config.healthindicators:config.decimal_places.desc": "The number of decimal places that should appear in the number display.",
+
+  "yacl3.config.healthindicators:config.number_display_background_color": "Background color",
+  "yacl3.config.healthindicators:config.number_display_background_color.desc": "The background color for the number display",
+
+  "yacl3.config.healthindicators:config.size": "Indicator Size",
+  "yacl3.config.healthindicators:config.size.desc": "The scale of the indicators",
+
+  "yacl3.config.healthindicators:config.percentage_based_health": "Percentage based health",
+  "yacl3.config.healthindicators:config.percentage_based_health.desc": "Shows health as a percentage instead of raw values. Enabling this would mean that all mobs would show the same base-health (configurable below) and their actual health would be shown out of that. \n\nFor example, an iron golem might have 40 out of 50 hearts, but the indicator will show 8 out of 10 hearts. \n\nThe number-type indicator will not follow this mechanic, and simply show a % value: e.g. 80%",
+
+  "yacl3.config.healthindicators:config.max_health": "Base health",
+  "yacl3.config.healthindicators:config.max_health.desc": "The base value (in hp, not hearts! 1 heart = 2hp) for the percentage based health.",
 
 
-  "yacl3.config.health-indicators:config.category.filters": "Visibility",
-  "yacl3.config.health-indicators:config.category.appearance": "Appearance",
-  "yacl3.config.health-indicators:config.category.messages": "Messages & Commands",
+  "yacl3.config.healthindicators:config.display_offset": "Display offset",
+  "yacl3.config.healthindicators:config.display_offset.desc": "The distance between the top of the Entity and the health display. Negative offset values can make the health display render below or in the middle of the entity. Extreme offset values can make the health display render out of view.",
 
-  "yacl3.config.health-indicators:config.category.filters.group.entity_type": "Entity Categories",
-  "yacl3.config.health-indicators:config.category.filters.group.advanced": "Advanced",
-  "yacl3.config.health-indicators:config.category.appearance.group.indicator_type": "Indicator Appearance",
-  "yacl3.config.health-indicators:config.category.appearance.group.offset": "Indicator Location",
-  "yacl3.config.health-indicators:config.category.messages.group.messages_appearance": "Mod Messages",
-  "yacl3.config.health-indicators:config.category.messages.group.commands": "Mod Commands",
+  "yacl3.config.healthindicators:config.offset_step_size": "Offset step size",
+  "yacl3.config.healthindicators:config.offset_step_size.desc": "The offset that the keybind (default up-arrow and down-arrow) will change per click.",
+
+  "yacl3.config.healthindicators:config.force_higher_offset_for_players": "Force higher offset for players",
+  "yacl3.config.healthindicators:config.force_higher_offset_for_players.desc": "Normally, the health display renders at a higher offset for Players and Entities with a visible name-tag. \n \n However, some servers implement a custom name-tag which the mod does not recognize and account for. This option will forcibly raise offset for *all* players to fix the problem.",
+
+  "yacl3.config.healthindicators:config.message_type": "Message type",
+  "yacl3.config.healthindicators:config.message_type.desc": "Whether mod messages (Indicator Enabled/Disabled, Heart Offset, etc) will be sent in chat, actionbar or not be sent at all",
+
+  "yacl3.config.healthindicators:config.colored_messages": "Colored Messages",
+  "yacl3.config.healthindicators:config.colored_messages.desc": "Whether the Indicator Enabled/Disabled messages should be colored (Green and Red respectively)",
+
+  "yacl3.config.healthindicators:config.enable_commands": "Enable mod commands",
+  "yacl3.config.healthindicators:config.enable_commands.desc": "Enables the /healthindicators command and its subcommands",
+
+  "yacl3.config.healthindicators:config.hearts_clipping": "Heart clipping",
+  "yacl3.config.healthindicators:config.hearts_clipping.desc": "Hearts will get pushed downwards if there is a solid block at their normal rendering position.",
+
+  "yacl3.config.healthindicators:config.enable_damage_direction_indicators": "Enable Damage Direction Indicators",
+  "yacl3.config.healthindicators:config.enable_damage_direction_indicators.desc": "These indicators will display an arrow around your crosshair to show the direction of incoming damage, helping you quickly identify threats.",
+
+  "yacl3.config.healthindicators:config.damage_direction_indicators_scale": "Size",
+  "yacl3.config.healthindicators:config.damage_direction_indicators_scale.desc": "Size of the Damage Direction Indicators.",
+
+
+  "yacl3.config.healthindicators:config.category.filters": "Visibility",
+  "yacl3.config.healthindicators:config.category.appearance": "Appearance",
+  "yacl3.config.healthindicators:config.category.messages": "Messages & Commands",
+  "yacl3.config.healthindicators:config.category.damage_direction_indicators": "Damage Direction Indicators",
+
+  "yacl3.config.healthindicators:config.category.filters.group.entity_type": "Entity Categories",
+  "yacl3.config.healthindicators:config.category.filters.group.advanced": "Advanced",
+  "yacl3.config.healthindicators:config.category.appearance.group.indicator_type": "Indicator Appearance",
+  "yacl3.config.healthindicators:config.category.appearance.group.offset": "Indicator Location",
+  "yacl3.config.healthindicators:config.category.messages.group.messages_appearance": "Mod Messages",
+  "yacl3.config.healthindicators:config.category.messages.group.commands": "Mod Commands",
 
 
   "key.categories.healthindicators": "Health Indicators",
