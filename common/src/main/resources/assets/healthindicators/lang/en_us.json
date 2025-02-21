@@ -120,6 +120,9 @@
   "yacl3.config.healthindicators:config.damage_direction_indicators_scale": "Size",
   "yacl3.config.healthindicators:config.damage_direction_indicators_scale.desc": "Size of the Damage Direction Indicators.",
 
+  "yacl3.config.healthindicators:config.damage_direction_indicators_color": "Color",
+  "yacl3.config.healthindicators:config.damage_direction_indicators_color.desc": "Color of the Damage Direction Indicators.",
+
 
   "yacl3.config.healthindicators:config.category.filters": "Visibility",
   "yacl3.config.healthindicators:config.category.appearance": "Appearance",

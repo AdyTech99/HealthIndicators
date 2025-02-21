@@ -79,11 +79,12 @@ public class DamageDirectionIndicatorRenderer {
 
             float scale = ModConfig.HANDLER.instance().damage_direction_indicators_scale;
             // Tip of the wedge (top center)
-            buffer.vertex(matrix, 0 * scale, -4 * scale, 0).color(255, 0, 0, alpha);
+            //buffer.vertex(matrix, 0 * scale, -4 * scale, 0).color(255, 0, 0, alpha);
+            buffer.vertex(matrix, 0 * scale, -4 * scale, 0).color(ModConfig.HANDLER.instance().damage_direction_indicators_color.getRed(), ModConfig.HANDLER.instance().damage_direction_indicators_color.getGreen(), ModConfig.HANDLER.instance().damage_direction_indicators_color.getBlue(), alpha);
             // Left base point
-            buffer.vertex(matrix, -3 * scale, 4 * scale, 0).color(255, 0, 0, alpha);
+            buffer.vertex(matrix, -3 * scale, 4 * scale, 0).color(ModConfig.HANDLER.instance().damage_direction_indicators_color.getRed(), ModConfig.HANDLER.instance().damage_direction_indicators_color.getGreen(), ModConfig.HANDLER.instance().damage_direction_indicators_color.getBlue(), alpha);
             // Right base point
-            buffer.vertex(matrix, 3 * scale, 4 * scale, 0).color(255, 0, 0, alpha);
+            buffer.vertex(matrix, 3 * scale, 4 * scale, 0).color(ModConfig.HANDLER.instance().damage_direction_indicators_color.getRed(), ModConfig.HANDLER.instance().damage_direction_indicators_color.getGreen(), ModConfig.HANDLER.instance().damage_direction_indicators_color.getBlue(), alpha);
 
             BuiltBuffer builtBuffer;
             try {

@@ -278,6 +278,11 @@ public class ModConfig {
     @IntSlider(min = 1, max = 8, step = 1)
     public int damage_direction_indicators_scale = 2;
 
+    @SerialEntry
+    @AutoGen(category = "damage_direction_indicators")
+    @ColorField
+    public Color damage_direction_indicators_color = Color.RED;
+
 
     public static Screen createScreen(@Nullable Screen parent) {
         return HANDLER.generateGui().generateScreen(parent);
