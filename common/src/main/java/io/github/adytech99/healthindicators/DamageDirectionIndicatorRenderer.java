@@ -1,12 +1,14 @@
 package io.github.adytech99.healthindicators;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import dev.architectury.platform.Mod;
 import io.github.adytech99.healthindicators.config.ModConfig;
 import net.minecraft.client.gl.ShaderProgramKeys;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.*;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import org.joml.Matrix4f;
@@ -34,7 +36,7 @@ public class DamageDirectionIndicatorRenderer {
 
     public static void render(DrawContext drawContext, RenderTickCounter renderTickCounter) {
         if (player == null) return;
-        if (timeSinceLastDamage <= 80 && attacker != null) {
+        if (timeSinceLastDamage <= ModConfig.HANDLER.instance().damage_direction_indicators_visibility_time * 20 && attacker != null) {
             // Get positions and calculate direction
             Vec3d playerPos = player.getPos();
             Vec3d attackerPos = attacker.getPos();
@@ -57,8 +59,15 @@ public class DamageDirectionIndicatorRenderer {
             float indicatorY = centerY - radius * (float) Math.cos(angle);
 
             // Calculate fade-out alpha (0-255)
-            int timeSinceHit = timeSinceLastDamage;
-            int alpha = 255 - (int) (255 * (timeSinceHit / 80.0f));
+            int alpha = 255;
+            if (ModConfig.HANDLER.instance().damage_direction_indicators_fade_out) {
+                int fadeDelay = (ModConfig.HANDLER.instance().damage_direction_indicators_visibility_time - ModConfig.HANDLER.instance().damage_direction_indicators_fade_out_time) * 20;
+                if (timeSinceLastDamage >= fadeDelay) {
+                    float progress = Math.min((timeSinceLastDamage - fadeDelay) / (float) (ModConfig.HANDLER.instance().damage_direction_indicators_fade_out_time * 20), 1.0f);
+                    alpha = 255 - (int) (255 * progress);
+                }
+            }
+
 
             // Draw directional wedge
             drawContext.getMatrices().push();

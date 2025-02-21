@@ -123,6 +123,15 @@
   "yacl3.config.healthindicators:config.damage_direction_indicators_color": "Color",
   "yacl3.config.healthindicators:config.damage_direction_indicators_color.desc": "Color of the Damage Direction Indicators.",
 
+  "yacl3.config.healthindicators:config.damage_direction_indicators_visibility_time": "Time to disappear",
+  "yacl3.config.healthindicators:config.damage_direction_indicators_visibility_time.desc": "The time it takes for the Damage Direction Indicators to go away in seconds.",
+
+  "yacl3.config.healthindicators:config.damage_direction_indicators_fade_out": "Should Fade Out",
+  "yacl3.config.healthindicators:config.damage_direction_indicators_fade_out.desc": "Whether the Damage Direction Indicators should fade out.",
+
+  "yacl3.config.healthindicators:config.damage_direction_indicators_fade_out_time": "Fade Out Time",
+  "yacl3.config.healthindicators:config.damage_direction_indicators_fade_out_time.desc": "The length of the fade-out animation in seconds. This number **must** be less than the 'Time to disappear'",
+
 
   "yacl3.config.healthindicators:config.category.filters": "Visibility",
   "yacl3.config.healthindicators:config.category.appearance": "Appearance",

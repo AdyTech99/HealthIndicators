@@ -283,6 +283,21 @@ public class ModConfig {
     @ColorField
     public Color damage_direction_indicators_color = Color.RED;
 
+    @SerialEntry
+    @AutoGen(category = "damage_direction_indicators")
+    @IntSlider(min = 1, max = 8, step = 1)
+    public int damage_direction_indicators_visibility_time = 4;
+
+    @SerialEntry
+    @AutoGen(category = "damage_direction_indicators")
+    @MasterTickBox(value = "damage_direction_indicators_fade_out_time")
+    public boolean damage_direction_indicators_fade_out = true;
+
+    @SerialEntry
+    @AutoGen(category = "damage_direction_indicators")
+    @IntSlider(min = 0, max = 7, step = 1)
+    public int damage_direction_indicators_fade_out_time = 3;
+
 
     public static Screen createScreen(@Nullable Screen parent) {
         return HANDLER.generateGui().generateScreen(parent);
