@@ -26,5 +26,5 @@ dependencies {
 }
 
 loom {
-    //accessWidenerPath = file("src/main/resources/healthindicators.accesswidener")
+    accessWidenerPath = file("src/main/resources/healthindicators.accesswidener")
 }

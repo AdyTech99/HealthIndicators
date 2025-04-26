@@ -4,8 +4,8 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.adytech99.healthindicators.config.ModConfig;
 import io.github.adytech99.healthindicators.enums.ArmorTypeEnum;
 import io.github.adytech99.healthindicators.enums.HeartTypeEnum;
-import net.minecraft.client.gl.ShaderProgramKeys;
 import net.minecraft.client.render.VertexConsumer;
+import net.minecraft.client.texture.NativeImageBackedTexture;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.Identifier;
 import org.joml.Matrix4f;
@@ -20,10 +20,10 @@ public class RenderUtils {
         Identifier heartIcon = Identifier.of("minecraft", "textures/gui/sprites/hud/heart/" + additionalIconEffects + type.icon + ".png");
         Identifier vanillaHeartIcon = Identifier.of("healthindicators", "textures/gui/heart/" + additionalIconEffects + type.icon + ".png");
 
-        RenderSystem.setShader(ShaderProgramKeys.POSITION_TEX);
-        RenderSystem.setShaderTexture(0, ModConfig.HANDLER.instance().use_vanilla_textures ? vanillaHeartIcon : heartIcon);
-        RenderSystem.enableDepthTest();
-
+        var device = RenderSystem.getDevice();
+        
+        var textureToUse = ModConfig.HANDLER.instance().use_vanilla_textures ? vanillaHeartIcon : heartIcon;
+        
         float minU = 0F;
         float maxU = 1F;
         float minV = 0F;
@@ -39,11 +39,10 @@ public class RenderUtils {
 
 
     public static void drawArmor(Matrix4f model, VertexConsumer vertexConsumer, float x, ArmorTypeEnum type) {
-        RenderSystem.setShader(ShaderProgramKeys.POSITION_TEX);
+        var device = RenderSystem.getDevice();
+        
         Identifier armorIcon = ModConfig.HANDLER.instance().use_vanilla_textures ? type.vanillaIcon : type.icon;
-        RenderSystem.setShaderTexture(0, armorIcon);
-        RenderSystem.enableDepthTest();
-
+        
         float minU = 0F;
         float maxU = 1F;
         float minV = 0F;

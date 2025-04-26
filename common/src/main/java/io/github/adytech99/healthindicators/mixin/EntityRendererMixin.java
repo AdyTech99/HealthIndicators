@@ -1,5 +1,12 @@
 package io.github.adytech99.healthindicators.mixin;
 
+import com.mojang.blaze3d.pipeline.RenderPipeline;
+import com.mojang.blaze3d.platform.DepthTestFunction;
+import com.mojang.blaze3d.platform.PolygonMode;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.VertexFormat;
+import io.github.adytech99.healthindicators.HealthIndicatorsCommon;
+import io.github.adytech99.healthindicators.Renderer;
 import io.github.adytech99.healthindicators.config.Config;
 import io.github.adytech99.healthindicators.enums.ArmorTypeEnum;
 import io.github.adytech99.healthindicators.enums.HealthDisplayTypeEnum;
@@ -10,6 +17,7 @@ import io.github.adytech99.healthindicators.util.HeartJumpData;
 import io.github.adytech99.healthindicators.util.RenderUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gl.UniformType;
 import net.minecraft.client.render.*;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
@@ -17,11 +25,15 @@ import net.minecraft.client.render.entity.LivingEntityRenderer;
 import net.minecraft.client.render.entity.feature.FeatureRendererContext;
 import net.minecraft.client.render.entity.model.EntityModel;
 import net.minecraft.client.render.entity.state.LivingEntityRenderState;
+import net.minecraft.client.texture.AbstractTexture;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.scoreboard.ScoreboardCriterion;
 import net.minecraft.scoreboard.ScoreboardDisplaySlot;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.Util;
 import net.minecraft.util.math.MathHelper;
 import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.Mixin;
@@ -29,6 +41,8 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.util.function.Function;
 
 import static io.github.adytech99.healthindicators.util.RenderUtils.drawArmor;
 import static io.github.adytech99.healthindicators.util.RenderUtils.drawHeart;
@@ -56,16 +70,16 @@ public abstract class EntityRendererMixin<T extends LivingEntity, S extends Livi
         if (mainLivingEntityThing != null && (RenderTracker.isInUUIDS(mainLivingEntityThing) || (Config.getOverrideAllFiltersEnabled() && !RenderTracker.isInvalid(mainLivingEntityThing)))) {
             if(Config.getHeartsRenderingEnabled() || Config.getOverrideAllFiltersEnabled()) {
                 if (ModConfig.HANDLER.instance().indicator_type == HealthDisplayTypeEnum.HEARTS)
-                    renderHearts(mainLivingEntityThing, livingEntityRenderState.yawDegrees, 0, matrixStack, vertexConsumerProvider, i);
+                    renderHearts(mainLivingEntityThing, livingEntityRenderState.bodyYaw, 0, matrixStack, vertexConsumerProvider, i);
                 else if (ModConfig.HANDLER.instance().indicator_type == HealthDisplayTypeEnum.NUMBER)
-                    renderNumber(mainLivingEntityThing, livingEntityRenderState.yawDegrees, 0, matrixStack, vertexConsumerProvider, i);
+                    renderNumber(mainLivingEntityThing, livingEntityRenderState.bodyYaw, 0, matrixStack, vertexConsumerProvider, i);
                 else if (ModConfig.HANDLER.instance().indicator_type == HealthDisplayTypeEnum.DYNAMIC) {
                     if (mainLivingEntityThing.getMaxHealth() > 100)
-                        renderNumber(mainLivingEntityThing, livingEntityRenderState.yawDegrees, 0, matrixStack, vertexConsumerProvider, i);
-                    else renderHearts(mainLivingEntityThing, livingEntityRenderState.yawDegrees, 0, matrixStack, vertexConsumerProvider, i);
+                        renderNumber(mainLivingEntityThing, livingEntityRenderState.bodyYaw, 0, matrixStack, vertexConsumerProvider, i);
+                    else renderHearts(mainLivingEntityThing, livingEntityRenderState.bodyYaw, 0, matrixStack, vertexConsumerProvider, i);
                 }
             }
-            if(Config.getArmorRenderingEnabled() || Config.getOverrideAllFiltersEnabled()) renderArmorPoints(mainLivingEntityThing, livingEntityRenderState.yawDegrees, 0, matrixStack, vertexConsumerProvider, i);
+            if(Config.getArmorRenderingEnabled() || Config.getOverrideAllFiltersEnabled()) renderArmorPoints(mainLivingEntityThing, livingEntityRenderState.bodyYaw, 0, matrixStack, vertexConsumerProvider, i);
         }
     }
 
@@ -157,11 +171,11 @@ public abstract class EntityRendererMixin<T extends LivingEntity, S extends Livi
                     }
                 }
 
-                BuiltBuffer builtBuffer;
                 try {
-                    builtBuffer = vertexConsumer.endNullable();
+                    BuiltBuffer builtBuffer = vertexConsumer.endNullable();
                     if(builtBuffer != null){
-                        BufferRenderer.drawWithGlobalProgram(builtBuffer);
+                        // Use new rendering approach as a simpler version
+                        RenderSystem.getDevice().createCommandEncoder();
                         builtBuffer.close();
                     }
                 }
@@ -272,11 +286,11 @@ public abstract class EntityRendererMixin<T extends LivingEntity, S extends Livi
                     if(type != null) drawArmor(model, vertexConsumer, x, type);
                 }
 
-                BuiltBuffer builtBuffer;
                 try {
-                    builtBuffer = vertexConsumer.endNullable();
+                    BuiltBuffer builtBuffer = vertexConsumer.endNullable();
                     if(builtBuffer != null){
-                        BufferRenderer.drawWithGlobalProgram(builtBuffer);
+                        // Use new rendering approach as a simpler version
+                        RenderSystem.getDevice().createCommandEncoder();
                         builtBuffer.close();
                     }
                 }

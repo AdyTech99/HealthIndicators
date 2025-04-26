@@ -1,5 +1,5 @@
 accessWidener v2 named
-accessible method net/minecraft/client/render/BufferBuilder build ()Lnet/minecraft/client/render/BuiltBuffer;
+
 accessible field net/minecraft/client/texture/TextureManager resourceContainer Lnet/minecraft/resource/ResourceManager;
 
 accessible field net/minecraft/client/render/RenderLayer$MultiPhase phases Lnet/minecraft/client/render/RenderLayer$MultiPhaseParameters;

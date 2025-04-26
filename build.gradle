@@ -1,5 +1,5 @@
 plugins {
-    id 'dev.architectury.loom' version '1.9-SNAPSHOT' apply false
+    id 'dev.architectury.loom' version '1.10-SNAPSHOT' apply false
     id 'architectury-plugin' version '3.4-SNAPSHOT'
     id 'com.github.johnrengelman.shadow' version '8.1.1' apply false
     id 'io.github.pacifistmc.forgix' version "1.2.9"
@@ -72,6 +72,15 @@ subprojects {
 
     tasks.withType(JavaCompile).configureEach {
         it.options.release = 21
+    }
+
+    tasks.withType(JavaCompile) {
+        doNotTrackState("Avoiding issues with paths containing spaces")
+    }
+
+    tasks.named('compileJava') {
+        doNotTrackState("Avoiding issues with paths containing spaces")
+        outputs.upToDateWhen { false } // Force task to always run
     }
 
     // Configure Maven publishing.
