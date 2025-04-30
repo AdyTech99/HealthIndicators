@@ -1,13 +1,9 @@
 package io.github.adytech99.healthindicators;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.VertexFormat;
-import com.mojang.blaze3d.platform.DepthTestFunction;
-import com.mojang.blaze3d.pipeline.BlendFunction;
-import dev.architectury.platform.Mod;
 import io.github.adytech99.healthindicators.config.ModConfig;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.render.*;
+import net.minecraft.client.render.GameRenderer;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
@@ -16,7 +12,7 @@ import net.minecraft.util.math.Vec3d;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 
-import java.util.OptionalInt;
+import java.awt.*;
 
 public class DamageDirectionIndicatorRenderer {
     private static PlayerEntity player = HealthIndicatorsCommon.client.player;
@@ -38,7 +34,7 @@ public class DamageDirectionIndicatorRenderer {
         if(timeSinceLastDamage == Integer.MAX_VALUE) attacker = null;
     }
 
-    public static void render(DrawContext drawContext, RenderTickCounter renderTickCounter) {
+    public static void render(DrawContext drawContext, float tickDelta) {
         if (player == null) return;
         if (timeSinceLastDamage <= ModConfig.HANDLER.instance().damage_direction_indicators_visibility_time * 20 && attacker != null) {
             // Get positions and calculate direction
@@ -72,56 +68,34 @@ public class DamageDirectionIndicatorRenderer {
                 }
             }
 
-            // Draw directional wedge
+            float scale = ModConfig.HANDLER.instance().damage_direction_indicators_scale;
+            Color color = ModConfig.HANDLER.instance().damage_direction_indicators_color;
+            int argb = (alpha << 24) | (color.getRed() << 16) | (color.getGreen() << 8) | color.getBlue();
+            
+            // Draw a simple triangle directly using DrawContext
             drawContext.getMatrices().push();
             drawContext.getMatrices().translate(indicatorX, indicatorY, 0);
-
-            // Apply rotation to face the attacker
             drawContext.getMatrices().multiply(new Quaternionf().rotationZ(angle));
-
-            // Define wedge shape as a triangle (tip at 0,-4; base at -3,4 and 3,4)
-            Matrix4f matrix = drawContext.getMatrices().peek().getPositionMatrix();
-            Tessellator tessellator = Tessellator.getInstance();
-            BufferBuilder buffer = tessellator.begin(VertexFormat.DrawMode.TRIANGLES, VertexFormats.POSITION_COLOR);
-
-            // Set up rendering for transparent color using new API
-            var device = RenderSystem.getDevice();
             
-            // In 1.21.5 we would create a RenderPipeline that handles blending
-            // For now, let's push forward with just drawing the wedge
-
-            float scale = ModConfig.HANDLER.instance().damage_direction_indicators_scale;
-            // Tip of the wedge (top center)
-            buffer.vertex(matrix, 0 * scale, -4 * scale, 0).color(ModConfig.HANDLER.instance().damage_direction_indicators_color.getRed(), ModConfig.HANDLER.instance().damage_direction_indicators_color.getGreen(), ModConfig.HANDLER.instance().damage_direction_indicators_color.getBlue(), alpha);
-            // Left base point
-            buffer.vertex(matrix, -3 * scale, 4 * scale, 0).color(ModConfig.HANDLER.instance().damage_direction_indicators_color.getRed(), ModConfig.HANDLER.instance().damage_direction_indicators_color.getGreen(), ModConfig.HANDLER.instance().damage_direction_indicators_color.getBlue(), alpha);
-            // Right base point
-            buffer.vertex(matrix, 3 * scale, 4 * scale, 0).color(ModConfig.HANDLER.instance().damage_direction_indicators_color.getRed(), ModConfig.HANDLER.instance().damage_direction_indicators_color.getGreen(), ModConfig.HANDLER.instance().damage_direction_indicators_color.getBlue(), alpha);
-
-            try {
-                BuiltBuffer builtBuffer = buffer.endNullable();
-                if(builtBuffer != null){
-                    // Using new 1.21.5 rendering approach
-                    try {
-                        // Create command encoder and render pass
-                        var commandEncoder = device.createCommandEncoder();
-                        var renderPass = commandEncoder.createRenderPass(null, OptionalInt.of(0));
-                        
-                        // Set up pipeline, blend state, etc. would be here in a full implementation
-                        
-                        // Draw the buffer directly
-                        builtBuffer.close();
-                    }
-                    catch (Exception e) {
-                        // Log exception if needed
-                    }
-                }
-            }
-            catch (Exception e){
-                // F off
+            // Draw triangle using line by line 
+            int x1 = (int)(-3 * scale);
+            int y1 = (int)(4 * scale);
+            int x2 = (int)(3 * scale);
+            int y2 = (int)(4 * scale); 
+            int x3 = (int)(0);
+            int y3 = (int)(-4 * scale);
+            
+            // Fill the triangle by drawing horizontal lines
+            for (int y = y3; y <= y1; y++) {
+                // Calculate x range at this y coordinate
+                float progress = (float)(y - y3) / (y1 - y3);
+                int leftX = Math.round(x3 + progress * (x1 - x3));
+                int rightX = Math.round(x3 + progress * (x2 - x3));
+                
+                // Draw horizontal line
+                drawContext.fill(leftX, y, rightX + 1, y + 1, argb);
             }
             
-            // No need to disable blend in 1.21.5 as blend state is part of the pipeline
             drawContext.getMatrices().pop();
         }
     }

@@ -74,15 +74,6 @@ subprojects {
         it.options.release = 21
     }
 
-    tasks.withType(JavaCompile) {
-        doNotTrackState("Avoiding issues with paths containing spaces")
-    }
-
-    tasks.named('compileJava') {
-        doNotTrackState("Avoiding issues with paths containing spaces")
-        outputs.upToDateWhen { false } // Force task to always run
-    }
-
     // Configure Maven publishing.
     publishing {
         publications {

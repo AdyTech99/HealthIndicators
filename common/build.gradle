@@ -28,3 +28,23 @@ dependencies {
 loom {
     accessWidenerPath = file("src/main/resources/healthindicators.accesswidener")
 }
+
+// Completely disable incremental compilation
+/* tasks.withType(JavaCompile) {
+    options.incremental = false
+    doNotTrackState("Avoiding OneDrive sync issues")
+    outputs.upToDateWhen { false }
+} */
+
+// Force clean compile
+/* compileJava {
+    dependsOn 'clean'
+    options.incremental = false
+    doNotTrackState("Avoiding OneDrive sync issues")
+    outputs.upToDateWhen { false }
+} */
+
+// Disable caching for this module
+tasks.configureEach {
+    outputs.cacheIf { false }
+}

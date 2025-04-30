@@ -1,23 +1,17 @@
 package io.github.adytech99.healthindicators.mixin;
 
-import com.mojang.blaze3d.pipeline.RenderPipeline;
-import com.mojang.blaze3d.platform.DepthTestFunction;
-import com.mojang.blaze3d.platform.PolygonMode;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.VertexFormat;
 import io.github.adytech99.healthindicators.HealthIndicatorsCommon;
 import io.github.adytech99.healthindicators.Renderer;
 import io.github.adytech99.healthindicators.config.Config;
+import io.github.adytech99.healthindicators.config.ModConfig;
 import io.github.adytech99.healthindicators.enums.ArmorTypeEnum;
 import io.github.adytech99.healthindicators.enums.HealthDisplayTypeEnum;
 import io.github.adytech99.healthindicators.enums.HeartTypeEnum;
 import io.github.adytech99.healthindicators.RenderTracker;
-import io.github.adytech99.healthindicators.config.ModConfig;
 import io.github.adytech99.healthindicators.util.HeartJumpData;
 import io.github.adytech99.healthindicators.util.RenderUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gl.UniformType;
 import net.minecraft.client.render.*;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
@@ -25,15 +19,10 @@ import net.minecraft.client.render.entity.LivingEntityRenderer;
 import net.minecraft.client.render.entity.feature.FeatureRendererContext;
 import net.minecraft.client.render.entity.model.EntityModel;
 import net.minecraft.client.render.entity.state.LivingEntityRenderState;
-import net.minecraft.client.texture.AbstractTexture;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.scoreboard.ScoreboardCriterion;
-import net.minecraft.scoreboard.ScoreboardDisplaySlot;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.Util;
 import net.minecraft.util.math.MathHelper;
 import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.Mixin;
@@ -42,11 +31,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.function.Function;
-
 import static io.github.adytech99.healthindicators.util.RenderUtils.drawArmor;
 import static io.github.adytech99.healthindicators.util.RenderUtils.drawHeart;
-
 
 @Mixin(LivingEntityRenderer.class)
 public abstract class EntityRendererMixin<T extends LivingEntity, S extends LivingEntityRenderState, M extends EntityModel<? super S>>
@@ -54,8 +40,8 @@ public abstract class EntityRendererMixin<T extends LivingEntity, S extends Livi
         implements FeatureRendererContext<S, M> {
 
     @Unique private LivingEntity mainLivingEntityThing;
-
     @Unique private final MinecraftClient client = MinecraftClient.getInstance();
+    
     protected EntityRendererMixin(EntityRendererFactory.Context ctx) {
         super(ctx);
     }
@@ -84,8 +70,7 @@ public abstract class EntityRendererMixin<T extends LivingEntity, S extends Livi
     }
 
     @Unique private void renderHearts(LivingEntity livingEntity, float yaw, float tickDelta, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int light){
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder vertexConsumer;
+        VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(RenderLayer.getGui());
 
         double d = this.dispatcher.getSquaredDistanceToCamera(livingEntity);
 
@@ -123,21 +108,19 @@ public abstract class EntityRendererMixin<T extends LivingEntity, S extends Livi
                 }
 
                 matrixStack.push();
-                vertexConsumer = tessellator.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
-
                 matrixStack.translate(0, livingEntity.getHeight() + 0.5f + h, 0);
 
                 if (livingEntity.hasStatusEffect(StatusEffects.REGENERATION) && ModConfig.HANDLER.instance().show_heart_effects) {
-                        if(HeartJumpData.getWhichHeartJumping(livingEntity) == heart){
-                            matrixStack.translate(0.0D, 1.15F * scale, 0.0D);
-                        }
+                    if(HeartJumpData.getWhichHeartJumping(livingEntity) == heart){
+                        matrixStack.translate(0.0D, 1.15F * scale, 0.0D);
+                    }
                 }
 
                 if ((this.hasLabel((T) livingEntity, d)
                         || (ModConfig.HANDLER.instance().force_higher_offset_for_players && livingEntity instanceof PlayerEntity && livingEntity != client.player))
                         && d <= 4096.0) {
                     matrixStack.translate(0.0D, 9.0F * 1.15F * scale, 0.0D);
-                    if (d < 100.0 && livingEntity instanceof PlayerEntity && livingEntity.getEntityWorld().getScoreboard().getObjectiveForSlot(ScoreboardDisplaySlot.BELOW_NAME) != null) {
+                    if (d < 100.0 && livingEntity instanceof PlayerEntity && livingEntity.getEntityWorld().getScoreboard().getObjectiveForSlot(net.minecraft.scoreboard.ScoreboardDisplaySlot.BELOW_NAME) != null) {
                         matrixStack.translate(0.0D, 9.0F * 1.15F * scale, 0.0D);
                     }
                 }
@@ -171,17 +154,6 @@ public abstract class EntityRendererMixin<T extends LivingEntity, S extends Livi
                     }
                 }
 
-                try {
-                    BuiltBuffer builtBuffer = vertexConsumer.endNullable();
-                    if(builtBuffer != null){
-                        // Use new rendering approach as a simpler version
-                        RenderSystem.getDevice().createCommandEncoder();
-                        builtBuffer.close();
-                    }
-                }
-                catch (Exception e){
-                    // F off
-                }
                 matrixStack.pop();
             }
         }
@@ -200,7 +172,7 @@ public abstract class EntityRendererMixin<T extends LivingEntity, S extends Livi
                 || (ModConfig.HANDLER.instance().force_higher_offset_for_players && livingEntity instanceof PlayerEntity && livingEntity != client.player))
                 && d <= 4096.0) {
             matrixStack.translate(0.0D, 9.0F * 1.15F * scale, 0.0D);
-            if (d < 100.0 && livingEntity instanceof PlayerEntity && livingEntity.getEntityWorld().getScoreboard().getObjectiveForSlot(ScoreboardDisplaySlot.BELOW_NAME) != null) {
+            if (d < 100.0 && livingEntity instanceof PlayerEntity && livingEntity.getEntityWorld().getScoreboard().getObjectiveForSlot(net.minecraft.scoreboard.ScoreboardDisplaySlot.BELOW_NAME) != null) {
                 matrixStack.translate(0.0D, 9.0F * 1.15F * scale, 0.0D);
             }
         }
@@ -219,8 +191,7 @@ public abstract class EntityRendererMixin<T extends LivingEntity, S extends Livi
 
 
     @Unique private void renderArmorPoints(LivingEntity livingEntity, float yaw, float tickDelta, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int light){
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder vertexConsumer;
+        VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(RenderLayer.getGui());
 
         double d = this.dispatcher.getSquaredDistanceToCamera(livingEntity);
 
@@ -251,15 +222,13 @@ public abstract class EntityRendererMixin<T extends LivingEntity, S extends Livi
                 }
 
                 matrixStack.push();
-                vertexConsumer = tessellator.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
-
                 int extraHeight = (int) (((livingEntity.getMaxHealth() + livingEntity.getAbsorptionAmount())/2 + pointsPerRow - 1) / pointsPerRow);
                 matrixStack.translate(0, livingEntity.getHeight() + 0.75f + (scale*10)*(extraHeight-1) + h, 0);
                 if ((this.hasLabel((T) livingEntity, d)
                         || (ModConfig.HANDLER.instance().force_higher_offset_for_players && livingEntity instanceof PlayerEntity && livingEntity != client.player))
                         && d <= 4096.0) {
                     matrixStack.translate(0.0D, 9.0F * 1.15F * scale, 0.0D);
-                    if (d < 100.0 && livingEntity instanceof PlayerEntity && livingEntity.getEntityWorld().getScoreboard().getObjectiveForSlot(ScoreboardDisplaySlot.BELOW_NAME) != null) {
+                    if (d < 100.0 && livingEntity instanceof PlayerEntity && livingEntity.getEntityWorld().getScoreboard().getObjectiveForSlot(net.minecraft.scoreboard.ScoreboardDisplaySlot.BELOW_NAME) != null) {
                         matrixStack.translate(0.0D, 9.0F * 1.15F * scale, 0.0D);
                     }
                 }
@@ -286,25 +255,8 @@ public abstract class EntityRendererMixin<T extends LivingEntity, S extends Livi
                     if(type != null) drawArmor(model, vertexConsumer, x, type);
                 }
 
-                try {
-                    BuiltBuffer builtBuffer = vertexConsumer.endNullable();
-                    if(builtBuffer != null){
-                        // Use new rendering approach as a simpler version
-                        RenderSystem.getDevice().createCommandEncoder();
-                        builtBuffer.close();
-                    }
-                }
-                catch (Exception e){
-                    // F off
-                }
                 matrixStack.pop();
             }
         }
-    }
-
-    @Unique
-    @Deprecated
-    private static void drawVertex(Matrix4f model, VertexConsumer vertices, float x, float y, float u, float v) {
-        vertices.vertex(model, x, y, 0.0F).texture(u, v);
     }
 }

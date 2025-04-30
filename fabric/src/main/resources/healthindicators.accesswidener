@@ -1,11 +1,2 @@
 accessWidener v2 named
 accessible method net/minecraft/client/render/BufferBuilder build ()Lnet/minecraft/client/render/BuiltBuffer;
-accessible field net/minecraft/client/texture/TextureManager resourceContainer Lnet/minecraft/resource/ResourceManager;
-
-accessible field net/minecraft/client/render/RenderLayer$MultiPhase phases Lnet/minecraft/client/render/RenderLayer$MultiPhaseParameters;
-
-accessible field net/minecraft/client/render/RenderLayer$MultiPhaseParameters phases Lcom/google/common/collect/ImmutableList;
-
-accessible field net/minecraft/client/render/RenderPhase beginAction Ljava/lang/Runnable;
-mutable field net/minecraft/client/render/RenderPhase beginAction Ljava/lang/Runnable;
-transitive-accessible	field	net/minecraft/client/gl/RenderPipelines	MATRICES_SNIPPET	Lcom/mojang/blaze3d/pipeline/RenderPipeline$Snippet;

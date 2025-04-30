@@ -5,7 +5,6 @@ import io.github.adytech99.healthindicators.config.ModConfig;
 import io.github.adytech99.healthindicators.enums.ArmorTypeEnum;
 import io.github.adytech99.healthindicators.enums.HeartTypeEnum;
 import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.texture.NativeImageBackedTexture;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.Identifier;
 import org.joml.Matrix4f;
@@ -20,10 +19,8 @@ public class RenderUtils {
         Identifier heartIcon = Identifier.of("minecraft", "textures/gui/sprites/hud/heart/" + additionalIconEffects + type.icon + ".png");
         Identifier vanillaHeartIcon = Identifier.of("healthindicators", "textures/gui/heart/" + additionalIconEffects + type.icon + ".png");
 
-        var device = RenderSystem.getDevice();
-        
-        var textureToUse = ModConfig.HANDLER.instance().use_vanilla_textures ? vanillaHeartIcon : heartIcon;
-        
+        // Using the Identifier directly with the vertex consumer
+
         float minU = 0F;
         float maxU = 1F;
         float minV = 0F;
@@ -31,18 +28,17 @@ public class RenderUtils {
 
         float heartSize = 9F;
 
-        vertexConsumer.vertex(model, x, 0F - heartSize, 0.0F).texture(minU, maxV);
-        vertexConsumer.vertex(model, x - heartSize, 0F - heartSize, 0.0F).texture(maxU, maxV);
-        vertexConsumer.vertex(model, x - heartSize, 0F, 0.0F).texture(maxU, minV);
-        vertexConsumer.vertex(model, x, 0F, 0.0F).texture(minU, minV);
+        vertexConsumer.vertex(model, x, 0F - heartSize, 0.0F).texture(minU, maxV).color(1.0F, 0.0F, 0.0F, 1.0F);
+        vertexConsumer.vertex(model, x - heartSize, 0F - heartSize, 0.0F).texture(maxU, maxV).color(1.0F, 0.0F, 0.0F, 1.0F);
+        vertexConsumer.vertex(model, x - heartSize, 0F, 0.0F).texture(maxU, minV).color(1.0F, 0.0F, 0.0F, 1.0F);
+        vertexConsumer.vertex(model, x, 0F, 0.0F).texture(minU, minV).color(1.0F, 0.0F, 0.0F, 1.0F);
     }
 
-
     public static void drawArmor(Matrix4f model, VertexConsumer vertexConsumer, float x, ArmorTypeEnum type) {
-        var device = RenderSystem.getDevice();
-        
         Identifier armorIcon = ModConfig.HANDLER.instance().use_vanilla_textures ? type.vanillaIcon : type.icon;
         
+        // Using the Identifier directly with the vertex consumer
+
         float minU = 0F;
         float maxU = 1F;
         float minV = 0F;

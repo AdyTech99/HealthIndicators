@@ -48,7 +48,7 @@ public final class HealthIndicatorsCommon {
 
     public static void onHudRender(DrawContext drawContext1, RenderTickCounter renderTickCounter1) {
         if(RenderTracker.getTrackedEntity() != null) HudRenderer.onHudRender(drawContext1, renderTickCounter1);
-        if(ModConfig.HANDLER.instance().enable_damage_direction_indicators) DamageDirectionIndicatorRenderer.render(drawContext1, renderTickCounter1);
+        if(ModConfig.HANDLER.instance().enable_damage_direction_indicators) DamageDirectionIndicatorRenderer.render(drawContext1, renderTickCounter1.getFixedDeltaTicks());
     }
 
     public static void openConfig(){
