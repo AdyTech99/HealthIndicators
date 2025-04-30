@@ -1,5 +1,6 @@
 package io.github.adytech99.healthindicators.mixin;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.adytech99.healthindicators.HealthIndicatorsCommon;
 import io.github.adytech99.healthindicators.Renderer;
 import io.github.adytech99.healthindicators.config.Config;
@@ -23,6 +24,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.Mixin;
@@ -33,6 +35,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static io.github.adytech99.healthindicators.util.RenderUtils.drawArmor;
 import static io.github.adytech99.healthindicators.util.RenderUtils.drawHeart;
+import static io.github.adytech99.healthindicators.enums.HeartTypeEnum.addHardcoreIcon;
+import static io.github.adytech99.healthindicators.enums.HeartTypeEnum.addStatusIcon;
 
 @Mixin(LivingEntityRenderer.class)
 public abstract class EntityRendererMixin<T extends LivingEntity, S extends LivingEntityRenderState, M extends EntityModel<? super S>>
@@ -41,6 +45,7 @@ public abstract class EntityRendererMixin<T extends LivingEntity, S extends Livi
 
     @Unique private LivingEntity mainLivingEntityThing;
     @Unique private final MinecraftClient client = MinecraftClient.getInstance();
+    @Unique private static final Identifier ICONS_TEXTURE = Identifier.of("minecraft", "textures/gui/icons.png");
     
     protected EntityRendererMixin(EntityRendererFactory.Context ctx) {
         super(ctx);
@@ -70,8 +75,6 @@ public abstract class EntityRendererMixin<T extends LivingEntity, S extends Livi
     }
 
     @Unique private void renderHearts(LivingEntity livingEntity, float yaw, float tickDelta, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int light){
-        VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(RenderLayer.getGui());
-
         double d = this.dispatcher.getSquaredDistanceToCamera(livingEntity);
 
         int healthRed = MathHelper.ceil(livingEntity.getHealth());
@@ -103,7 +106,6 @@ public abstract class EntityRendererMixin<T extends LivingEntity, S extends Livi
         for (int isDrawingEmpty = 0; isDrawingEmpty < 2; isDrawingEmpty++) {
             for (int heart = 0; heart < heartsTotal; heart++) {
                 if (heart % heartsPerRow == 0) {
-                    //h = (scale*10)*((heart/2 + heartsPerRow - 1) / heartsPerRow);
                     h = heart / heartDensity;
                 }
 
@@ -133,7 +135,18 @@ public abstract class EntityRendererMixin<T extends LivingEntity, S extends Livi
                 float x = maxX - (heart % heartsPerRow) * 8;
 
                 if (isDrawingEmpty == 0) {
-                    drawHeart(model, vertexConsumer, x, HeartTypeEnum.EMPTY, livingEntity);
+                    // Create heart texture identifier
+                    String additionalIconEffects = "";
+                    HeartTypeEnum type = HeartTypeEnum.EMPTY;
+                    Identifier heartTextureId = ModConfig.HANDLER.instance().use_vanilla_textures ? 
+                        Identifier.of("healthindicators", "textures/gui/heart/" + additionalIconEffects + type.icon + ".png") :
+                        Identifier.of("minecraft", "textures/gui/sprites/hud/heart/" + additionalIconEffects + type.icon + ".png");
+                        
+                    // Get vertex consumer for this specific texture
+                    VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(
+                        RenderLayer.getText(heartTextureId)
+                    );
+                    drawHeart(model, vertexConsumer, x, type, livingEntity);
                 } else {
                     HeartTypeEnum type;
                     if (heart < heartsRed) {
@@ -150,6 +163,20 @@ public abstract class EntityRendererMixin<T extends LivingEntity, S extends Livi
                         }
                     }
                     if (type != HeartTypeEnum.EMPTY) {
+                        // Create heart texture identifier with effects
+                        String additionalIconEffects = "";
+                        if(type != HeartTypeEnum.YELLOW_FULL && type != HeartTypeEnum.YELLOW_HALF && type != HeartTypeEnum.EMPTY && ModConfig.HANDLER.instance().show_heart_effects) {
+                            additionalIconEffects = (addStatusIcon(livingEntity) + addHardcoreIcon(livingEntity));
+                        }
+                        
+                        Identifier heartTextureId = ModConfig.HANDLER.instance().use_vanilla_textures ? 
+                            Identifier.of("healthindicators", "textures/gui/heart/" + additionalIconEffects + type.icon + ".png") :
+                            Identifier.of("minecraft", "textures/gui/sprites/hud/heart/" + additionalIconEffects + type.icon + ".png");
+                            
+                        // Get vertex consumer for this specific texture
+                        VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(
+                            RenderLayer.getText(heartTextureId)
+                        );
                         drawHeart(model, vertexConsumer, x, type, livingEntity);
                     }
                 }
@@ -191,8 +218,6 @@ public abstract class EntityRendererMixin<T extends LivingEntity, S extends Livi
 
 
     @Unique private void renderArmorPoints(LivingEntity livingEntity, float yaw, float tickDelta, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int light){
-        VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(RenderLayer.getGui());
-
         double d = this.dispatcher.getSquaredDistanceToCamera(livingEntity);
 
         int armor = MathHelper.ceil(livingEntity.getArmor());
@@ -217,7 +242,6 @@ public abstract class EntityRendererMixin<T extends LivingEntity, S extends Livi
         for (int isDrawingEmpty = 0; isDrawingEmpty < 2; isDrawingEmpty++) {
             for (int pointCount = 0; pointCount < pointsTotal; pointCount++) {
                 if (pointCount % pointsPerRow == 0) {
-                    //h = pointCount / pointDensity;
                     h = (scale*10)*((pointCount/2 + pointsPerRow - 1) / pointsPerRow);
                 }
 
@@ -241,7 +265,15 @@ public abstract class EntityRendererMixin<T extends LivingEntity, S extends Livi
                 float x = maxX - (pointCount % pointsPerRow) * 8;
 
                 if (isDrawingEmpty == 0) {
-                    drawArmor(model, vertexConsumer, x, ArmorTypeEnum.EMPTY);
+                    // Get the correct armor texture identifier
+                    ArmorTypeEnum type = ArmorTypeEnum.EMPTY;
+                    Identifier armorIcon = ModConfig.HANDLER.instance().use_vanilla_textures ? type.vanillaIcon : type.icon;
+                    
+                    // Get vertex consumer for this specific texture
+                    VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(
+                        RenderLayer.getText(armorIcon)
+                    );
+                    drawArmor(model, vertexConsumer, x, type);
                 } else {
                     ArmorTypeEnum type = null;
                     if (pointCount < armorPoints) {
@@ -252,7 +284,16 @@ public abstract class EntityRendererMixin<T extends LivingEntity, S extends Livi
                     } else if (pointCount < pointsNormal) {
                         type = ArmorTypeEnum.EMPTY;
                     }
-                    if(type != null) drawArmor(model, vertexConsumer, x, type);
+                    if(type != null) {
+                        // Get the correct armor texture identifier
+                        Identifier armorIcon = ModConfig.HANDLER.instance().use_vanilla_textures ? type.vanillaIcon : type.icon;
+                        
+                        // Get vertex consumer for this specific texture
+                        VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(
+                            RenderLayer.getText(armorIcon)
+                        );
+                        drawArmor(model, vertexConsumer, x, type);
+                    }
                 }
 
                 matrixStack.pop();

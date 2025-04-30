@@ -1,12 +1,10 @@
 package io.github.adytech99.healthindicators.util;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.adytech99.healthindicators.config.ModConfig;
 import io.github.adytech99.healthindicators.enums.ArmorTypeEnum;
 import io.github.adytech99.healthindicators.enums.HeartTypeEnum;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.Identifier;
 import org.joml.Matrix4f;
 
 import static io.github.adytech99.healthindicators.enums.HeartTypeEnum.addHardcoreIcon;
@@ -14,42 +12,39 @@ import static io.github.adytech99.healthindicators.enums.HeartTypeEnum.addStatus
 
 public class RenderUtils {
     public static void drawHeart(Matrix4f model, VertexConsumer vertexConsumer, float x, HeartTypeEnum type, LivingEntity livingEntity) {
-        String additionalIconEffects = "";
-        if(type != HeartTypeEnum.YELLOW_FULL && type != HeartTypeEnum.YELLOW_HALF && type != HeartTypeEnum.EMPTY && ModConfig.HANDLER.instance().show_heart_effects) additionalIconEffects = (addStatusIcon(livingEntity) + addHardcoreIcon(livingEntity));
-        Identifier heartIcon = Identifier.of("minecraft", "textures/gui/sprites/hud/heart/" + additionalIconEffects + type.icon + ".png");
-        Identifier vanillaHeartIcon = Identifier.of("healthindicators", "textures/gui/heart/" + additionalIconEffects + type.icon + ".png");
-
-        // Using the Identifier directly with the vertex consumer
-
+        // The vertexConsumer is already bound to the appropriate texture
+        // We just need to draw the heart quad with the full texture coordinates
+        
         float minU = 0F;
         float maxU = 1F;
         float minV = 0F;
         float maxV = 1F;
 
         float heartSize = 9F;
-
-        vertexConsumer.vertex(model, x, 0F - heartSize, 0.0F).texture(minU, maxV).color(1.0F, 0.0F, 0.0F, 1.0F);
-        vertexConsumer.vertex(model, x - heartSize, 0F - heartSize, 0.0F).texture(maxU, maxV).color(1.0F, 0.0F, 0.0F, 1.0F);
-        vertexConsumer.vertex(model, x - heartSize, 0F, 0.0F).texture(maxU, minV).color(1.0F, 0.0F, 0.0F, 1.0F);
-        vertexConsumer.vertex(model, x, 0F, 0.0F).texture(minU, minV).color(1.0F, 0.0F, 0.0F, 1.0F);
+        
+        // Draw the heart as a quad (two triangles)
+        vertexConsumer.vertex(model, x, 0F - heartSize, 0.0F).texture(minU, maxV).light(15728880).color(1.0F, 1.0F, 1.0F, 1.0F);
+        vertexConsumer.vertex(model, x - heartSize, 0F - heartSize, 0.0F).texture(maxU, maxV).light(15728880).color(1.0F, 1.0F, 1.0F, 1.0F);
+        vertexConsumer.vertex(model, x - heartSize, 0F, 0.0F).texture(maxU, minV).light(15728880).color(1.0F, 1.0F, 1.0F, 1.0F);
+        vertexConsumer.vertex(model, x, 0F, 0.0F).texture(minU, minV).light(15728880).color(1.0F, 1.0F, 1.0F, 1.0F);
     }
 
     public static void drawArmor(Matrix4f model, VertexConsumer vertexConsumer, float x, ArmorTypeEnum type) {
-        Identifier armorIcon = ModConfig.HANDLER.instance().use_vanilla_textures ? type.vanillaIcon : type.icon;
+        // The vertexConsumer is already bound to the appropriate texture
+        // We just need to draw the armor quad with the full texture coordinates
         
-        // Using the Identifier directly with the vertex consumer
-
         float minU = 0F;
         float maxU = 1F;
         float minV = 0F;
         float maxV = 1F;
 
-        float heartSize = 9F;
-
-        vertexConsumer.vertex(model, x, 0F - heartSize, 0.0F).texture(minU, maxV);
-        vertexConsumer.vertex(model, x - heartSize, 0F - heartSize, 0.0F).texture(maxU, maxV);
-        vertexConsumer.vertex(model, x - heartSize, 0F, 0.0F).texture(maxU, minV);
-        vertexConsumer.vertex(model, x, 0F, 0.0F).texture(minU, minV);
+        float armorSize = 9F;
+        
+        // Draw the armor icon as a quad (two triangles)
+        vertexConsumer.vertex(model, x, 0F - armorSize, 0.0F).texture(minU, maxV).light(15728880).color(1.0F, 1.0F, 1.0F, 1.0F);
+        vertexConsumer.vertex(model, x - armorSize, 0F - armorSize, 0.0F).texture(maxU, maxV).light(15728880).color(1.0F, 1.0F, 1.0F, 1.0F);
+        vertexConsumer.vertex(model, x - armorSize, 0F, 0.0F).texture(maxU, minV).light(15728880).color(1.0F, 1.0F, 1.0F, 1.0F);
+        vertexConsumer.vertex(model, x, 0F, 0.0F).texture(minU, minV).light(15728880).color(1.0F, 1.0F, 1.0F, 1.0F);
     }
 
     public static String getHealthText(LivingEntity livingEntity) {
@@ -61,7 +56,6 @@ public class RenderUtils {
         // Rounding off to the specified number of decimal places
         String healthStr = formatToDecimalPlaces(health + absorption, decimalPlaces);
         String maxHealthStr = formatToDecimalPlaces(maxHealth, decimalPlaces);
-        //String absorptionStr = formatToDecimalPlaces(absorption, decimalPlaces);
 
         if (ModConfig.HANDLER.instance().percentage_based_health) {
             float percentage = ((health + absorption) / maxHealth) * 100;
