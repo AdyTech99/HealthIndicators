@@ -168,6 +168,11 @@ public class ModConfig {
 
     @SerialEntry
     @AutoGen(category = "appearance", group = "indicator_type")
+    @IntSlider(min = 0, max = 100, step = 1)
+    public int health_bar_opacity = 100;
+
+    @SerialEntry
+    @AutoGen(category = "appearance", group = "indicator_type")
     @Boolean
     public boolean show_heart_effects = true;
 
@@ -219,7 +224,10 @@ public class ModConfig {
     @FloatSlider(min = 0.0f, max = 0.1f, step = 0.005f, format = "%.3f")
     public float size = 0.025f;
 
-
+    @SerialEntry
+    @AutoGen(category = "appearance", group = "indicator_type") 
+    @Boolean
+    public boolean show_through_walls = false;
 
 
     @SerialEntry

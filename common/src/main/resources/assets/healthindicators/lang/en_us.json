@@ -63,6 +63,9 @@
   "yacl3.config.healthindicators:config.use_vanilla_textures": "Use vanilla textures",
   "yacl3.config.healthindicators:config.use_vanilla_textures.desc": "Some resource packs use a custom heart icon, which can break this mod. Enabling this setting will override the custom icon.",
 
+  "yacl3.config.healthindicators:config.health_bar_opacity": "Opacity",
+  "yacl3.config.healthindicators:config.health_bar_opacity.desc": "The opacity of the health indicator. This value is a percentage (0-100).",
+
   "yacl3.config.healthindicators:config.show_heart_effects": "Show effects",
   "yacl3.config.healthindicators:config.show_heart_effects.desc": "Some status effects and conditions (poisoned, withered, hardcore, frozen) changes the texture of the hearts. Enabling this option will change the texture of the health indicator's heart's as well.",
 
@@ -91,6 +94,9 @@
 
   "yacl3.config.healthindicators:config.max_health": "Base health",
   "yacl3.config.healthindicators:config.max_health.desc": "The base value (in hp, not hearts! 1 heart = 2hp) for the percentage based health.",
+
+  "yacl3.config.healthindicators:config.show_through_walls": "Show through walls",
+  "yacl3.config.healthindicators:config.show_through_walls.desc": "Whether the health indicator should be visible through walls.",
 
 
   "yacl3.config.healthindicators:config.display_offset": "Display offset",

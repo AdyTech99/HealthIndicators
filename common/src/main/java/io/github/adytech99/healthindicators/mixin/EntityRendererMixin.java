@@ -1,8 +1,11 @@
 package io.github.adytech99.healthindicators.mixin;
 
+<<<<<<< HEAD
 import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.adytech99.healthindicators.HealthIndicatorsCommon;
 import io.github.adytech99.healthindicators.Renderer;
+=======
+>>>>>>> 69cdc6c (Feat: option to show health indicators through walls)
 import io.github.adytech99.healthindicators.config.Config;
 import io.github.adytech99.healthindicators.config.ModConfig;
 import io.github.adytech99.healthindicators.enums.ArmorTypeEnum;
@@ -142,10 +145,24 @@ public abstract class EntityRendererMixin<T extends LivingEntity, S extends Livi
                         Identifier.of("healthindicators", "textures/gui/heart/" + additionalIconEffects + type.icon + ".png") :
                         Identifier.of("minecraft", "textures/gui/sprites/hud/heart/" + additionalIconEffects + type.icon + ".png");
                         
+<<<<<<< HEAD
                     // Get vertex consumer for this specific texture
                     VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(
                         RenderLayer.getText(heartTextureId)
                     );
+=======
+                    // Get vertex consumer for this specific texture with appropriate render layer
+                    RenderLayer renderLayer;
+                    if (ModConfig.HANDLER.instance().show_through_walls) {
+                        // Use a render layer that ignores depth testing when show_through_walls is enabled
+                        renderLayer = RenderLayer.getTextSeeThrough(heartTextureId);
+                    } else {
+                        // Use normal text render layer
+                        renderLayer = RenderLayer.getText(heartTextureId);
+                    }
+                    
+                    VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(renderLayer);
+>>>>>>> 69cdc6c (Feat: option to show health indicators through walls)
                     drawHeart(model, vertexConsumer, x, type, livingEntity);
                 } else {
                     HeartTypeEnum type;
@@ -173,10 +190,24 @@ public abstract class EntityRendererMixin<T extends LivingEntity, S extends Livi
                             Identifier.of("healthindicators", "textures/gui/heart/" + additionalIconEffects + type.icon + ".png") :
                             Identifier.of("minecraft", "textures/gui/sprites/hud/heart/" + additionalIconEffects + type.icon + ".png");
                             
+<<<<<<< HEAD
                         // Get vertex consumer for this specific texture
                         VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(
                             RenderLayer.getText(heartTextureId)
                         );
+=======
+                        // Get vertex consumer for this specific texture with appropriate render layer
+                        RenderLayer renderLayer;
+                        if (ModConfig.HANDLER.instance().show_through_walls) {
+                            // Use a render layer that ignores depth testing when show_through_walls is enabled
+                            renderLayer = RenderLayer.getTextSeeThrough(heartTextureId);
+                        } else {
+                            // Use normal text render layer
+                            renderLayer = RenderLayer.getText(heartTextureId);
+                        }
+                        
+                        VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(renderLayer);
+>>>>>>> 69cdc6c (Feat: option to show health indicators through walls)
                         drawHeart(model, vertexConsumer, x, type, livingEntity);
                     }
                 }
@@ -212,7 +243,22 @@ public abstract class EntityRendererMixin<T extends LivingEntity, S extends Livi
         float x = -textRenderer.getWidth(healthText) / 2.0f;
         Matrix4f model = matrixStack.peek().getPositionMatrix();
 
-        textRenderer.draw(healthText, x, 0, ModConfig.HANDLER.instance().number_color.getRGB(), ModConfig.HANDLER.instance().render_number_display_shadow, model, vertexConsumerProvider, TextRenderer.TextLayerType.NORMAL, ModConfig.HANDLER.instance().render_number_display_background_color ? ModConfig.HANDLER.instance().number_display_background_color.getRGB() : 0, light);
+        // Use a different text layer type when show_through_walls is enabled
+        TextRenderer.TextLayerType textLayerType = ModConfig.HANDLER.instance().show_through_walls ? 
+            TextRenderer.TextLayerType.SEE_THROUGH : TextRenderer.TextLayerType.NORMAL;
+            
+        int backgroundColor = ModConfig.HANDLER.instance().render_number_display_background_color ? 
+            ModConfig.HANDLER.instance().number_display_background_color.getRGB() : 0;
+            
+        // Apply opacity based on health_bar_opacity
+        int textColor = ModConfig.HANDLER.instance().number_color.getRGB();
+        int opacity = ModConfig.HANDLER.instance().health_bar_opacity;
+        textColor = (textColor & 0x00FFFFFF) | ((opacity * 255 / 100) << 24);
+        
+        textRenderer.draw(healthText, x, 0, textColor, 
+            ModConfig.HANDLER.instance().render_number_display_shadow, model, 
+            vertexConsumerProvider, textLayerType, backgroundColor, light);
+            
         matrixStack.pop();
     }
 
@@ -264,7 +310,9 @@ public abstract class EntityRendererMixin<T extends LivingEntity, S extends Livi
 
                 float x = maxX - (pointCount % pointsPerRow) * 8;
 
+                ArmorTypeEnum type;
                 if (isDrawingEmpty == 0) {
+<<<<<<< HEAD
                     // Get the correct armor texture identifier
                     ArmorTypeEnum type = ArmorTypeEnum.EMPTY;
                     Identifier armorIcon = ModConfig.HANDLER.instance().use_vanilla_textures ? type.vanillaIcon : type.icon;
@@ -295,6 +343,30 @@ public abstract class EntityRendererMixin<T extends LivingEntity, S extends Livi
                         drawArmor(model, vertexConsumer, x, type);
                     }
                 }
+=======
+                    type = ArmorTypeEnum.EMPTY;
+                } else if (pointCount < armorPoints) {
+                    type = ArmorTypeEnum.FULL;
+                    if (pointCount == armorPoints - 1 && lastPointHalf) {
+                        type = ArmorTypeEnum.HALF;
+                    }
+                } else continue;
+
+                Identifier armorTextureId = type.icon;
+
+                // Get vertex consumer for this specific texture with appropriate render layer
+                RenderLayer renderLayer;
+                if (ModConfig.HANDLER.instance().show_through_walls) {
+                    // Use a render layer that ignores depth testing when show_through_walls is enabled
+                    renderLayer = RenderLayer.getTextSeeThrough(armorTextureId);
+                } else {
+                    // Use normal text render layer
+                    renderLayer = RenderLayer.getText(armorTextureId);
+                }
+                
+                VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(renderLayer);
+                drawArmor(model, vertexConsumer, x, type);
+>>>>>>> 69cdc6c (Feat: option to show health indicators through walls)
 
                 matrixStack.pop();
             }
