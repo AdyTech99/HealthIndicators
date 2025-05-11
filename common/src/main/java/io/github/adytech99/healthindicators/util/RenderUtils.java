@@ -22,13 +22,6 @@ public class RenderUtils {
 
         float heartSize = 9F;
         
-<<<<<<< HEAD
-        // Draw the heart as a quad (two triangles)
-        vertexConsumer.vertex(model, x, 0F - heartSize, 0.0F).texture(minU, maxV).light(15728880).color(1.0F, 1.0F, 1.0F, 1.0F);
-        vertexConsumer.vertex(model, x - heartSize, 0F - heartSize, 0.0F).texture(maxU, maxV).light(15728880).color(1.0F, 1.0F, 1.0F, 1.0F);
-        vertexConsumer.vertex(model, x - heartSize, 0F, 0.0F).texture(maxU, minV).light(15728880).color(1.0F, 1.0F, 1.0F, 1.0F);
-        vertexConsumer.vertex(model, x, 0F, 0.0F).texture(minU, minV).light(15728880).color(1.0F, 1.0F, 1.0F, 1.0F);
-=======
         // Calculate alpha
         float alpha = 1.0F;
         alpha = ModConfig.HANDLER.instance().health_bar_opacity / 100.0F;
@@ -38,7 +31,6 @@ public class RenderUtils {
         vertexConsumer.vertex(model, x - heartSize, 0F - heartSize, 0.0F).texture(maxU, maxV).light(15728880).color(1.0F, 1.0F, 1.0F, alpha);
         vertexConsumer.vertex(model, x - heartSize, 0F, 0.0F).texture(maxU, minV).light(15728880).color(1.0F, 1.0F, 1.0F, alpha);
         vertexConsumer.vertex(model, x, 0F, 0.0F).texture(minU, minV).light(15728880).color(1.0F, 1.0F, 1.0F, alpha);
->>>>>>> 69cdc6c (Feat: option to show health indicators through walls)
     }
 
     public static void drawArmor(Matrix4f model, VertexConsumer vertexConsumer, float x, ArmorTypeEnum type) {
@@ -52,13 +44,6 @@ public class RenderUtils {
 
         float armorSize = 9F;
         
-<<<<<<< HEAD
-        // Draw the armor icon as a quad (two triangles)
-        vertexConsumer.vertex(model, x, 0F - armorSize, 0.0F).texture(minU, maxV).light(15728880).color(1.0F, 1.0F, 1.0F, 1.0F);
-        vertexConsumer.vertex(model, x - armorSize, 0F - armorSize, 0.0F).texture(maxU, maxV).light(15728880).color(1.0F, 1.0F, 1.0F, 1.0F);
-        vertexConsumer.vertex(model, x - armorSize, 0F, 0.0F).texture(maxU, minV).light(15728880).color(1.0F, 1.0F, 1.0F, 1.0F);
-        vertexConsumer.vertex(model, x, 0F, 0.0F).texture(minU, minV).light(15728880).color(1.0F, 1.0F, 1.0F, 1.0F);
-=======
         // Calculate alpha
         float alpha = 1.0F;
         alpha = ModConfig.HANDLER.instance().health_bar_opacity / 100.0F;
@@ -69,7 +54,6 @@ public class RenderUtils {
         vertexConsumer.vertex(model, x - armorSize, 0F - armorSize, 0.0F).texture(maxU, maxV).light(15728880).color(1.0F, 1.0F, 1.0F, alpha);
         vertexConsumer.vertex(model, x - armorSize, 0F, 0.0F).texture(maxU, minV).light(15728880).color(1.0F, 1.0F, 1.0F, alpha);
         vertexConsumer.vertex(model, x, 0F, 0.0F).texture(minU, minV).light(15728880).color(1.0F, 1.0F, 1.0F, alpha);
->>>>>>> 69cdc6c (Feat: option to show health indicators through walls)
     }
 
     public static String getHealthText(LivingEntity livingEntity) {

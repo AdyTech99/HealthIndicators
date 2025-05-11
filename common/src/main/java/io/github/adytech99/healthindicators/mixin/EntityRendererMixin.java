@@ -1,11 +1,5 @@
 package io.github.adytech99.healthindicators.mixin;
 
-<<<<<<< HEAD
-import com.mojang.blaze3d.systems.RenderSystem;
-import io.github.adytech99.healthindicators.HealthIndicatorsCommon;
-import io.github.adytech99.healthindicators.Renderer;
-=======
->>>>>>> 69cdc6c (Feat: option to show health indicators through walls)
 import io.github.adytech99.healthindicators.config.Config;
 import io.github.adytech99.healthindicators.config.ModConfig;
 import io.github.adytech99.healthindicators.enums.ArmorTypeEnum;
@@ -145,12 +139,6 @@ public abstract class EntityRendererMixin<T extends LivingEntity, S extends Livi
                         Identifier.of("healthindicators", "textures/gui/heart/" + additionalIconEffects + type.icon + ".png") :
                         Identifier.of("minecraft", "textures/gui/sprites/hud/heart/" + additionalIconEffects + type.icon + ".png");
                         
-<<<<<<< HEAD
-                    // Get vertex consumer for this specific texture
-                    VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(
-                        RenderLayer.getText(heartTextureId)
-                    );
-=======
                     // Get vertex consumer for this specific texture with appropriate render layer
                     RenderLayer renderLayer;
                     if (ModConfig.HANDLER.instance().show_through_walls) {
@@ -162,7 +150,6 @@ public abstract class EntityRendererMixin<T extends LivingEntity, S extends Livi
                     }
                     
                     VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(renderLayer);
->>>>>>> 69cdc6c (Feat: option to show health indicators through walls)
                     drawHeart(model, vertexConsumer, x, type, livingEntity);
                 } else {
                     HeartTypeEnum type;
@@ -190,12 +177,6 @@ public abstract class EntityRendererMixin<T extends LivingEntity, S extends Livi
                             Identifier.of("healthindicators", "textures/gui/heart/" + additionalIconEffects + type.icon + ".png") :
                             Identifier.of("minecraft", "textures/gui/sprites/hud/heart/" + additionalIconEffects + type.icon + ".png");
                             
-<<<<<<< HEAD
-                        // Get vertex consumer for this specific texture
-                        VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(
-                            RenderLayer.getText(heartTextureId)
-                        );
-=======
                         // Get vertex consumer for this specific texture with appropriate render layer
                         RenderLayer renderLayer;
                         if (ModConfig.HANDLER.instance().show_through_walls) {
@@ -207,7 +188,6 @@ public abstract class EntityRendererMixin<T extends LivingEntity, S extends Livi
                         }
                         
                         VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(renderLayer);
->>>>>>> 69cdc6c (Feat: option to show health indicators through walls)
                         drawHeart(model, vertexConsumer, x, type, livingEntity);
                     }
                 }
@@ -312,38 +292,6 @@ public abstract class EntityRendererMixin<T extends LivingEntity, S extends Livi
 
                 ArmorTypeEnum type;
                 if (isDrawingEmpty == 0) {
-<<<<<<< HEAD
-                    // Get the correct armor texture identifier
-                    ArmorTypeEnum type = ArmorTypeEnum.EMPTY;
-                    Identifier armorIcon = ModConfig.HANDLER.instance().use_vanilla_textures ? type.vanillaIcon : type.icon;
-                    
-                    // Get vertex consumer for this specific texture
-                    VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(
-                        RenderLayer.getText(armorIcon)
-                    );
-                    drawArmor(model, vertexConsumer, x, type);
-                } else {
-                    ArmorTypeEnum type = null;
-                    if (pointCount < armorPoints) {
-                        type = ArmorTypeEnum.FULL;
-                        if (pointCount == armorPoints - 1 && lastPointHalf) {
-                            type = ArmorTypeEnum.HALF;
-                        }
-                    } else if (pointCount < pointsNormal) {
-                        type = ArmorTypeEnum.EMPTY;
-                    }
-                    if(type != null) {
-                        // Get the correct armor texture identifier
-                        Identifier armorIcon = ModConfig.HANDLER.instance().use_vanilla_textures ? type.vanillaIcon : type.icon;
-                        
-                        // Get vertex consumer for this specific texture
-                        VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(
-                            RenderLayer.getText(armorIcon)
-                        );
-                        drawArmor(model, vertexConsumer, x, type);
-                    }
-                }
-=======
                     type = ArmorTypeEnum.EMPTY;
                 } else if (pointCount < armorPoints) {
                     type = ArmorTypeEnum.FULL;
@@ -366,7 +314,6 @@ public abstract class EntityRendererMixin<T extends LivingEntity, S extends Livi
                 
                 VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(renderLayer);
                 drawArmor(model, vertexConsumer, x, type);
->>>>>>> 69cdc6c (Feat: option to show health indicators through walls)
 
                 matrixStack.pop();
             }
