@@ -169,7 +169,7 @@ public class ModConfig {
     @SerialEntry
     @AutoGen(category = "appearance", group = "indicator_type")
     @IntSlider(min = 0, max = 100, step = 1)
-    public int health_bar_opacity = 100;
+    public int health_bar_opacity = 50;
 
     @SerialEntry
     @AutoGen(category = "appearance", group = "indicator_type")

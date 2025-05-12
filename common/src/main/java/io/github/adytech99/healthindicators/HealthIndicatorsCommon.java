@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 
 public final class HealthIndicatorsCommon {
     public static final String MOD_ID = "healthindicators";
-    public static final MinecraftClient client = MinecraftClient.getInstance();
+    public static MinecraftClient client = MinecraftClient.getInstance();
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
     private static boolean changed = false;
@@ -27,6 +27,7 @@ public final class HealthIndicatorsCommon {
         ModConfig.HANDLER.load();
         Config.load();
         ClientGuiEvent.RENDER_HUD.register(HealthIndicatorsCommon::onHudRender);
+        client = MinecraftClient.getInstance();
         LOGGER.info("Never be heartless!");
     }
 
@@ -36,9 +37,11 @@ public final class HealthIndicatorsCommon {
             client.setScreen(configScreen);
             openConfig = false;
         }
-
-        if(client.world == null) return;
-        if(changed && client.world.getTime() % 200 == 0){
+        if(client == null || client.world == null){
+            client = MinecraftClient.getInstance();
+            return;
+        }
+        if(changed && client.world != null && client.world.getTime() % 200 == 0){
             ModConfig.HANDLER.save();
             changed = false;
         }
@@ -52,12 +55,16 @@ public final class HealthIndicatorsCommon {
     }
 
     public static void openConfig(){
-        openConfig = client.world != null;
+        try {
+            openConfig = client.world != null;
+        } catch (NullPointerException e) {
+            openConfig = false;
+        }
     }
 
     public static void enableHeartsRendering(){
         Config.setHeartsRenderingEnabled(!Config.getHeartsRenderingEnabled());
-        if (client.player != null) {
+        if (client != null && client.player != null) {
             Formatting formatting;
             if(ModConfig.HANDLER.instance().colored_messages) formatting = Config.getHeartsRenderingEnabled() ? Formatting.GREEN : Formatting.RED;
             else formatting = Formatting.WHITE;
@@ -67,7 +74,7 @@ public final class HealthIndicatorsCommon {
 
     public static void enableArmorRendering(){
         Config.setArmorRenderingEnabled(!Config.getArmorRenderingEnabled());
-        if (client.player != null) {
+        if (client != null && client.player != null) {
             Formatting formatting;
             if(ModConfig.HANDLER.instance().colored_messages) formatting = Config.getArmorRenderingEnabled() ? Formatting.GREEN : Formatting.RED;
             else formatting = Formatting.WHITE;
@@ -78,21 +85,21 @@ public final class HealthIndicatorsCommon {
     public static void increaseOffset(){
         ModConfig.HANDLER.instance().display_offset = (ModConfig.HANDLER.instance().display_offset + ModConfig.HANDLER.instance().offset_step_size);
         changed = true;
-        if (client.player != null) {
+        if (client != null && client.player != null) {
             ConfigUtils.sendMessage(client.player, Text.literal("Set heart offset to " + Util.truncate(ModConfig.HANDLER.instance().display_offset,2)));
         }
     }
     public static void decreaseOffset(){
         ModConfig.HANDLER.instance().display_offset = (ModConfig.HANDLER.instance().display_offset - ModConfig.HANDLER.instance().offset_step_size);
         changed = true;
-        if (client.player != null) {
+        if (client != null && client.player != null) {
             ConfigUtils.sendMessage(client.player, Text.literal("Set heart offset to " + Util.truncate(ModConfig.HANDLER.instance().display_offset,2)));
         }
     }
 
     public static void overrideFilters(){
         Config.setOverrideAllFiltersEnabled(true);
-        if (client.player != null) {
+        if (client != null && client.player != null) {
             ConfigUtils.sendOverlayMessage(client.player, Text.literal( " Config Criteria " + (Config.getOverrideAllFiltersEnabled() ? "Temporarily Overridden" : "Re-implemented")));
         }
     }

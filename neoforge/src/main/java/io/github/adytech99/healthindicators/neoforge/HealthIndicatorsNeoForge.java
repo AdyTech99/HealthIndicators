@@ -66,6 +66,7 @@ public final class HealthIndicatorsNeoForge {
 
     public HealthIndicatorsNeoForge() {
         HealthIndicatorsCommon.init();
+        HealthIndicatorsCommon.client = client;
         if(ModConfig.HANDLER.instance().enable_commands) NeoForge.EVENT_BUS.addListener(ModCommands::onRegisterCommands);
         NeoForge.EVENT_BUS.addListener(this::onClientTick);
 

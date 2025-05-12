@@ -10,8 +10,6 @@ import io.github.adytech99.healthindicators.config.ModConfig;
 import io.github.adytech99.healthindicators.util.ConfigUtils;
 import io.github.adytech99.healthindicators.util.Util;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientCommandSource;
-import net.minecraft.command.CommandSource;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.server.command.CommandManager;

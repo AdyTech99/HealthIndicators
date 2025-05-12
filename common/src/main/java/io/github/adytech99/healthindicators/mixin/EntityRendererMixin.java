@@ -1,5 +1,8 @@
 package io.github.adytech99.healthindicators.mixin;
 
+import com.mojang.blaze3d.systems.RenderSystem;
+import io.github.adytech99.healthindicators.HealthIndicatorsCommon;
+import io.github.adytech99.healthindicators.Renderer;
 import io.github.adytech99.healthindicators.config.Config;
 import io.github.adytech99.healthindicators.config.ModConfig;
 import io.github.adytech99.healthindicators.enums.ArmorTypeEnum;
@@ -22,7 +25,10 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -46,6 +52,33 @@ public abstract class EntityRendererMixin<T extends LivingEntity, S extends Livi
     
     protected EntityRendererMixin(EntityRendererFactory.Context ctx) {
         super(ctx);
+    }
+
+    /**
+     * Checks if there's a block between the player's camera and the entity
+     * @param entity The entity to check
+     * @return true if a block is blocking the view, false otherwise
+     */
+    @Unique
+    private boolean isEntityObstructedByBlocks(LivingEntity entity) {
+        if (client.player == null || client.world == null) return false;
+        
+        // Get the camera and entity positions
+        Vec3d cameraPos = client.player.getCameraPosVec(1.0f);
+        // Target the entity's position plus some height offset to aim at the health indicator position
+        Vec3d entityPos = entity.getPos().add(0, entity.getHeight() + 0.5f, 0); 
+        
+        // Perform raycast from player to entity
+        HitResult hitResult = client.player.raycast(200.0, 1.0f, false);
+        
+        // If we hit a block before reaching the entity's position, view is obstructed
+        if (hitResult.getType() == HitResult.Type.BLOCK) {
+            double distanceToHit = hitResult.getPos().squaredDistanceTo(cameraPos);
+            double distanceToEntity = entityPos.squaredDistanceTo(cameraPos);
+            return distanceToHit < distanceToEntity;
+        }
+        
+        return false;
     }
 
     @Inject(method = "updateRenderState(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/client/render/entity/state/LivingEntityRenderState;F)V", at = @At("TAIL"))
@@ -100,6 +133,9 @@ public abstract class EntityRendererMixin<T extends LivingEntity, S extends Livi
         double heartDensity = 50F - (Math.max(4F - Math.ceil((double) heartsTotal / heartsPerRow), -3F) * 5F);
         double h = 0;
 
+        // Check if entity is obstructed by blocks
+        boolean isObstructed = ModConfig.HANDLER.instance().show_through_walls && isEntityObstructedByBlocks(livingEntity);
+
         for (int isDrawingEmpty = 0; isDrawingEmpty < 2; isDrawingEmpty++) {
             for (int heart = 0; heart < heartsTotal; heart++) {
                 if (heart % heartsPerRow == 0) {
@@ -141,8 +177,8 @@ public abstract class EntityRendererMixin<T extends LivingEntity, S extends Livi
                         
                     // Get vertex consumer for this specific texture with appropriate render layer
                     RenderLayer renderLayer;
-                    if (ModConfig.HANDLER.instance().show_through_walls) {
-                        // Use a render layer that ignores depth testing when show_through_walls is enabled
+                    if (isObstructed) {
+                        // Use a render layer that ignores depth testing when show_through_walls is enabled and view is obstructed
                         renderLayer = RenderLayer.getTextSeeThrough(heartTextureId);
                     } else {
                         // Use normal text render layer
@@ -150,7 +186,20 @@ public abstract class EntityRendererMixin<T extends LivingEntity, S extends Livi
                     }
                     
                     VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(renderLayer);
-                    drawHeart(model, vertexConsumer, x, type, livingEntity);
+                    
+                    // Apply correct opacity
+                    float opacity = ModConfig.HANDLER.instance().health_bar_opacity / 100.0F;
+                    float minU = 0F;
+                    float maxU = 1F;
+                    float minV = 0F;
+                    float maxV = 1F;
+                    float heartSize = 9F;
+                    
+                    vertexConsumer.vertex(model, x, 0F - heartSize, 0.0F).texture(minU, maxV).light(15728880).color(1.0F, 1.0F, 1.0F, opacity);
+                    vertexConsumer.vertex(model, x - heartSize, 0F - heartSize, 0.0F).texture(maxU, maxV).light(15728880).color(1.0F, 1.0F, 1.0F, opacity);
+                    vertexConsumer.vertex(model, x - heartSize, 0F, 0.0F).texture(maxU, minV).light(15728880).color(1.0F, 1.0F, 1.0F, opacity);
+                    vertexConsumer.vertex(model, x, 0F, 0.0F).texture(minU, minV).light(15728880).color(1.0F, 1.0F, 1.0F, opacity);
+                
                 } else {
                     HeartTypeEnum type;
                     if (heart < heartsRed) {
@@ -179,8 +228,8 @@ public abstract class EntityRendererMixin<T extends LivingEntity, S extends Livi
                             
                         // Get vertex consumer for this specific texture with appropriate render layer
                         RenderLayer renderLayer;
-                        if (ModConfig.HANDLER.instance().show_through_walls) {
-                            // Use a render layer that ignores depth testing when show_through_walls is enabled
+                        if (isObstructed) {
+                            // Use a render layer that ignores depth testing when view is obstructed
                             renderLayer = RenderLayer.getTextSeeThrough(heartTextureId);
                         } else {
                             // Use normal text render layer
@@ -188,7 +237,19 @@ public abstract class EntityRendererMixin<T extends LivingEntity, S extends Livi
                         }
                         
                         VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(renderLayer);
-                        drawHeart(model, vertexConsumer, x, type, livingEntity);
+                        
+                        // Apply correct opacity
+                        float opacity = ModConfig.HANDLER.instance().health_bar_opacity / 100.0F;
+                        float minU = 0F;
+                        float maxU = 1F;
+                        float minV = 0F;
+                        float maxV = 1F;
+                        float heartSize = 9F;
+                        
+                        vertexConsumer.vertex(model, x, 0F - heartSize, 0.0F).texture(minU, maxV).light(15728880).color(1.0F, 1.0F, 1.0F, opacity);
+                        vertexConsumer.vertex(model, x - heartSize, 0F - heartSize, 0.0F).texture(maxU, maxV).light(15728880).color(1.0F, 1.0F, 1.0F, opacity);
+                        vertexConsumer.vertex(model, x - heartSize, 0F, 0.0F).texture(maxU, minV).light(15728880).color(1.0F, 1.0F, 1.0F, opacity);
+                        vertexConsumer.vertex(model, x, 0F, 0.0F).texture(minU, minV).light(15728880).color(1.0F, 1.0F, 1.0F, opacity);
                     }
                 }
 
@@ -201,6 +262,9 @@ public abstract class EntityRendererMixin<T extends LivingEntity, S extends Livi
     private void renderNumber(LivingEntity livingEntity, float yaw, float tickDelta, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int light){
         double d = this.dispatcher.getSquaredDistanceToCamera(livingEntity);
         String healthText = RenderUtils.getHealthText(livingEntity);
+
+        // Check if entity is obstructed by blocks
+        boolean isObstructed = ModConfig.HANDLER.instance().show_through_walls && isEntityObstructedByBlocks(livingEntity);
 
         matrixStack.push();
         float scale = ModConfig.HANDLER.instance().size;
@@ -223,8 +287,8 @@ public abstract class EntityRendererMixin<T extends LivingEntity, S extends Livi
         float x = -textRenderer.getWidth(healthText) / 2.0f;
         Matrix4f model = matrixStack.peek().getPositionMatrix();
 
-        // Use a different text layer type when show_through_walls is enabled
-        TextRenderer.TextLayerType textLayerType = ModConfig.HANDLER.instance().show_through_walls ? 
+        // Use a different text layer type when show_through_walls is enabled and entity is obstructed
+        TextRenderer.TextLayerType textLayerType = isObstructed ? 
             TextRenderer.TextLayerType.SEE_THROUGH : TextRenderer.TextLayerType.NORMAL;
             
         int backgroundColor = ModConfig.HANDLER.instance().render_number_display_background_color ? 
@@ -232,8 +296,10 @@ public abstract class EntityRendererMixin<T extends LivingEntity, S extends Livi
             
         // Apply opacity based on health_bar_opacity
         int textColor = ModConfig.HANDLER.instance().number_color.getRGB();
+
         int opacity = ModConfig.HANDLER.instance().health_bar_opacity;
         textColor = (textColor & 0x00FFFFFF) | ((opacity * 255 / 100) << 24);
+
         
         textRenderer.draw(healthText, x, 0, textColor, 
             ModConfig.HANDLER.instance().render_number_display_shadow, model, 
@@ -261,6 +327,8 @@ public abstract class EntityRendererMixin<T extends LivingEntity, S extends Livi
         float maxX = pixelsTotal / 2.0f;
         float scale = ModConfig.HANDLER.instance().size;
 
+        // Check if entity is obstructed by blocks
+        boolean isObstructed = ModConfig.HANDLER.instance().show_through_walls && isEntityObstructedByBlocks(livingEntity);
 
         double pointDensity = 50F - (Math.max(4F - Math.ceil((double) pointsTotal / pointsPerRow), -3F) * 5F);
         double h = 0;
@@ -290,7 +358,7 @@ public abstract class EntityRendererMixin<T extends LivingEntity, S extends Livi
 
                 float x = maxX - (pointCount % pointsPerRow) * 8;
 
-                ArmorTypeEnum type;
+                ArmorTypeEnum type = null;
                 if (isDrawingEmpty == 0) {
                     type = ArmorTypeEnum.EMPTY;
                 } else if (pointCount < armorPoints) {
@@ -298,22 +366,38 @@ public abstract class EntityRendererMixin<T extends LivingEntity, S extends Livi
                     if (pointCount == armorPoints - 1 && lastPointHalf) {
                         type = ArmorTypeEnum.HALF;
                     }
-                } else continue;
-
-                Identifier armorTextureId = type.icon;
-
-                // Get vertex consumer for this specific texture with appropriate render layer
-                RenderLayer renderLayer;
-                if (ModConfig.HANDLER.instance().show_through_walls) {
-                    // Use a render layer that ignores depth testing when show_through_walls is enabled
-                    renderLayer = RenderLayer.getTextSeeThrough(armorTextureId);
-                } else {
-                    // Use normal text render layer
-                    renderLayer = RenderLayer.getText(armorTextureId);
                 }
                 
-                VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(renderLayer);
-                drawArmor(model, vertexConsumer, x, type);
+                // Only proceed with rendering if we have a valid type
+                if (type != null) {
+                    Identifier armorTextureId = type.icon;
+    
+                    // Get vertex consumer for this specific texture with appropriate render layer
+                    RenderLayer renderLayer;
+                    if (isObstructed) {
+                        // Use a render layer that ignores depth testing when show_through_walls is enabled and view is obstructed
+                        renderLayer = RenderLayer.getTextSeeThrough(armorTextureId);
+                    } else {
+                        // Use normal text render layer
+                        renderLayer = RenderLayer.getText(armorTextureId);
+                    }
+                    
+                    VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(renderLayer);
+                    
+                    // Apply correct opacity
+                    float opacity = ModConfig.HANDLER.instance().health_bar_opacity / 100.0F;
+                    float minU = 0F;
+                    float maxU = 1F;
+                    float minV = 0F;
+                    float maxV = 1F;
+                    float armorSize = 9F;
+                    
+                    vertexConsumer.vertex(model, x, 0F - armorSize, 0.0F).texture(minU, maxV).light(15728880).color(1.0F, 1.0F, 1.0F, opacity);
+                    vertexConsumer.vertex(model, x - armorSize, 0F - armorSize, 0.0F).texture(maxU, maxV).light(15728880).color(1.0F, 1.0F, 1.0F, opacity);
+                    vertexConsumer.vertex(model, x - armorSize, 0F, 0.0F).texture(maxU, minV).light(15728880).color(1.0F, 1.0F, 1.0F, opacity);
+                    vertexConsumer.vertex(model, x, 0F, 0.0F).texture(minU, minV).light(15728880).color(1.0F, 1.0F, 1.0F, opacity);
+
+                }
 
                 matrixStack.pop();
             }
