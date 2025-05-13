@@ -264,7 +264,7 @@ public abstract class EntityRendererMixin<T extends LivingEntity, S extends Livi
         String healthText = RenderUtils.getHealthText(livingEntity);
 
         // Check if entity is obstructed by blocks
-        boolean isObstructed = ModConfig.HANDLER.instance().show_through_walls && isEntityObstructedByBlocks(livingEntity);
+        boolean isObstructed = ModConfig.HANDLER.instance().show_through_walls;
 
         matrixStack.push();
         float scale = ModConfig.HANDLER.instance().size;
@@ -328,7 +328,7 @@ public abstract class EntityRendererMixin<T extends LivingEntity, S extends Livi
         float scale = ModConfig.HANDLER.instance().size;
 
         // Check if entity is obstructed by blocks
-        boolean isObstructed = ModConfig.HANDLER.instance().show_through_walls && isEntityObstructedByBlocks(livingEntity);
+        boolean isObstructed = ModConfig.HANDLER.instance().show_through_walls;
 
         double pointDensity = 50F - (Math.max(4F - Math.ceil((double) pointsTotal / pointsPerRow), -3F) * 5F);
         double h = 0;
