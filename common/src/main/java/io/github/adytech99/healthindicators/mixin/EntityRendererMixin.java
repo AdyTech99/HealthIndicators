@@ -134,7 +134,7 @@ public abstract class EntityRendererMixin<T extends LivingEntity, S extends Livi
         double h = 0;
 
         // Check if entity is obstructed by blocks
-        boolean isObstructed = ModConfig.HANDLER.instance().show_through_walls && isEntityObstructedByBlocks(livingEntity);
+        boolean isObstructed = ModConfig.HANDLER.instance().show_through_walls; // && isEntityObstructedByBlocks(livingEntity);
 
         for (int isDrawingEmpty = 0; isDrawingEmpty < 2; isDrawingEmpty++) {
             for (int heart = 0; heart < heartsTotal; heart++) {

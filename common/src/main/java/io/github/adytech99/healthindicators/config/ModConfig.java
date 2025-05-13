@@ -60,6 +60,11 @@ public class ModConfig {
     public boolean self = false;
 
     @SerialEntry
+    @AutoGen(category = "filters", group = "entity_type") 
+    @TickBox
+    public boolean show_through_walls = false;
+
+    @SerialEntry
     @AutoGen(category = "filters")
     @Boolean(formatter = Boolean.Formatter.CUSTOM)
     public boolean blacklistOrWhitelist = true;
@@ -223,11 +228,6 @@ public class ModConfig {
     @AutoGen(category = "appearance", group = "indicator_type")
     @FloatSlider(min = 0.0f, max = 0.1f, step = 0.005f, format = "%.3f")
     public float size = 0.025f;
-
-    @SerialEntry
-    @AutoGen(category = "appearance", group = "indicator_type") 
-    @Boolean
-    public boolean show_through_walls = false;
 
 
     @SerialEntry

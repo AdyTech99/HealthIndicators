@@ -13,6 +13,10 @@
 
   "yacl3.config.healthindicators:config.self": "Show for yourself",
   "yacl3.config.healthindicators:config.self.desc": "Displays a health bar above yourself in third person and in the inventory menu",
+  
+  "yacl3.config.healthindicators:config.show_through_walls": "Show through walls",
+  "yacl3.config.healthindicators:config.show_through_walls.desc": "Whether the health indicator should be visible through walls.",
+
 
   "yacl3.config.healthindicators:config.blacklistOrWhitelist": "Blacklist or Whitelist",
   "yacl3.config.healthindicators:config.blacklistOrWhitelist.desc": "Toggles Blacklist/Whitelist mode for the below list \n\n If you choose Blacklist, then the list below will prevent displaying health bars over the entered entity types. \n\n If you choose Whitelist, then Health bars will only display over the entity types listed in the list. Leave the list empty to disable.",
@@ -94,10 +98,6 @@
 
   "yacl3.config.healthindicators:config.max_health": "Base health",
   "yacl3.config.healthindicators:config.max_health.desc": "The base value (in hp, not hearts! 1 heart = 2hp) for the percentage based health.",
-
-  "yacl3.config.healthindicators:config.show_through_walls": "Show through walls",
-  "yacl3.config.healthindicators:config.show_through_walls.desc": "Whether the health indicator should be visible through walls.",
-
 
   "yacl3.config.healthindicators:config.display_offset": "Display offset",
   "yacl3.config.healthindicators:config.display_offset.desc": "The distance between the top of the Entity and the health display. Negative offset values can make the health display render below or in the middle of the entity. Extreme offset values can make the health display render out of view.",
