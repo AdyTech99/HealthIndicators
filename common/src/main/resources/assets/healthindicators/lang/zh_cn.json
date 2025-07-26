@@ -1,0 +1,160 @@
+{
+  "yacl3.config.healthindicators:config.passive_mobs": "显示被动生物",
+  "yacl3.config.healthindicators:config.passive_mobs.desc": "在被动生物头顶显示血条",
+
+  "yacl3.config.healthindicators:config.hostile_mobs": "显示敌对生物",
+  "yacl3.config.healthindicators:config.hostile_mobs.desc": "在敌对生物头顶显示血条",
+
+  "yacl3.config.healthindicators:config.angered_mobs": "显示激怒生物",
+  "yacl3.config.healthindicators:config.angered_mobs.desc": "在被激怒的生物头顶显示血条。与“敌对生物”不同，被动生物（例如：铁傀儡、末影人）通常不算作敌对生物，但如果被激怒后仍会攻击玩家。",
+
+  "yacl3.config.healthindicators:config.players": "显示其他玩家",
+  "yacl3.config.healthindicators:config.players.desc": "在其他玩家头顶显示血条",
+
+  "yacl3.config.healthindicators:config.self": "显示自己",
+  "yacl3.config.healthindicators:config.self.desc": "以第三人称和在物品栏界面中显示自己的血条",
+
+  "yacl3.config.healthindicators:config.show_through_walls": "透墙显示",
+  "yacl3.config.healthindicators:config.show_through_walls.desc": "血条是否可透过方块可见。",
+
+  "yacl3.config.healthindicators:config.blacklistOrWhitelist": "黑名单 / 白名单 模式",
+  "yacl3.config.healthindicators:config.blacklistOrWhitelist.desc": "切换下方列表的黑名单/白名单模式\n\n选择“黑名单”时，列表中列出的生物类型将不会显示血条。\n\n选择“白名单”时，仅列表中列出的生物类型会显示血条。留空列表可禁用此功能。",
+  "yacl3.config.healthindicators:config.blacklistOrWhitelist.fmt.true": "黑名单",
+  "yacl3.config.healthindicators:config.blacklistOrWhitelist.fmt.false": "白名单",
+
+  "yacl3.config.healthindicators:config.list": "过滤实体列表",
+  "yacl3.config.healthindicators:config.list.desc": "血条渲染的黑/白名单。",
+
+  "yacl3.config.healthindicators:config.whitelist": "白名单",
+  "yacl3.config.healthindicators:config.whitelist.desc": "仅对白名单中的实体类型显示血条。留空列表可禁用此功能。",
+
+  "yacl3.config.healthindicators:config.after_attack": "仅被攻击后显示",
+  "yacl3.config.healthindicators:config.after_attack.desc": "只有当实体被攻击后才显示血条。",
+
+  "yacl3.config.healthindicators:config.time_after_hit": "重置指示器时间（秒）",
+  "yacl3.config.healthindicators:config.time_after_hit.desc": "血条将在设定的秒数后消失。",
+
+  "yacl3.config.healthindicators:config.damaged_only": "仅受伤实体",
+  "yacl3.config.healthindicators:config.damaged_only.desc": "只有当实体生命值低于最大值时才显示血条。带有伤害吸收状态效果的实体可能无法按预期工作。",
+
+  "yacl3.config.healthindicators:config.max_health_percentage": "生命值阈值",
+  "yacl3.config.healthindicators:config.max_health_percentage.desc": "以最大生命值的百分比为单位，当实体生命值高于此值时不显示血条。\n\n例如，设为 40% 时，生命值高于 40% 的实体不会显示血条；设为 100% 则对所有实体均显示。",
+
+  "yacl3.config.healthindicators:config.looking_at": "仅准心目标实体",
+  "yacl3.config.healthindicators:config.looking_at.desc": "只有当你正在观察该实体时才会渲染血条。",
+
+  "yacl3.config.healthindicators:config.reach": "目标范围",
+  "yacl3.config.healthindicators:config.reach.desc": "“目标实体”选项的作用范围。默认距离为 3 格。",
+
+  "yacl3.config.healthindicators:config.within_distance": "仅在范围内显示血条",
+  "yacl3.config.healthindicators:config.within_distance.desc": "超过此距离的实体不会显示血条。注意：此选项不同于“目标范围”，它限制所有实体的可见距离。",
+
+  "yacl3.config.healthindicators:config.distance": "距离",
+  "yacl3.config.healthindicators:config.distance.desc": "“仅在范围内显示血条”选项的距离。",
+
+  "yacl3.config.healthindicators:config.override_players": "始终显示玩家血条",
+  "yacl3.config.healthindicators:config.override_players.desc": "无视以上所有条件，始终对玩家显示血条，即使他们未受攻击、生命值已满或未被准心指向。",
+
+  "yacl3.config.healthindicators:config.override_players_label.desc": "无视上述条件，始终对以下实体类型渲染血条。\n\n目前仅支持 playerentity 类型。",
+
+  "yacl3.config.healthindicators:config.indicator_type": "血条指示器类型",
+  "yacl3.config.healthindicators:config.indicator_type.desc": "选择渲染浮动心形还是数字显示。设置为“动态”时，生命值小于 100 的实体使用心形，大于 100 的实体使用数字。",
+
+  "yacl3.config.healthindicators:config.icons_per_row": "每行心形数量 (Beta)",
+
+  "yacl3.config.healthindicators:config.use_vanilla_textures": "使用原版纹理",
+  "yacl3.config.healthindicators:config.use_vanilla_textures.desc": "某些资源包使用自定义心形图标，可能导致本模组无法正常工作。启用此选项可覆盖自定义图标。",
+
+  "yacl3.config.healthindicators:config.health_bar_opacity": "不透明度",
+  "yacl3.config.healthindicators:config.health_bar_opacity.desc": "血条的不透明度，取值范围 0–100%。",
+
+  "yacl3.config.healthindicators:config.show_heart_effects": "显示状态效果",
+  "yacl3.config.healthindicators:config.show_heart_effects.desc": "某些状态效果（中毒、凋零、极限模式、冻结）会改变心形纹理，启用此选项后，血条心形也会随之改变。",
+
+  "yacl3.config.healthindicators:config.number_type_settings_label.desc": "数字类型指示器设置",
+
+  "yacl3.config.healthindicators:config.number_color": "数字颜色",
+  "yacl3.config.healthindicators:config.number_color.desc": "数字显示的颜色。",
+
+  "yacl3.config.healthindicators:config.render_number_display_shadow": "显示阴影",
+  "yacl3.config.healthindicators:config.render_number_display_shadow.desc": "数字显示是否带阴影。",
+
+  "yacl3.config.healthindicators:config.render_number_display_background_color": "显示背景",
+  "yacl3.config.healthindicators:config.render_number_display_background_color.desc": "数字显示是否带有背景。",
+
+  "yacl3.config.healthindicators:config.decimal_places": "小数位数",
+  "yacl3.config.healthindicators:config.decimal_places.desc": "数字显示保留的小数位数。",
+
+  "yacl3.config.healthindicators:config.number_display_background_color": "背景颜色",
+  "yacl3.config.healthindicators:config.number_display_background_color.desc": "数字显示背景的颜色。",
+
+  "yacl3.config.healthindicators:config.size": "指示器大小",
+  "yacl3.config.healthindicators:config.size.desc": "血条指示器的缩放比例。",
+
+  "yacl3.config.healthindicators:config.percentage_based_health": "百分比生命值",
+  "yacl3.config.healthindicators:config.percentage_based_health.desc": "以百分比显示生命值而非原始数值。启用后所有生物都会有相同的基础生命值（可在下方配置），并以此为基准显示实际生命值。\n\n例如：铁傀儡最大生命值为 50 心，若剩余 40 心，将显示为 10 心中的 8 心。\n\n数字类型指示器将直接显示百分比，如 80%。",
+
+  "yacl3.config.healthindicators:config.max_health": "基础生命值",
+  "yacl3.config.healthindicators:config.max_health.desc": "百分比生命值模式下的基础生命值（单位：HP，1 心 = 2 HP）。",
+
+  "yacl3.config.healthindicators:config.display_offset": "显示偏移",
+  "yacl3.config.healthindicators:config.display_offset.desc": "血条顶端与实体顶部之间的距离。负值可将血条移至实体中部或下方，过大或过小的偏移可能导致血条超出视野。",
+
+  "yacl3.config.healthindicators:config.offset_step_size": "偏移步长",
+  "yacl3.config.healthindicators:config.offset_step_size.desc": "按键（默认上/下箭头）每次调整的偏移量。",
+
+  "yacl3.config.healthindicators:config.force_higher_offset_for_players": "强制提高玩家偏移",
+  "yacl3.config.healthindicators:config.force_higher_offset_for_players.desc": "通常对于玩家及带名牌的实体，血条会自动提高偏移以防遮挡名牌。尽管如此但一些服务器使用自定义名牌，本模组无法识别此情况。\n\n启用此选项可对所有玩家强制提高偏移。",
+
+  "yacl3.config.healthindicators:config.message_type": "信息类型",
+  "yacl3.config.healthindicators:config.message_type.desc": "模组消息（启用/禁用指示器，调整血条偏移等）显示在聊天栏、动作栏，或不显示。",
+
+  "yacl3.config.healthindicators:config.colored_messages": "彩色消息",
+  "yacl3.config.healthindicators:config.colored_messages.desc": "启用后，启用/禁用指示器的消息将分别显示为绿色和红色。",
+
+  "yacl3.config.healthindicators:config.enable_commands": "启用模组指令",
+  "yacl3.config.healthindicators:config.enable_commands.desc": "启用 /healthindicators 及其子指令。",
+
+  "yacl3.config.healthindicators:config.hearts_clipping": "血条挤压",
+  "yacl3.config.healthindicators:config.hearts_clipping.desc": "如果血条渲染位置上方有方块，心形会被向下挤压。",
+
+  "yacl3.config.healthindicators:config.enable_damage_direction_indicators": "启用伤害方向指示器",
+  "yacl3.config.healthindicators:config.enable_damage_direction_indicators.desc": "在准心周围显示箭头，指示伤害来源方向，来帮助快速定位威胁。",
+
+  "yacl3.config.healthindicators:config.damage_direction_indicators_scale": "大小",
+  "yacl3.config.healthindicators:config.damage_direction_indicators_scale.desc": "伤害方向指示器的大小。",
+
+  "yacl3.config.healthindicators:config.damage_direction_indicators_color": "颜色",
+  "yacl3.config.healthindicators:config.damage_direction_indicators_color.desc": "伤害方向指示器的颜色。",
+
+  "yacl3.config.healthindicators:config.damage_direction_indicators_visibility_time": "显示时长（秒）",
+  "yacl3.config.healthindicators:config.damage_direction_indicators_visibility_time.desc": "伤害方向指示器显示持续的秒数。",
+
+  "yacl3.config.healthindicators:config.damage_direction_indicators_fade_out": "是否淡出",
+  "yacl3.config.healthindicators:config.damage_direction_indicators_fade_out.desc": "伤害方向指示器是否在消失前进行淡出动画。",
+
+  "yacl3.config.healthindicators:config.damage_direction_indicators_fade_out_time": "淡出时间（秒）",
+  "yacl3.config.healthindicators:config.damage_direction_indicators_fade_out_time.desc": "淡出动画的时长（秒）。此值必须小于“显示时长”。",
+
+
+  "yacl3.config.healthindicators:config.category.filters": "可见性",
+  "yacl3.config.healthindicators:config.category.appearance": "外观",
+  "yacl3.config.healthindicators:config.category.messages": "消息与指令",
+  "yacl3.config.healthindicators:config.category.damage_direction_indicators": "伤害方向指示器",
+
+  "yacl3.config.healthindicators:config.category.filters.group.entity_type": "实体类别",
+  "yacl3.config.healthindicators:config.category.filters.group.advanced": "高级",
+  "yacl3.config.healthindicators:config.category.appearance.group.indicator_type": "指示器样式",
+  "yacl3.config.healthindicators:config.category.appearance.group.offset": "指示器位置",
+  "yacl3.config.healthindicators:config.category.messages.group.messages_appearance": "模组消息样式",
+  "yacl3.config.healthindicators:config.category.messages.group.commands": "模组指令",
+
+
+  "key.categories.healthindicators": "血条指示器",
+  "key.healthindicators.renderingEnabled": "切换渲染",
+  "key.healthindicators.armorRenderingEnabled": "切换护甲条渲染",
+  "key.healthindicators.overrideAllFilters": "覆盖所有过滤条件",
+  "key.healthindicators.increaseHeartOffset": "增加血条偏移",
+  "key.healthindicators.decreaseHeartOffset": "减少血条偏移",
+  "key.healthindicators.openModMenuConfig": "打开配置界面"
+}
